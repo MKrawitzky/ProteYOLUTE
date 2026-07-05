@@ -76,7 +76,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000037 RID: 55
 		// (get) Token: 0x0600016D RID: 365 RVA: 0x0000A21C File Offset: 0x0000841C
-		public ObservableCollection<LCChartUserControl.TraceSourceItem> TraceSelectionSource { get; private set; }
+		public ObservableCollection<LCChartUserControl.TraceSourceItem> TraceSelectionSource { get; } = new ObservableCollection<LCChartUserControl.TraceSourceItem>();
 
 		// Token: 0x17000038 RID: 56
 		// (get) Token: 0x0600016E RID: 366 RVA: 0x0000A224 File Offset: 0x00008424
@@ -295,11 +295,13 @@ namespace BalticWpfControlLib
 		private readonly List<LCChartUserControl.TraceSourceItem> _traceSelectionSourceService = new List<LCChartUserControl.TraceSourceItem>();
 
 		// Token: 0x020000BA RID: 186
-		public partial class DataPt
+		public class DataPt
 		{
 			// Token: 0x060006E1 RID: 1761 RVA: 0x0003BEDB File Offset: 0x0003A0DB
 			public DataPt(double time, double value)
 			{
+				this.Time = time;
+				this.Value = value;
 			}
 
 			// Token: 0x1700016B RID: 363
@@ -314,19 +316,22 @@ namespace BalticWpfControlLib
 		}
 
 		// Token: 0x020000BB RID: 187
-		public partial class TraceSourceItem : NotificationObject
+		public class TraceSourceItem : NotificationObject
 		{
 			// Token: 0x060006E6 RID: 1766 RVA: 0x0003BF14 File Offset: 0x0003A114
 			public TraceSourceItem(SfChart chart, IMeteringChannel channel, Color color, double maxTimeBufferMin)
 			{
-				this.TraceName = this._channel.ChannelInfo.CreateTraceName() + " [" + this._channel.ChannelInfo.Unit + "]";
+				this._fp_chart = chart;
+				this._fp_channel = channel;
+				this._fp_maxTimeBufferMin = maxTimeBufferMin;
+				this.TraceName = this._fp_channel.ChannelInfo.CreateTraceName() + " [" + this._fp_channel.ChannelInfo.Unit + "]";
 				this.TraceColor = new SolidColorBrush(color);
-				// base constructor call removed
+				// base constructor call (decompilation artifact removed)
 			}
 
 			// Token: 0x1700016D RID: 365
 			// (get) Token: 0x060006E7 RID: 1767 RVA: 0x0003BFA4 File Offset: 0x0003A1A4
-			public string TraceName { get; private set; }
+			public string TraceName { get; }
 
 			// Token: 0x1700016E RID: 366
 			// (get) Token: 0x060006E8 RID: 1768 RVA: 0x0003BFAC File Offset: 0x0003A1AC
@@ -334,7 +339,7 @@ namespace BalticWpfControlLib
 			{
 				get
 				{
-					return this._channel.ChannelInfo.IsDiagnostic;
+					return this._fp_channel.ChannelInfo.IsDiagnostic;
 				}
 			}
 
@@ -344,7 +349,7 @@ namespace BalticWpfControlLib
 			{
 				get
 				{
-					return this._channel.ChannelInfo.IsSevice;
+					return this._fp_channel.ChannelInfo.IsSevice;
 				}
 			}
 
@@ -366,7 +371,7 @@ namespace BalticWpfControlLib
 
 			// Token: 0x17000171 RID: 369
 			// (get) Token: 0x060006EC RID: 1772 RVA: 0x0003BFEC File Offset: 0x0003A1EC
-			public Brush TraceColor { get; private set; }
+			public Brush TraceColor { get; }
 
 			// Token: 0x17000172 RID: 370
 			// (get) Token: 0x060006ED RID: 1773 RVA: 0x0003BFF4 File Offset: 0x0003A1F4
@@ -379,7 +384,7 @@ namespace BalticWpfControlLib
 				}
 				set
 				{
-					this._chart.Dispatcher.VerifyAccess();
+					this._fp_chart.Dispatcher.VerifyAccess();
 					if (this._isChecked != value)
 					{
 						this._isChecked = value;
@@ -392,17 +397,17 @@ namespace BalticWpfControlLib
 								EnableAntiAliasing = true,
 								StrokeThickness = 1.0,
 								Interior = this.TraceColor,
-								Label = this._channel.ChannelInfo.Id.ToString(),
+								Label = this._fp_channel.ChannelInfo.Id.ToString(),
 								LegendIcon = ChartLegendIcon.SeriesType,
 								XBindingPath = "Time",
 								YBindingPath = "Value"
 							};
-							this._chart.Series.Add(this._series);
-							this._channel.ChannelDataChanged += this.TraceDataChanged;
+							this._fp_chart.Series.Add(this._series);
+							this._fp_channel.ChannelDataChanged += this.TraceDataChanged;
 							return;
 						}
-						this._channel.ChannelDataChanged -= this.TraceDataChanged;
-						this._chart.Series.Remove(this._series);
+						this._fp_channel.ChannelDataChanged -= this.TraceDataChanged;
+						this._fp_chart.Series.Remove(this._series);
 						this._series = null;
 						this._lastTime = TimeSpan.Zero;
 					}
@@ -412,7 +417,7 @@ namespace BalticWpfControlLib
 			// Token: 0x060006EF RID: 1775 RVA: 0x0003C112 File Offset: 0x0003A312
 			public override string ToString()
 			{
-				return string.Format("{0}:{1}", this._channel.ChannelInfo.Id.Source, this._channel.ChannelInfo.Id.Name);
+				return string.Format("{0}:{1}", this._fp_channel.ChannelInfo.Id.Source, this._fp_channel.ChannelInfo.Id.Name);
 			}
 
 			// Token: 0x060006F0 RID: 1776 RVA: 0x0003C148 File Offset: 0x0003A348
@@ -451,7 +456,7 @@ namespace BalticWpfControlLib
 								if (!double.IsNaN(value))
 								{
 									TimeSpan time = new TimeSpan(point.Timestamp);
-									data.Add(new LCChartUserControl.DataPt(time.TotalMinutes, Math.Round(value, this._channel.ChannelInfo.DisplayDecimals)));
+									data.Add(new LCChartUserControl.DataPt(time.TotalMinutes, Math.Round(value, this._fp_channel.ChannelInfo.DisplayDecimals)));
 									goto IL_00DE;
 								}
 								goto IL_00DE;
@@ -465,7 +470,7 @@ namespace BalticWpfControlLib
 						{
 							clearChart = true;
 						}
-						this._chart.Dispatcher.BeginInvoke(new Action(delegate
+						this._fp_chart.Dispatcher.BeginInvoke(new Action(delegate
 						{
 							try
 							{
@@ -482,7 +487,7 @@ namespace BalticWpfControlLib
 										}
 										else if (data != null && this.IsChecked)
 										{
-											while (ds.Count > 0 && Math.Abs(data[0].Time - ds[0].Time) > this._maxTimeBufferMin)
+											while (ds.Count > 0 && Math.Abs(data[0].Time - ds[0].Time) > this._fp_maxTimeBufferMin)
 											{
 												ds.RemoveAt(0);
 											}
@@ -509,15 +514,15 @@ namespace BalticWpfControlLib
 
 			// Token: 0x040003A6 RID: 934
 			[CompilerGenerated]
-			private SfChart _chart;
+			private SfChart _fp_chart;
 
 			// Token: 0x040003A7 RID: 935
 			[CompilerGenerated]
-			private IMeteringChannel _channel;
+			private IMeteringChannel _fp_channel;
 
 			// Token: 0x040003A8 RID: 936
 			[CompilerGenerated]
-			private double _maxTimeBufferMin;
+			private double _fp_maxTimeBufferMin;
 
 			// Token: 0x040003A9 RID: 937
 			private FastLineBitmapSeries _series;

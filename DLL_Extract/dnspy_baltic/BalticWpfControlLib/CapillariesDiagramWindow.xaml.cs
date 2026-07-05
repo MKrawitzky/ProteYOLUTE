@@ -36,7 +36,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000027 RID: 39
 		// (get) Token: 0x060000DC RID: 220 RVA: 0x00006065 File Offset: 0x00004265
-		public DiagramStateController Controller { get; private set; }
+		public DiagramStateController Controller { get; }
 
 		// Token: 0x17000028 RID: 40
 		// (get) Token: 0x060000DD RID: 221 RVA: 0x0000606D File Offset: 0x0000426D

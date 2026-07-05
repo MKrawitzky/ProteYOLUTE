@@ -64,7 +64,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x1700000E RID: 14
 		// (get) Token: 0x0600004E RID: 78 RVA: 0x00002EFF File Offset: 0x000010FF
-		public ObservableCollection<AdvProcParam> Parameters { get; private set; }
+		public ObservableCollection<AdvProcParam> Parameters { get; } = new ObservableCollection<AdvProcParam>();
 
 		// Token: 0x0600004F RID: 79 RVA: 0x00002F08 File Offset: 0x00001108
 		public void SetParameters(IEnumerable<ProcedureParameter> procedureParameters, ProcedureArguments procArgs, IEnumerable<ChildProcedureParameter> childProcedureParameters, ChildProcedureArguments childProcArgs, ProcedureArguments valuePresets, ChildProcedureArguments childValuePresets)

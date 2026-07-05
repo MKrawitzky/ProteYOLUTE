@@ -30,11 +30,11 @@ namespace BalticWpfControlLib
 
 		// Token: 0x1700001C RID: 28
 		// (get) Token: 0x06000094 RID: 148 RVA: 0x00003AE5 File Offset: 0x00001CE5
-		public string Header { get; private set; }
+		public string Header { get; }
 
 		// Token: 0x1700001D RID: 29
 		// (get) Token: 0x06000095 RID: 149 RVA: 0x00003AED File Offset: 0x00001CED
-		public SolidColorBrush HeaderFgColor { get; private set; }
+		public SolidColorBrush HeaderFgColor { get; }
 
 		// Token: 0x06000096 RID: 150 RVA: 0x00003AF8 File Offset: 0x00001CF8
 		public AdvChildParamSettingsUserControl(string header, BindableBalticMethod method, BalticInstrumentFacade instrument, ExperimentInfo experiment)

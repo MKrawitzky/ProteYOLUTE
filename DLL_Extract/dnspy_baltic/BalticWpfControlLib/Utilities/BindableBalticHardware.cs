@@ -13,6 +13,7 @@ namespace BalticWpfControlLib.Utilities
 		// Token: 0x060003F8 RID: 1016 RVA: 0x00018DC9 File Offset: 0x00016FC9
 		public BindableBalticHardware(BalticHWProfile hardwareProfile)
 		{
+			this._fp_hardwareProfile = hardwareProfile;
 		}
 
 		// Token: 0x170000A3 RID: 163
@@ -22,11 +23,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.Autosampler.DeviceIP;
+				return this._fp_hardwareProfile.Autosampler.DeviceIP;
 			}
 			set
 			{
-				this._hardwareProfile.Autosampler.DeviceIP = value;
+				this._fp_hardwareProfile.Autosampler.DeviceIP = value;
 				this.OnPropertyChanged("AutosamplerIP");
 				this.OnPropertyChanged("PumpHost");
 			}
@@ -39,11 +40,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.LC.DeviceIP;
+				return this._fp_hardwareProfile.LC.DeviceIP;
 			}
 			set
 			{
-				this._hardwareProfile.LC.DeviceIP = value;
+				this._fp_hardwareProfile.LC.DeviceIP = value;
 				this.OnPropertyChanged("PumpHost");
 				this.OnPropertyChanged("AutosamplerIP");
 			}
@@ -56,11 +57,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.IsSimulate;
+				return this._fp_hardwareProfile.IsSimulate;
 			}
 			set
 			{
-				this._hardwareProfile.IsSimulate = value;
+				this._fp_hardwareProfile.IsSimulate = value;
 				if (value)
 				{
 					this.IsCTCSimulate = false;
@@ -76,11 +77,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.IsCTCSimulate;
+				return this._fp_hardwareProfile.IsCTCSimulate;
 			}
 			set
 			{
-				this._hardwareProfile.IsCTCSimulate = value;
+				this._fp_hardwareProfile.IsCTCSimulate = value;
 				if (value)
 				{
 					this.IsSimulate = false;
@@ -96,11 +97,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.IsPressurePSI;
+				return this._fp_hardwareProfile.IsPressurePSI;
 			}
 			set
 			{
-				this._hardwareProfile.IsPressurePSI = value;
+				this._fp_hardwareProfile.IsPressurePSI = value;
 				this.OnPropertyChanged("IsPressurePSI");
 			}
 		}
@@ -112,11 +113,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.MaxPumpPressure;
+				return this._fp_hardwareProfile.MaxPumpPressure;
 			}
 			set
 			{
-				this._hardwareProfile.MaxPumpPressure = value;
+				this._fp_hardwareProfile.MaxPumpPressure = value;
 				this.OnPropertyChanged("MaxPumpPressure");
 			}
 		}
@@ -128,11 +129,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.UseIdleProcedure;
+				return this._fp_hardwareProfile.UseIdleProcedure;
 			}
 			set
 			{
-				this._hardwareProfile.UseIdleProcedure = value;
+				this._fp_hardwareProfile.UseIdleProcedure = value;
 				this.OnPropertyChanged("UseIdleProcedure");
 			}
 		}
@@ -144,11 +145,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.IsColumnOvenConnected;
+				return this._fp_hardwareProfile.IsColumnOvenConnected;
 			}
 			set
 			{
-				this._hardwareProfile.IsColumnOvenConnected = value;
+				this._fp_hardwareProfile.IsColumnOvenConnected = value;
 				this.OnPropertyChanged("IsColumnOvenConnected");
 			}
 		}
@@ -160,11 +161,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.Autosampler.Slot1TrayType;
+				return this._fp_hardwareProfile.Autosampler.Slot1TrayType;
 			}
 			set
 			{
-				this._hardwareProfile.Autosampler.Slot1TrayType = value;
+				this._fp_hardwareProfile.Autosampler.Slot1TrayType = value;
 				this.OnPropertyChanged("Slot1TrayType");
 			}
 		}
@@ -176,11 +177,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.Autosampler.Slot2TrayType;
+				return this._fp_hardwareProfile.Autosampler.Slot2TrayType;
 			}
 			set
 			{
-				this._hardwareProfile.Autosampler.Slot2TrayType = value;
+				this._fp_hardwareProfile.Autosampler.Slot2TrayType = value;
 				this.OnPropertyChanged("Slot2TrayType");
 			}
 		}
@@ -192,15 +193,15 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.Autosampler.Slot1TrayTypeName;
+				return this._fp_hardwareProfile.Autosampler.Slot1TrayTypeName;
 			}
 			set
 			{
-				this._hardwareProfile.Autosampler.Slot1TrayTypeName = value;
+				this._fp_hardwareProfile.Autosampler.Slot1TrayTypeName = value;
 				BalticHWProfile.ASProfile.TrayType selEnum;
-				if (Enum.TryParse<BalticHWProfile.ASProfile.TrayType>(this._hardwareProfile.Autosampler.Slot1TrayTypeName, out selEnum))
+				if (Enum.TryParse<BalticHWProfile.ASProfile.TrayType>(this._fp_hardwareProfile.Autosampler.Slot1TrayTypeName, out selEnum))
 				{
-					this._hardwareProfile.Autosampler.Slot1TrayType = selEnum;
+					this._fp_hardwareProfile.Autosampler.Slot1TrayType = selEnum;
 				}
 				this.OnPropertyChanged("Slot1TrayTypeName");
 			}
@@ -213,15 +214,15 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.Autosampler.Slot2TrayTypeName;
+				return this._fp_hardwareProfile.Autosampler.Slot2TrayTypeName;
 			}
 			set
 			{
-				this._hardwareProfile.Autosampler.Slot2TrayTypeName = value;
+				this._fp_hardwareProfile.Autosampler.Slot2TrayTypeName = value;
 				BalticHWProfile.ASProfile.TrayType selection;
-				if (Enum.TryParse<BalticHWProfile.ASProfile.TrayType>(this._hardwareProfile.Autosampler.Slot2TrayTypeName, out selection))
+				if (Enum.TryParse<BalticHWProfile.ASProfile.TrayType>(this._fp_hardwareProfile.Autosampler.Slot2TrayTypeName, out selection))
 				{
-					this._hardwareProfile.Autosampler.Slot2TrayType = selection;
+					this._fp_hardwareProfile.Autosampler.Slot2TrayType = selection;
 				}
 				this.OnPropertyChanged("Slot2TrayTypeName");
 			}
@@ -234,11 +235,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.Autosampler.SampleTrayTemperature;
+				return this._fp_hardwareProfile.Autosampler.SampleTrayTemperature;
 			}
 			set
 			{
-				this._hardwareProfile.Autosampler.SampleTrayTemperature = value;
+				this._fp_hardwareProfile.Autosampler.SampleTrayTemperature = value;
 				this.OnPropertyChanged("TrayTemperature");
 			}
 		}
@@ -250,11 +251,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.ApplicationKey;
+				return this._fp_hardwareProfile.ApplicationKey;
 			}
 			set
 			{
-				this._hardwareProfile.ApplicationKey = value;
+				this._fp_hardwareProfile.ApplicationKey = value;
 				this.OnPropertyChanged("ApplicationKey");
 			}
 		}
@@ -266,11 +267,11 @@ namespace BalticWpfControlLib.Utilities
 		{
 			get
 			{
-				return this._hardwareProfile.ConnectionProfile;
+				return this._fp_hardwareProfile.ConnectionProfile;
 			}
 			set
 			{
-				this._hardwareProfile.ConnectionProfile = value;
+				this._fp_hardwareProfile.ConnectionProfile = value;
 				this.OnPropertyChanged("ConnectionProfile");
 			}
 		}
@@ -319,9 +320,9 @@ namespace BalticWpfControlLib.Utilities
 
 		// Token: 0x04000262 RID: 610
 		[CompilerGenerated]
-		private BalticHWProfile _hardwareProfile;
+		private BalticHWProfile _fp_hardwareProfile;
 
 		// Token: 0x04000263 RID: 611
-		private static readonly Regex _ipRegex = new Regex("^(\\d\\.)\\d");
+		private static readonly Regex _ipRegex = new Regex("^(\\d{1,3}\\.){3}\\d{1,3}$");
 	}
 }

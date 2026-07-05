@@ -212,7 +212,12 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000064 RID: 100
 		// (get) Token: 0x060002BD RID: 701 RVA: 0x00012FD8 File Offset: 0x000111D8
-		public List<LedBrightness> LedBrightnessValues { get; private set; }
+		public List<LedBrightness> LedBrightnessValues { get; } = new List<LedBrightness>(3)
+		{
+			LedBrightness.Off,
+			LedBrightness.Intermediate,
+			LedBrightness.Full
+		};
 
 		// Token: 0x14000031 RID: 49
 		// (add) Token: 0x060002BE RID: 702 RVA: 0x00012FE0 File Offset: 0x000111E0

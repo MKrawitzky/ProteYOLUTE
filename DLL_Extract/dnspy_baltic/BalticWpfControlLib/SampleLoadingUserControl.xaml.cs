@@ -621,7 +621,7 @@ namespace BalticWpfControlLib
 		private string _pressureTolTip;
 
 		// Token: 0x020000FC RID: 252
-		public partial class ComboBoxItemInjMethod
+		public class ComboBoxItemInjMethod
 		{
 			// Token: 0x17000176 RID: 374
 			// (get) Token: 0x060007AA RID: 1962 RVA: 0x0003DC22 File Offset: 0x0003BE22

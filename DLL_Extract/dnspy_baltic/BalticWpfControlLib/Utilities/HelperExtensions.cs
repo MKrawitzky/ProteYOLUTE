@@ -288,7 +288,7 @@ namespace BalticWpfControlLib.Utilities
 
 			// Token: 0x1700017D RID: 381
 			// (get) Token: 0x060007F3 RID: 2035 RVA: 0x0003E35A File Offset: 0x0003C55A
-			public IntPtr Handle { get; private set; }
+			public IntPtr Handle { get; }
 
 			// Token: 0x060007F4 RID: 2036 RVA: 0x0003E362 File Offset: 0x0003C562
 			public FromHandle(IntPtr handle)

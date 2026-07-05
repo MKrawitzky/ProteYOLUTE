@@ -57,7 +57,7 @@ namespace BalticWpfControlLib.Properties
 		{
 			get
 			{
-				return null; // Resource removed to avoid System.Resources.Extensions dependency
+				return (Bitmap)Resources.ResourceManager.GetObject("blue_dot", Resources.resourceCulture);
 			}
 		}
 

@@ -1,7 +1,10 @@
-using System;
+﻿using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -10,978 +13,1232 @@ using BalticClassLib;
 using BalticWpfControlLib.Utilities;
 using Bruker.Lc.Baltic;
 using Bruker.Lc.Business;
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace BalticWpfControlLib
 {
-
-public partial class MethodUserControl : UserControl, IComponentConnector
-{
-	public delegate void ValidateInputUpdate(bool isValid);
-
-	public delegate void EnableMethodComplete(bool isEnabled);
-
-	public delegate void TrapSelectionWarning(bool isShow, string message = "");
-
-	private const int _heightCollapsed = 505;
-
-	private const int _heightExpanded = 705;
-
-	private bool _methodStateEnabled;
-
-	private readonly bool _isPressurePSI;
-
-	private readonly bool _isOvenDetected;
-
-	private bool _isTrapColEquilValid = true;
-
-	private bool _isAnalColEquilValid = true;
-
-	private bool _isSampleLoadValid = true;
-
-	private bool _isGradTableValid = true;
-
-	private bool _isGradMainValid = true;
-
-	private bool _isAdvSettingsValid = true;
-
-	private readonly bool _isService;
-
-	private readonly BindableBalticMethod _method;
-
-	private readonly BalticInstrumentFacade _facade;
-
-	private Expander _expSettings;
-
-	private GradientMainUserControl _ucGradMain;
-
-	private GradientTableUserControl _ucGradTable;
-
-	private readonly RadioButton _btnTrapColEquil = new RadioButton();
-
-	private readonly RadioButton _btnSepColEquil = new RadioButton();
-
-	private readonly RadioButton _btnSampleLoad = new RadioButton();
-
-	private readonly RadioButton _btnAdvancedSett = new RadioButton();
-
-	private TextBlock _tbTrapModified;
-
-	private TextBlock _tbSepModified;
-
-	private TextBlock _tbLoadModified;
-
-	private TextBlock _tbAdvModified;
-
-	private TextBlock _tbModifiedAll;
-
-	private Image _imgTrapErrorNotify;
-
-	private Image _imgSepErrorNotify;
-
-	private Image _imgLoadErrorNotify;
-
-	private Image _imgAdvErrorNotify;
-
-	private Image _imgAllErrorNotify;
-
-	private UserControl _activeUc;
-
-	private RadioButton _activeBtn;
-
-	private Grid _expGrid;
-
-	private double _ucWidth;
-
-	private double _ucHeight;
-
-	private readonly Window _owner;
-
-	private ExperimentInfo _experiment;
-
-	private readonly BalticColumnList _columns;
-
-	private readonly ColumnSelections _columnSelections;
-
-	private readonly ResourceDictionary _myResDictionary = new ResourceDictionary();
-
-
-
-	private bool IsMethodDataValid
+	// Token: 0x0200002C RID: 44
+	public partial class MethodUserControl : UserControl
 	{
-		get
+		// Auto-generated callsite cache class
+		private static class _co_66
 		{
-			if (_isTrapColEquilValid && _isAnalColEquilValid && _isSampleLoadValid && _isGradTableValid && _isGradMainValid)
-			{
-				return _isAdvSettingsValid;
-			}
-			return false;
+			public static dynamic _cp_0;
+			public static dynamic _cp_1;
+			public static dynamic _cp_2;
+			public static dynamic _cp_3;
+			public static dynamic _cp_4;
+			public static dynamic _cp_5;
+			public static dynamic _cp_6;
+			public static dynamic _cp_7;
 		}
-	}
 
-	private bool IsOverrideSettingsValid
-	{
-		get
+		// Token: 0x1400002D RID: 45
+		// (add) Token: 0x0600026E RID: 622 RVA: 0x00010180 File Offset: 0x0000E380
+		// (remove) Token: 0x0600026F RID: 623 RVA: 0x000101B8 File Offset: 0x0000E3B8
+		public event MethodUserControl.ValidateInputUpdate ValidateInputUpdateEvent;
+
+		// Token: 0x1400002E RID: 46
+		// (add) Token: 0x06000270 RID: 624 RVA: 0x000101F0 File Offset: 0x0000E3F0
+		// (remove) Token: 0x06000271 RID: 625 RVA: 0x00010228 File Offset: 0x0000E428
+		public event MethodUserControl.EnableMethodComplete EnableMethodCompleteEvent;
+
+		// Token: 0x1400002F RID: 47
+		// (add) Token: 0x06000272 RID: 626 RVA: 0x00010260 File Offset: 0x0000E460
+		// (remove) Token: 0x06000273 RID: 627 RVA: 0x00010298 File Offset: 0x0000E498
+		public event MethodUserControl.TrapSelectionWarning TrapSelectionWarningEvent;
+
+		// Token: 0x17000056 RID: 86
+		// (get) Token: 0x06000274 RID: 628 RVA: 0x000102CD File Offset: 0x0000E4CD
+		private bool IsMethodDataValid
 		{
-			if (_isTrapColEquilValid && _isAnalColEquilValid && _isSampleLoadValid)
+			get
 			{
-				return _isAdvSettingsValid;
-			}
-			return false;
-		}
-	}
-
-	public event ValidateInputUpdate ValidateInputUpdateEvent;
-
-	public event EnableMethodComplete EnableMethodCompleteEvent;
-
-	public event TrapSelectionWarning TrapSelectionWarningEvent;
-
-	public MethodUserControl(Window owner, BalticMethod method, BalticInstrumentFacade facade, BalticColumnList columns, ColumnSelections columnSelections, bool isPressurePSI = false, bool isOvenDetected = false)
-	{
-		_owner = owner;
-		_method = new BindableBalticMethod(method, facade);
-		_facade = facade;
-		_columns = columns;
-		_columnSelections = columnSelections;
-		_isPressurePSI = isPressurePSI;
-		_isOvenDetected = isOvenDetected;
-		_isService = BalticInstrumentFacade.IsService;
-		InitializeComponent();
-		_myResDictionary.Source = new Uri("pack://application:,,,/BalticWpfControlLib;component/Resources/BrukerIcons.xaml", UriKind.RelativeOrAbsolute);
-		if (_method.ElutionName != null)
-		{
-			UpdateExperimentInfo();
-			CheckExistingMethod();
-		}
-		UpdateMethodDisplay();
-	}
-
-	private void UpdateExperimentInfo()
-	{
-		_experiment = new ExperimentInfo
-		{
-			ElutionName = _method.ElutionName,
-			AnalysisTime = TimeSpan.FromMinutes(_method.GradientTime),
-			OvenTemperature = _method.OvenTemperature,
-			AppKey = _facade.AppKey
-		};
-		if (_method.UsesTrapColumn)
-		{
-			Column column = _columns.Find((Column item) => item.Name == _method.TrapColumnName);
-			if (column != null)
-			{
-				_experiment.Trap = new ColumnAdapter(column);
-			}
-			else
-			{
-				MessageBox.Show(_owner, "Method trap column \"" + _method.TrapColumnName + "\" cannot be found in the system column list - Reset Method, or Select a column and Adapt !", "Error - Unknown Column Name ", MessageBoxButton.OK, MessageBoxImage.Hand);
+				return this._isTrapColEquilValid && this._isAnalColEquilValid && this._isSampleLoadValid && this._isGradTableValid && this._isGradMainValid && this._isAdvSettingsValid;
 			}
 		}
-		if (_method.UsesSepColumn)
+
+		// Token: 0x17000057 RID: 87
+		// (get) Token: 0x06000275 RID: 629 RVA: 0x000102FF File Offset: 0x0000E4FF
+		private bool IsOverrideSettingsValid
 		{
-			Column column2 = _columns.Find((Column item) => item.Name == _method.SeparationColumnName);
-			if (column2 != null)
+			get
 			{
-				_experiment.Separator = new ColumnAdapter(column2);
-			}
-			else
-			{
-				MessageBox.Show(_owner, "Method separation column \"" + _method.SeparationColumnName + "\" cannot be found in the system column list - Reset Method, or Select a column and Adapt !", "Error - Unknown Column Name ", MessageBoxButton.OK, MessageBoxImage.Hand);
+				return this._isTrapColEquilValid && this._isAnalColEquilValid && this._isSampleLoadValid && this._isAdvSettingsValid;
 			}
 		}
-	}
 
-	private void UpdateMethodDisplay()
-	{
-		_ucGradMain = new GradientMainUserControl(_method, _facade, _columns, _columnSelections, _isOvenDetected);
-		_ucGradMain.GetInitialMethodParamEvent += ucGradMain_GetInitialMethodParamEvent;
-		_ucGradMain.GenerateMethodEvent += ucGradMain_GenerateMethodEvent;
-		_ucGradMain.EnableMethodControlsEvent += ucGradMain_EnableMethodControlsEvent;
-		_ucGradMain.ValidationUpdateEvent += ucGradMain_UpdateInputValidation;
-		_ucGradMain.TrapSelectionWarningEvent += ucGradMain_TrapSelectionWarning;
-		Canvas.SetLeft(_ucGradMain, 0.0);
-		Canvas.SetTop(_ucGradMain, 0.0);
-		cvMethodEditor.Children.Add(_ucGradMain);
-		_ucGradTable = new GradientTableUserControl(_method, _facade, _experiment);
-		_ucGradTable.Width = _ucGradTable.DesignWidth;
-		_ucGradTable.Height = _ucGradMain.Height;
-		_ucGradTable.GradientMainUpdateEvent += ucGradTable_GradientMainUpdateEvent;
-		_ucGradTable.ValidationUpdateEvent += ucGradTable_UpdateInputValidation;
-		Canvas.SetLeft(_ucGradTable, _ucGradMain.Width - 5.0);
-		Canvas.SetTop(_ucGradTable, 0.0);
-		cvMethodEditor.Children.Add(_ucGradTable);
-		_expSettings = new Expander();
-		StackPanel stackPanel = new StackPanel
+		// Token: 0x06000276 RID: 630 RVA: 0x00010324 File Offset: 0x0000E524
+		public MethodUserControl(Window owner, BalticMethod method, BalticInstrumentFacade facade, BalticColumnList columns, ColumnSelections columnSelections, bool isPressurePSI = false, bool isOvenDetected = false)
 		{
-			Orientation = Orientation.Horizontal
-		};
-		TextBlock element = new TextBlock
-		{
-			Foreground = new SolidColorBrush(Colors.SteelBlue),
-			FontSize = 10.0,
-			Text = "OVERRIDE DEFAULT SETTINGS"
-		};
-		_tbModifiedAll = new TextBlock
-		{
-			HorizontalAlignment = HorizontalAlignment.Left,
-			VerticalAlignment = VerticalAlignment.Center,
-			Text = "",
-			Foreground = new SolidColorBrush(Colors.Red),
-			FontSize = 8.0,
-			FontStyle = FontStyles.Italic
-		};
-		_imgAllErrorNotify = new Image
-		{
-			Height = 12.0,
-			Width = 12.0,
-			HorizontalAlignment = HorizontalAlignment.Right,
-			VerticalAlignment = VerticalAlignment.Center,
-			Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
-			Source = (_myResDictionary["IconErrorRed"] as DrawingImage),
-			ToolTip = "Override Settings Error(s)",
-			Visibility = Visibility.Hidden
-		};
-		stackPanel.Children.Add(element);
-		stackPanel.Children.Add(_tbModifiedAll);
-		stackPanel.Children.Add(_imgAllErrorNotify);
-		_expSettings.Header = stackPanel;
-		_expSettings.Width = _ucGradMain.Width + _ucGradTable.Width - 9.0;
-		_expSettings.BorderBrush = new SolidColorBrush(Colors.LightGray);
-		_expGrid = new Grid
-		{
-			Margin = new Thickness(4.0, 4.0, 0.0, 4.0)
-		};
-		ColumnDefinition value = new ColumnDefinition
-		{
-			Width = new GridLength(_expSettings.Width * 0.45, GridUnitType.Pixel)
-		};
-		_expGrid.ColumnDefinitions.Add(value);
-		ColumnDefinition value2 = new ColumnDefinition
-		{
-			Width = new GridLength(_expSettings.Width * 0.55 - 12.0, GridUnitType.Pixel)
-		};
-		_expGrid.ColumnDefinitions.Add(value2);
-		for (int i = 0; i < 5; i++)
-		{
-			RowDefinition value3 = new RowDefinition
+			this._owner = owner;
+			this._method = new BindableBalticMethod(method, facade);
+			this._facade = facade;
+			this._columns = columns;
+			this._columnSelections = columnSelections;
+			this._isPressurePSI = isPressurePSI;
+			this._isOvenDetected = isOvenDetected;
+			this._isService = BalticInstrumentFacade.IsService;
+			this.InitializeComponent();
+			this._myResDictionary.Source = new Uri("pack://application:,,,/BalticWpfControlLib;component/Resources/BrukerIcons.xaml", UriKind.RelativeOrAbsolute);
+			if (this._method.ElutionName != null)
 			{
-				Height = new GridLength(38.0)
+				this.UpdateExperimentInfo();
+				this.CheckExistingMethod();
+			}
+			this.UpdateMethodDisplay();
+		}
+
+		// Token: 0x06000277 RID: 631 RVA: 0x0001041C File Offset: 0x0000E61C
+		private void UpdateExperimentInfo()
+		{
+			this._experiment = new ExperimentInfo
+			{
+				ElutionName = this._method.ElutionName,
+				AnalysisTime = TimeSpan.FromMinutes(this._method.GradientTime),
+				OvenTemperature = this._method.OvenTemperature,
+				AppKey = this._facade.AppKey
 			};
-			_expGrid.RowDefinitions.Add(value3);
+			if (this._method.UsesTrapColumn)
+			{
+				Column column = this._columns.Find((Column item) => item.Name == this._method.TrapColumnName);
+				if (column != null)
+				{
+					this._experiment.Trap = new ColumnAdapter(column);
+				}
+				else
+				{
+					MessageBox.Show(this._owner, "Method trap column \"" + this._method.TrapColumnName + "\" cannot be found in the system column list - Reset Method, or Select a column and Adapt !", "Error - Unknown Column Name ", MessageBoxButton.OK, MessageBoxImage.Hand);
+				}
+			}
+			if (this._method.UsesSepColumn)
+			{
+				Column column2 = this._columns.Find((Column item) => item.Name == this._method.SeparationColumnName);
+				if (column2 != null)
+				{
+					this._experiment.Separator = new ColumnAdapter(column2);
+					return;
+				}
+				MessageBox.Show(this._owner, "Method separation column \"" + this._method.SeparationColumnName + "\" cannot be found in the system column list - Reset Method, or Select a column and Adapt !", "Error - Unknown Column Name ", MessageBoxButton.OK, MessageBoxImage.Hand);
+			}
 		}
-		UpdateOverrideControls();
-		UpdateGradientTableControls();
-		_expSettings.Content = _expGrid;
-		_expSettings.Collapsed += expSettings_Collapsed;
-		_expSettings.Expanded += expSettings_Expanded;
-		Canvas.SetLeft(_expSettings, 2.0);
-		Canvas.SetTop(_expSettings, _ucGradMain.Height + 5.0);
-		cvMethodEditor.Children.Add(_expSettings);
-		base.Height = 505.0;
-	}
 
-	private void UpdateGradientTableControls()
-	{
-		_ucGradTable.UpdateGradientTableControls();
-	}
-
-	private void UpdateOverrideControls(bool isKeepGradient = false)
-	{
-		if (isKeepGradient)
+		// Token: 0x06000278 RID: 632 RVA: 0x00010550 File Offset: 0x0000E750
+		private void UpdateMethodDisplay()
 		{
-			if (_activeUc is TrapColEquilUserControl trapColEquilUserControl)
+			this._ucGradMain = new GradientMainUserControl(this._method, this._facade, this._columns, this._columnSelections, this._isOvenDetected);
+			this._ucGradMain.GetInitialMethodParamEvent += this.ucGradMain_GetInitialMethodParamEvent;
+			this._ucGradMain.GenerateMethodEvent += this.ucGradMain_GenerateMethodEvent;
+			this._ucGradMain.EnableMethodControlsEvent += this.ucGradMain_EnableMethodControlsEvent;
+			this._ucGradMain.ValidationUpdateEvent += this.ucGradMain_UpdateInputValidation;
+			this._ucGradMain.TrapSelectionWarningEvent += this.ucGradMain_TrapSelectionWarning;
+			Canvas.SetLeft(this._ucGradMain, 0.0);
+			Canvas.SetTop(this._ucGradMain, 0.0);
+			this.cvMethodEditor.Children.Add(this._ucGradMain);
+			this._ucGradTable = new GradientTableUserControl(this._method, this._facade, this._experiment);
+			this._ucGradTable.Width = (double)this._ucGradTable.DesignWidth;
+			this._ucGradTable.Height = this._ucGradMain.Height;
+			this._ucGradTable.GradientMainUpdateEvent += this.ucGradTable_GradientMainUpdateEvent;
+			this._ucGradTable.ValidationUpdateEvent += this.ucGradTable_UpdateInputValidation;
+			Canvas.SetLeft(this._ucGradTable, this._ucGradMain.Width - 5.0);
+			Canvas.SetTop(this._ucGradTable, 0.0);
+			this.cvMethodEditor.Children.Add(this._ucGradTable);
+			this._expSettings = new Expander();
+			StackPanel expPanel = new StackPanel
 			{
-				trapColEquilUserControl.RefreshParameters(_experiment, _method);
-			}
-			else if (_activeUc is AnalyticalColEquilUserControl analyticalColEquilUserControl)
+				Orientation = Orientation.Horizontal
+			};
+			TextBlock tbHeader = new TextBlock
 			{
-				analyticalColEquilUserControl.RefreshParameters(_experiment, _method);
-			}
-			else if (_activeUc is SampleLoadingUserControl sampleLoadingUserControl)
+				Foreground = new SolidColorBrush(Colors.SteelBlue),
+				FontSize = 10.0,
+				Text = "OVERRIDE DEFAULT SETTINGS"
+			};
+			this._tbModifiedAll = new TextBlock
 			{
-				sampleLoadingUserControl.RefreshParameters(_experiment, _method);
-			}
-			else if (_activeUc is AdvParamSettingsUserControl advParamSettingsUserControl)
-			{
-				advParamSettingsUserControl.RefreshParameters(_experiment, _method);
-			}
-			return;
-		}
-		if (_method.ElutionName == null)
-		{
-			_expGrid.Children.Clear();
-			_expSettings.Visibility = Visibility.Hidden;
-			return;
-		}
-		_activeUc = null;
-		if (_method.UsesTrapColumn)
-		{
-			StackPanel stackPanel = new StackPanel();
-			TextBlock textBlock = new TextBlock();
-			stackPanel.Orientation = Orientation.Horizontal;
-			textBlock.Text = "Trap Column Equilibration";
-			_tbTrapModified = new TextBlock
-			{
+				HorizontalAlignment = HorizontalAlignment.Left,
+				VerticalAlignment = VerticalAlignment.Center,
 				Text = "",
 				Foreground = new SolidColorBrush(Colors.Red),
 				FontSize = 8.0,
-				FontStyle = FontStyles.Italic,
-				HorizontalAlignment = HorizontalAlignment.Right,
-				VerticalAlignment = VerticalAlignment.Center
+				FontStyle = FontStyles.Italic
 			};
-			_imgTrapErrorNotify = new Image
+			this._imgAllErrorNotify = new Image
 			{
 				Height = 12.0,
 				Width = 12.0,
 				HorizontalAlignment = HorizontalAlignment.Right,
 				VerticalAlignment = VerticalAlignment.Center,
 				Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
-				Source = (_myResDictionary["IconErrorRed"] as DrawingImage),
-				ToolTip = "Trap Column Equilibration Error(s)",
+				Source = (this._myResDictionary["IconErrorRed"] as DrawingImage),
+				ToolTip = "Override Settings Error(s)",
 				Visibility = Visibility.Hidden
 			};
-			stackPanel.Children.Add(textBlock);
-			stackPanel.Children.Add(_tbTrapModified);
-			stackPanel.Children.Add(_imgTrapErrorNotify);
-			_btnTrapColEquil.GroupName = "Overrides";
-			_btnTrapColEquil.Content = stackPanel;
-			_btnTrapColEquil.HorizontalContentAlignment = HorizontalAlignment.Left;
-			_btnTrapColEquil.Width = _expSettings.Width * 0.45;
-			_btnTrapColEquil.Height = 38.0;
-			_btnTrapColEquil.Margin = new Thickness(0.0);
-			_btnTrapColEquil.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
-			_btnTrapColEquil.Click += gridChild_Click;
-			Grid.SetRow(_btnTrapColEquil, _expGrid.Children.Count);
-			Grid.SetColumn(_btnTrapColEquil, 0);
-			_expGrid.Children.Add(_btnTrapColEquil);
-			if (_activeUc == null)
+			expPanel.Children.Add(tbHeader);
+			expPanel.Children.Add(this._tbModifiedAll);
+			expPanel.Children.Add(this._imgAllErrorNotify);
+			this._expSettings.Header = expPanel;
+			this._expSettings.Width = this._ucGradMain.Width + this._ucGradTable.Width - 9.0;
+			this._expSettings.BorderBrush = new SolidColorBrush(Colors.LightGray);
+			this._expGrid = new Grid
 			{
-				TrapColEquilUserControl trapColEquilUserControl2 = new TrapColEquilUserControl(_method, _facade, _isPressurePSI, _experiment);
-				trapColEquilUserControl2.ValidationUpdateEvent += ucTrapColEquil_UpdateInputValidation;
-				trapColEquilUserControl2.ModificationUpdateEvent += ucTrapColEquil_ModificationUpdate;
-				_activeUc = trapColEquilUserControl2;
-				_activeBtn = _btnTrapColEquil;
+				Margin = new Thickness(4.0, 4.0, 0.0, 4.0)
+			};
+			ColumnDefinition column0 = new ColumnDefinition
+			{
+				Width = new GridLength(this._expSettings.Width * 0.45, GridUnitType.Pixel)
+			};
+			this._expGrid.ColumnDefinitions.Add(column0);
+			ColumnDefinition column = new ColumnDefinition
+			{
+				Width = new GridLength(this._expSettings.Width * 0.55 - 12.0, GridUnitType.Pixel)
+			};
+			this._expGrid.ColumnDefinitions.Add(column);
+			for (int i = 0; i < 5; i++)
+			{
+				RowDefinition newRow = new RowDefinition
+				{
+					Height = new GridLength(38.0)
+				};
+				this._expGrid.RowDefinitions.Add(newRow);
 			}
+			this.UpdateOverrideControls(false);
+			this.UpdateGradientTableControls();
+			this._expSettings.Content = this._expGrid;
+			this._expSettings.Collapsed += this.expSettings_Collapsed;
+			this._expSettings.Expanded += this.expSettings_Expanded;
+			Canvas.SetLeft(this._expSettings, 2.0);
+			Canvas.SetTop(this._expSettings, this._ucGradMain.Height + 5.0);
+			this.cvMethodEditor.Children.Add(this._expSettings);
+			base.Height = 505.0;
 		}
-		if (_method.UsesSepColumn)
-		{
-			StackPanel stackPanel2 = new StackPanel();
-			TextBlock textBlock2 = new TextBlock();
-			stackPanel2.Orientation = Orientation.Horizontal;
-			textBlock2.Text = "Separation Column Equilibration";
-			_tbSepModified = new TextBlock
-			{
-				Text = "",
-				Foreground = new SolidColorBrush(Colors.Red),
-				FontSize = 8.0,
-				FontStyle = FontStyles.Italic,
-				HorizontalAlignment = HorizontalAlignment.Right,
-				VerticalAlignment = VerticalAlignment.Center
-			};
-			_imgSepErrorNotify = new Image
-			{
-				Height = 12.0,
-				Width = 12.0,
-				HorizontalAlignment = HorizontalAlignment.Right,
-				VerticalAlignment = VerticalAlignment.Center,
-				Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
-				Source = (_myResDictionary["IconErrorRed"] as DrawingImage),
-				ToolTip = "Separation Column Equilibration Error(s)",
-				Visibility = Visibility.Hidden
-			};
-			stackPanel2.Children.Add(textBlock2);
-			stackPanel2.Children.Add(_tbSepModified);
-			stackPanel2.Children.Add(_imgSepErrorNotify);
-			_btnSepColEquil.GroupName = "Overrides";
-			_btnSepColEquil.Content = stackPanel2;
-			_btnSepColEquil.HorizontalContentAlignment = HorizontalAlignment.Left;
-			_btnSepColEquil.Width = _expSettings.Width * 0.45;
-			_btnSepColEquil.Height = 38.0;
-			_btnSepColEquil.Margin = new Thickness(0.0);
-			_btnSepColEquil.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
-			_btnSepColEquil.Click += gridChild_Click;
-			Grid.SetRow(_btnSepColEquil, _expGrid.Children.Count);
-			Grid.SetColumn(_btnSepColEquil, 0);
-			_expGrid.Children.Add(_btnSepColEquil);
-			if (_activeUc == null)
-			{
-				AnalyticalColEquilUserControl analyticalColEquilUserControl2 = new AnalyticalColEquilUserControl(_method, _facade, _isPressurePSI, _experiment);
-				analyticalColEquilUserControl2.ValidationUpdateEvent += ucAnalyticalColEquil_UpdateInputValidation;
-				analyticalColEquilUserControl2.ModificationUpdateEvent += ucAnalyticalColEquil_ModificationUpdate;
-				_activeUc = analyticalColEquilUserControl2;
-				_activeBtn = _btnSepColEquil;
-			}
-		}
-		if (_method.UsesTrapColumn | _method.UsesSepColumn)
-		{
-			StackPanel stackPanel3 = new StackPanel();
-			TextBlock textBlock3 = new TextBlock();
-			stackPanel3.Orientation = Orientation.Horizontal;
-			textBlock3.Text = "Sample Loading";
-			_tbLoadModified = new TextBlock
-			{
-				Text = "",
-				Foreground = new SolidColorBrush(Colors.Red),
-				FontSize = 8.0,
-				FontStyle = FontStyles.Italic,
-				HorizontalAlignment = HorizontalAlignment.Right,
-				VerticalAlignment = VerticalAlignment.Center
-			};
-			_imgLoadErrorNotify = new Image
-			{
-				Height = 12.0,
-				Width = 12.0,
-				HorizontalAlignment = HorizontalAlignment.Right,
-				VerticalAlignment = VerticalAlignment.Center,
-				Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
-				Source = (_myResDictionary["IconErrorRed"] as DrawingImage),
-				ToolTip = "Sample Loading Errors(s)",
-				Visibility = Visibility.Hidden
-			};
-			stackPanel3.Children.Add(textBlock3);
-			stackPanel3.Children.Add(_tbLoadModified);
-			stackPanel3.Children.Add(_imgLoadErrorNotify);
-			_btnSampleLoad.GroupName = "Overrides";
-			_btnSampleLoad.Content = stackPanel3;
-			_btnSampleLoad.HorizontalContentAlignment = HorizontalAlignment.Left;
-			_btnSampleLoad.Width = _expSettings.Width * 0.45;
-			_btnSampleLoad.Height = 38.0;
-			_btnSampleLoad.Margin = new Thickness(0.0);
-			_btnSampleLoad.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
-			_btnSampleLoad.Click += gridChild_Click;
-			Grid.SetRow(_btnSampleLoad, _expGrid.Children.Count);
-			Grid.SetColumn(_btnSampleLoad, 0);
-			_expGrid.Children.Add(_btnSampleLoad);
-		}
-		StackPanel stackPanel4 = new StackPanel();
-		TextBlock textBlock4 = new TextBlock();
-		stackPanel4.Orientation = Orientation.Horizontal;
-		textBlock4.Text = "Advanced Settings";
-		_tbAdvModified = new TextBlock
-		{
-			Text = "",
-			Foreground = new SolidColorBrush(Colors.Red),
-			FontSize = 8.0,
-			FontStyle = FontStyles.Italic,
-			HorizontalAlignment = HorizontalAlignment.Right,
-			VerticalAlignment = VerticalAlignment.Center
-		};
-		_imgAdvErrorNotify = new Image
-		{
-			Height = 12.0,
-			Width = 12.0,
-			HorizontalAlignment = HorizontalAlignment.Right,
-			VerticalAlignment = VerticalAlignment.Center,
-			Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
-			Source = (_myResDictionary["IconErrorRed"] as DrawingImage),
-			ToolTip = "Advanced Settings Error(s)",
-			Visibility = Visibility.Hidden
-		};
-		stackPanel4.Children.Add(textBlock4);
-		stackPanel4.Children.Add(_tbAdvModified);
-		stackPanel4.Children.Add(_imgAdvErrorNotify);
-		_btnAdvancedSett.GroupName = "Overrides";
-		_btnAdvancedSett.Content = stackPanel4;
-		_btnAdvancedSett.HorizontalContentAlignment = HorizontalAlignment.Left;
-		_btnAdvancedSett.Width = _expSettings.Width * 0.45;
-		_btnAdvancedSett.Height = 38.0;
-		_btnAdvancedSett.Margin = new Thickness(0.0);
-		_btnAdvancedSett.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
-		_btnAdvancedSett.Click += gridChild_Click;
-		Grid.SetRow(_btnAdvancedSett, _expGrid.Children.Count);
-		Grid.SetColumn(_btnAdvancedSett, 0);
-		_expGrid.Children.Add(_btnAdvancedSett);
-		Border element = new Border
-		{
-			Width = _expSettings.Width * 0.45,
-			Margin = new Thickness(0.0),
-			BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0),
-			BorderBrush = new SolidColorBrush(Colors.SlateGray),
-			Height = double.NaN
-		};
-		Grid.SetRow(element, _expGrid.Children.Count);
-		Grid.SetColumn(element, 0);
-		Grid.SetRowSpan(element, _expGrid.RowDefinitions.Count - _expGrid.Children.Count);
-		_expGrid.Children.Add(element);
-		if (_activeUc != null)
-		{
-			_ucWidth = _expSettings.Width - _btnSampleLoad.Width - 12.0;
-			_ucHeight = _btnSampleLoad.Height * 5.0;
-			_activeUc.Width = _ucWidth;
-			_activeUc.Height = _ucHeight;
-			_activeUc.HorizontalAlignment = HorizontalAlignment.Center;
-			Grid.SetRow(_activeUc, 0);
-			Grid.SetColumn(_activeUc, 1);
-			Grid.SetRowSpan(_activeUc, 5);
-			_expGrid.Children.Add(_activeUc);
-			SetOverridePressedState();
-		}
-		if (_method.UsesTrapColumn | _method.UsesSepColumn)
-		{
-			_expSettings.Visibility = Visibility.Visible;
-		}
-		else
-		{
-			_ucWidth = _expSettings.Width - 12.0;
-			_ucHeight = 38.0;
-			_expSettings.IsExpanded = false;
-			_expSettings.Visibility = Visibility.Hidden;
-		}
-		InitialCheckForMethodModification();
-	}
 
-	private void InitialCheckForMethodModification()
-	{
-		if (_method.UsesSepColumn)
+		// Token: 0x06000279 RID: 633 RVA: 0x00010A39 File Offset: 0x0000EC39
+		private void UpdateGradientTableControls()
 		{
-			ucAnalyticalColEquil_ModificationUpdate(Math.Abs(_method.SeparationColumnEquil.Scale - _method.SeparationColumnEquil.DefaultScale) > 0.0001 || (int)(_method.SeparationColumnEquil.Pressure * 100.0) != (int)(_method.SeparationColumnEquil.DefaultPressure * 100.0));
+			this._ucGradTable.UpdateGradientTableControls();
 		}
-		if (_method.UsesTrapColumn)
-		{
-			ucTrapColEquil_ModificationUpdate(Math.Abs(_method.TrapColumnEquil.Scale - _method.TrapColumnEquil.DefaultScale) > 0.0001 || (int)(_method.TrapColumnEquil.Pressure * 100.0) != (int)(_method.TrapColumnEquil.DefaultPressure * 100.0));
-		}
-		if (_method.UsesSepColumn || _method.UsesTrapColumn)
-		{
-			ucSampleLoading_ModificationUpdate(Math.Abs(_method.SampleLoading.Scale - _method.SampleLoading.DefaultScale) > 0.0001 || (int)(_method.SampleLoading.Pressure * 100.0) != (int)(_method.SampleLoading.DefaultPressure * 100.0) || _method.SampleLoading.InjectionMethod != _method.SampleLoading.DefaultInjectionMethod || _method.SampleLoading.IsBottomSense != _method.SampleLoading.DefaultIsBottomSense);
-		}
-		bool isModified = false;
-		foreach (BindableBalticMethod.AdvancedSett.AdvancedParameter parameter in _method.AdvancedSettings.Parameters)
-		{
-			if (parameter.Value is bool flag)
-			{
-				if (flag != (bool)parameter.DefaultValue)
-				{
-					isModified = true;
-					break;
-				}
-			}
-			else if (parameter.Value is double num)
-			{
-				if ((int)(num * 1000.0) != (int)((double)parameter.DefaultValue * 1000.0))
-				{
-					isModified = true;
-					break;
-				}
-			}
-			else if (parameter.Value is int num2)
-			{
-				if (num2 != (int)parameter.DefaultValue)
-				{
-					isModified = true;
-					break;
-				}
-			}
-			else if (parameter.Value is string text && text != (string)parameter.DefaultValue)
-			{
-				isModified = true;
-				break;
-			}
-		}
-		foreach (BindableBalticMethod.AdvancedSett.AdvancedChildParameter childParameter in _method.AdvancedSettings.ChildParameters)
-		{
-			if (childParameter.Value is bool flag2)
-			{
-				if (flag2 != (bool)childParameter.DefaultValue)
-				{
-					isModified = true;
-					break;
-				}
-			}
-			else if (childParameter.Value is double num3)
-			{
-				if ((int)(num3 * 1000.0) != (int)((double)childParameter.DefaultValue * 1000.0))
-				{
-					isModified = true;
-					break;
-				}
-			}
-			else if (childParameter.Value is int num4)
-			{
-				if (num4 != (int)childParameter.DefaultValue)
-				{
-					isModified = true;
-					break;
-				}
-			}
-			else if (childParameter.Value is string text2 && text2 != (string)childParameter.DefaultValue)
-			{
-				isModified = true;
-				break;
-			}
-		}
-		ucAdvancedSett_ModificationUpdate(isModified);
-	}
 
-	private void CheckModifiedAll()
-	{
-		bool flag = _method.UsesTrapColumn && _tbTrapModified.Text == "(MODIFIED)";
-		bool flag2 = _method.UsesSepColumn && _tbSepModified.Text == "(MODIFIED)";
-		bool flag3 = (_method.UsesSepColumn || _method.UsesTrapColumn) && _tbLoadModified.Text == "(MODIFIED)";
-		bool flag4 = _tbAdvModified.Text == "(MODIFIED)";
-		_tbModifiedAll.Text = ((flag || flag2 || flag3 || flag4) ? "(MODIFIED)" : "");
-	}
-
-	private void gridChild_Click(object sender, RoutedEventArgs e)
-	{
-		if (_activeUc != null)
+		// Token: 0x0600027A RID: 634 RVA: 0x00010A48 File Offset: 0x0000EC48
+		private void UpdateOverrideControls(bool isKeepGradient = false)
 		{
-			_expGrid.Children.Remove(_activeUc);
-		}
-		RadioButton radioButton = sender as RadioButton;
-		if (radioButton == _btnTrapColEquil)
-		{
-			TrapColEquilUserControl trapColEquilUserControl = new TrapColEquilUserControl(_method, _facade, _isPressurePSI, _experiment)
+			if (isKeepGradient)
 			{
-				Height = _ucHeight,
-				Width = _ucWidth
-			};
-			trapColEquilUserControl.ValidationUpdateEvent += ucTrapColEquil_UpdateInputValidation;
-			trapColEquilUserControl.ModificationUpdateEvent += ucTrapColEquil_ModificationUpdate;
-			_activeBtn = _btnTrapColEquil;
-			_activeUc = trapColEquilUserControl;
-			Grid.SetRow(trapColEquilUserControl, 0);
-			Grid.SetColumn(trapColEquilUserControl, 1);
-			Grid.SetRowSpan(trapColEquilUserControl, 5);
-			_expGrid.Children.Add(trapColEquilUserControl);
-			SetOverridePressedState();
-		}
-		else if (radioButton == _btnSepColEquil)
-		{
-			AnalyticalColEquilUserControl analyticalColEquilUserControl = new AnalyticalColEquilUserControl(_method, _facade, _isPressurePSI, _experiment)
-			{
-				Height = _ucHeight,
-				Width = _ucWidth
-			};
-			analyticalColEquilUserControl.ValidationUpdateEvent += ucAnalyticalColEquil_UpdateInputValidation;
-			analyticalColEquilUserControl.ModificationUpdateEvent += ucAnalyticalColEquil_ModificationUpdate;
-			_activeBtn = _btnSepColEquil;
-			_activeUc = analyticalColEquilUserControl;
-			Grid.SetRow(analyticalColEquilUserControl, 0);
-			Grid.SetColumn(analyticalColEquilUserControl, 1);
-			Grid.SetRowSpan(analyticalColEquilUserControl, 5);
-			_expGrid.Children.Add(analyticalColEquilUserControl);
-			SetOverridePressedState();
-		}
-		else if (radioButton == _btnSampleLoad)
-		{
-			SampleLoadingUserControl sampleLoadingUserControl = new SampleLoadingUserControl(_method, _facade, _isPressurePSI, _experiment)
-			{
-				Height = _ucHeight,
-				Width = _ucWidth
-			};
-			sampleLoadingUserControl.ValidationUpdateEvent += ucSampleLoading_UpdateInputValidation;
-			sampleLoadingUserControl.ModificationUpdateEvent += ucSampleLoading_ModificationUpdate;
-			_activeBtn = _btnSampleLoad;
-			_activeUc = sampleLoadingUserControl;
-			Grid.SetRow(sampleLoadingUserControl, 0);
-			Grid.SetColumn(sampleLoadingUserControl, 1);
-			Grid.SetRowSpan(sampleLoadingUserControl, 5);
-			_expGrid.Children.Add(sampleLoadingUserControl);
-			SetOverridePressedState();
-		}
-		else if (radioButton == _btnAdvancedSett)
-		{
-			AdvParamSettingsUserControl advParamSettingsUserControl = new AdvParamSettingsUserControl(_method, _facade, _experiment, _isService)
-			{
-				Height = _ucHeight,
-				Width = _ucWidth
-			};
-			advParamSettingsUserControl.ModificationUpdateEvent += ucAdvancedSett_ModificationUpdate;
-			advParamSettingsUserControl.ValidationUpdateEvent += ucAdvancedSett_ValidationUpdateEvent;
-			_activeBtn = _btnAdvancedSett;
-			_activeUc = advParamSettingsUserControl;
-			Grid.SetRow(advParamSettingsUserControl, 0);
-			Grid.SetColumn(advParamSettingsUserControl, 1);
-			Grid.SetRowSpan(advParamSettingsUserControl, 5);
-			_expGrid.Children.Add(advParamSettingsUserControl);
-			SetOverridePressedState();
-		}
-	}
-
-	private void CheckExistingMethod()
-	{
-		ProcedureInfo elutionProcedure = _facade.GetElutionProcedure(_method.ElutionName);
-		if (elutionProcedure == null)
-		{
-			return;
-		}
-		ProcedureArguments procedureArguments = elutionProcedure.CreateAdvancedArguments();
-		ChildProcedureArguments childProcedureArguments = elutionProcedure.CreateAdvancedChildArguments();
-		foreach (ProcedureArgument item in procedureArguments)
-		{
-			if (_method.AdvancedSettings.Parameters.Find((BindableBalticMethod.AdvancedSett.AdvancedParameter x) => x.Name == item.Name) == null)
-			{
-				_method.AdvancedSettings.Parameters.Add(new BindableBalticMethod.AdvancedSett.AdvancedParameter(item.Name, item.Value, item.Value, item.Unit));
-			}
-		}
-		foreach (ChildProcedureArgument item2 in childProcedureArguments)
-		{
-			BindableBalticMethod.AdvancedSett.AdvancedChildParameter advancedChildParameter = _method.AdvancedSettings.ChildParameters.Find((BindableBalticMethod.AdvancedSett.AdvancedChildParameter x) => x.Name == item2.Name && x.Header == item2.Header);
-			if (advancedChildParameter == null)
-			{
-				_method.AdvancedSettings.ChildParameters.Add(new BindableBalticMethod.AdvancedSett.AdvancedChildParameter(item2.Header, item2.ProcArg.Name, item2.ProcArg.Value, item2.ProcArg.Value, item2.ProcArg.Unit, item2.IsService));
+				TrapColEquilUserControl trapUc = this._activeUc as TrapColEquilUserControl;
+				if (trapUc != null)
+				{
+					trapUc.RefreshParameters(this._experiment, this._method);
+					return;
+				}
+				AnalyticalColEquilUserControl analyticalColEquilUserControl = this._activeUc as AnalyticalColEquilUserControl;
+				if (analyticalColEquilUserControl != null)
+				{
+					analyticalColEquilUserControl.RefreshParameters(this._experiment, this._method);
+					return;
+				}
+				SampleLoadingUserControl sampleLoadingUserControl = this._activeUc as SampleLoadingUserControl;
+				if (sampleLoadingUserControl != null)
+				{
+					sampleLoadingUserControl.RefreshParameters(this._experiment, this._method);
+					return;
+				}
+				AdvParamSettingsUserControl advUc = this._activeUc as AdvParamSettingsUserControl;
+				if (advUc != null)
+				{
+					advUc.RefreshParameters(this._experiment, this._method);
+					return;
+				}
 			}
 			else
 			{
-				advancedChildParameter.IsService = item2.IsService;
+				if (this._method.ElutionName == null)
+				{
+					this._expGrid.Children.Clear();
+					this._expSettings.Visibility = Visibility.Hidden;
+					return;
+				}
+				this._activeUc = null;
+				if (this._method.UsesTrapColumn)
+				{
+					StackPanel trapPanel = new StackPanel();
+					TextBlock tbTrapLeft = new TextBlock();
+					trapPanel.Orientation = Orientation.Horizontal;
+					tbTrapLeft.Text = "Trap Column Equilibration";
+					this._tbTrapModified = new TextBlock
+					{
+						Text = "",
+						Foreground = new SolidColorBrush(Colors.Red),
+						FontSize = 8.0,
+						FontStyle = FontStyles.Italic,
+						HorizontalAlignment = HorizontalAlignment.Right,
+						VerticalAlignment = VerticalAlignment.Center
+					};
+					this._imgTrapErrorNotify = new Image
+					{
+						Height = 12.0,
+						Width = 12.0,
+						HorizontalAlignment = HorizontalAlignment.Right,
+						VerticalAlignment = VerticalAlignment.Center,
+						Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
+						Source = (this._myResDictionary["IconErrorRed"] as DrawingImage),
+						ToolTip = "Trap Column Equilibration Error(s)",
+						Visibility = Visibility.Hidden
+					};
+					trapPanel.Children.Add(tbTrapLeft);
+					trapPanel.Children.Add(this._tbTrapModified);
+					trapPanel.Children.Add(this._imgTrapErrorNotify);
+					this._btnTrapColEquil.GroupName = "Overrides";
+					this._btnTrapColEquil.Content = trapPanel;
+					this._btnTrapColEquil.HorizontalContentAlignment = HorizontalAlignment.Left;
+					this._btnTrapColEquil.Width = this._expSettings.Width * 0.45;
+					this._btnTrapColEquil.Height = 38.0;
+					this._btnTrapColEquil.Margin = new Thickness(0.0);
+					this._btnTrapColEquil.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+					this._btnTrapColEquil.Click += this.gridChild_Click;
+					Grid.SetRow(this._btnTrapColEquil, this._expGrid.Children.Count);
+					Grid.SetColumn(this._btnTrapColEquil, 0);
+					this._expGrid.Children.Add(this._btnTrapColEquil);
+					if (this._activeUc == null)
+					{
+						TrapColEquilUserControl userControl = new TrapColEquilUserControl(this._method, this._facade, this._isPressurePSI, this._experiment);
+						userControl.ValidationUpdateEvent += this.ucTrapColEquil_UpdateInputValidation;
+						userControl.ModificationUpdateEvent += this.ucTrapColEquil_ModificationUpdate;
+						this._activeUc = userControl;
+						this._activeBtn = this._btnTrapColEquil;
+					}
+				}
+				if (this._method.UsesSepColumn)
+				{
+					StackPanel sepPanel = new StackPanel();
+					TextBlock tbSepLeft = new TextBlock();
+					sepPanel.Orientation = Orientation.Horizontal;
+					tbSepLeft.Text = "Separation Column Equilibration";
+					this._tbSepModified = new TextBlock
+					{
+						Text = "",
+						Foreground = new SolidColorBrush(Colors.Red),
+						FontSize = 8.0,
+						FontStyle = FontStyles.Italic,
+						HorizontalAlignment = HorizontalAlignment.Right,
+						VerticalAlignment = VerticalAlignment.Center
+					};
+					this._imgSepErrorNotify = new Image
+					{
+						Height = 12.0,
+						Width = 12.0,
+						HorizontalAlignment = HorizontalAlignment.Right,
+						VerticalAlignment = VerticalAlignment.Center,
+						Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
+						Source = (this._myResDictionary["IconErrorRed"] as DrawingImage),
+						ToolTip = "Separation Column Equilibration Error(s)",
+						Visibility = Visibility.Hidden
+					};
+					sepPanel.Children.Add(tbSepLeft);
+					sepPanel.Children.Add(this._tbSepModified);
+					sepPanel.Children.Add(this._imgSepErrorNotify);
+					this._btnSepColEquil.GroupName = "Overrides";
+					this._btnSepColEquil.Content = sepPanel;
+					this._btnSepColEquil.HorizontalContentAlignment = HorizontalAlignment.Left;
+					this._btnSepColEquil.Width = this._expSettings.Width * 0.45;
+					this._btnSepColEquil.Height = 38.0;
+					this._btnSepColEquil.Margin = new Thickness(0.0);
+					this._btnSepColEquil.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+					this._btnSepColEquil.Click += this.gridChild_Click;
+					Grid.SetRow(this._btnSepColEquil, this._expGrid.Children.Count);
+					Grid.SetColumn(this._btnSepColEquil, 0);
+					this._expGrid.Children.Add(this._btnSepColEquil);
+					if (this._activeUc == null)
+					{
+						AnalyticalColEquilUserControl userControl2 = new AnalyticalColEquilUserControl(this._method, this._facade, this._isPressurePSI, this._experiment);
+						userControl2.ValidationUpdateEvent += this.ucAnalyticalColEquil_UpdateInputValidation;
+						userControl2.ModificationUpdateEvent += this.ucAnalyticalColEquil_ModificationUpdate;
+						this._activeUc = userControl2;
+						this._activeBtn = this._btnSepColEquil;
+					}
+				}
+				if (this._method.UsesTrapColumn | this._method.UsesSepColumn)
+				{
+					StackPanel loadPanel = new StackPanel();
+					TextBlock tbLoadLeft = new TextBlock();
+					loadPanel.Orientation = Orientation.Horizontal;
+					tbLoadLeft.Text = "Sample Loading";
+					this._tbLoadModified = new TextBlock
+					{
+						Text = "",
+						Foreground = new SolidColorBrush(Colors.Red),
+						FontSize = 8.0,
+						FontStyle = FontStyles.Italic,
+						HorizontalAlignment = HorizontalAlignment.Right,
+						VerticalAlignment = VerticalAlignment.Center
+					};
+					this._imgLoadErrorNotify = new Image
+					{
+						Height = 12.0,
+						Width = 12.0,
+						HorizontalAlignment = HorizontalAlignment.Right,
+						VerticalAlignment = VerticalAlignment.Center,
+						Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
+						Source = (this._myResDictionary["IconErrorRed"] as DrawingImage),
+						ToolTip = "Sample Loading Errors(s)",
+						Visibility = Visibility.Hidden
+					};
+					loadPanel.Children.Add(tbLoadLeft);
+					loadPanel.Children.Add(this._tbLoadModified);
+					loadPanel.Children.Add(this._imgLoadErrorNotify);
+					this._btnSampleLoad.GroupName = "Overrides";
+					this._btnSampleLoad.Content = loadPanel;
+					this._btnSampleLoad.HorizontalContentAlignment = HorizontalAlignment.Left;
+					this._btnSampleLoad.Width = this._expSettings.Width * 0.45;
+					this._btnSampleLoad.Height = 38.0;
+					this._btnSampleLoad.Margin = new Thickness(0.0);
+					this._btnSampleLoad.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+					this._btnSampleLoad.Click += this.gridChild_Click;
+					Grid.SetRow(this._btnSampleLoad, this._expGrid.Children.Count);
+					Grid.SetColumn(this._btnSampleLoad, 0);
+					this._expGrid.Children.Add(this._btnSampleLoad);
+				}
+				StackPanel advPanel = new StackPanel();
+				TextBlock tbAdvLeft = new TextBlock();
+				advPanel.Orientation = Orientation.Horizontal;
+				tbAdvLeft.Text = "Advanced Settings";
+				this._tbAdvModified = new TextBlock
+				{
+					Text = "",
+					Foreground = new SolidColorBrush(Colors.Red),
+					FontSize = 8.0,
+					FontStyle = FontStyles.Italic,
+					HorizontalAlignment = HorizontalAlignment.Right,
+					VerticalAlignment = VerticalAlignment.Center
+				};
+				this._imgAdvErrorNotify = new Image
+				{
+					Height = 12.0,
+					Width = 12.0,
+					HorizontalAlignment = HorizontalAlignment.Right,
+					VerticalAlignment = VerticalAlignment.Center,
+					Margin = new Thickness(2.0, 0.0, 0.0, 0.0),
+					Source = (this._myResDictionary["IconErrorRed"] as DrawingImage),
+					ToolTip = "Advanced Settings Error(s)",
+					Visibility = Visibility.Hidden
+				};
+				advPanel.Children.Add(tbAdvLeft);
+				advPanel.Children.Add(this._tbAdvModified);
+				advPanel.Children.Add(this._imgAdvErrorNotify);
+				this._btnAdvancedSett.GroupName = "Overrides";
+				this._btnAdvancedSett.Content = advPanel;
+				this._btnAdvancedSett.HorizontalContentAlignment = HorizontalAlignment.Left;
+				this._btnAdvancedSett.Width = this._expSettings.Width * 0.45;
+				this._btnAdvancedSett.Height = 38.0;
+				this._btnAdvancedSett.Margin = new Thickness(0.0);
+				this._btnAdvancedSett.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+				this._btnAdvancedSett.Click += this.gridChild_Click;
+				Grid.SetRow(this._btnAdvancedSett, this._expGrid.Children.Count);
+				Grid.SetColumn(this._btnAdvancedSett, 0);
+				this._expGrid.Children.Add(this._btnAdvancedSett);
+				Border fill = new Border
+				{
+					Width = this._expSettings.Width * 0.45,
+					Margin = new Thickness(0.0),
+					BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0),
+					BorderBrush = new SolidColorBrush(Colors.SlateGray),
+					Height = double.NaN
+				};
+				Grid.SetRow(fill, this._expGrid.Children.Count);
+				Grid.SetColumn(fill, 0);
+				Grid.SetRowSpan(fill, this._expGrid.RowDefinitions.Count - this._expGrid.Children.Count);
+				this._expGrid.Children.Add(fill);
+				if (this._activeUc != null)
+				{
+					this._ucWidth = this._expSettings.Width - this._btnSampleLoad.Width - 12.0;
+					this._ucHeight = this._btnSampleLoad.Height * 5.0;
+					this._activeUc.Width = this._ucWidth;
+					this._activeUc.Height = this._ucHeight;
+					this._activeUc.HorizontalAlignment = HorizontalAlignment.Center;
+					Grid.SetRow(this._activeUc, 0);
+					Grid.SetColumn(this._activeUc, 1);
+					Grid.SetRowSpan(this._activeUc, 5);
+					this._expGrid.Children.Add(this._activeUc);
+					this.SetOverridePressedState();
+				}
+				if (this._method.UsesTrapColumn | this._method.UsesSepColumn)
+				{
+					this._expSettings.Visibility = Visibility.Visible;
+				}
+				else
+				{
+					this._ucWidth = this._expSettings.Width - 12.0;
+					this._ucHeight = 38.0;
+					this._expSettings.IsExpanded = false;
+					this._expSettings.Visibility = Visibility.Hidden;
+				}
+				this.InitialCheckForMethodModification();
 			}
 		}
-		_method.ToBalticMethod(_columns);
-	}
 
-	private void GenerateMethod(bool isKeepGradient = false, bool isKeepAdvancedSettings = false)
-	{
-		ProcedureInfo elutionProcedure = _facade.GetElutionProcedure(_method.ElutionName);
-		ProcedureArguments procedureArguments = elutionProcedure.CreateArguments();
-		ProcedureArguments procedureArguments2 = elutionProcedure.CreateAdvancedArguments();
-		ChildProcedureArguments advChildArguments = elutionProcedure.CreateAdvancedChildArguments();
-		string advHeader = elutionProcedure.AdvHeader;
-		int[] advHeaderFgColor = elutionProcedure.AdvHeaderFgColor;
-		_experiment = new ExperimentInfo
+		// Token: 0x0600027B RID: 635 RVA: 0x000116FC File Offset: 0x0000F8FC
+		private void InitialCheckForMethodModification()
 		{
-			ElutionName = _method.ElutionName,
-			AnalysisTime = TimeSpan.FromMinutes(_method.GradientTime),
-			OvenTemperature = _method.OvenTemperature,
-			IsKeepGradient = isKeepGradient,
-			IsKeepAdvancedSettings = isKeepAdvancedSettings,
-			AppKey = _facade.AppKey
-		};
-		if ((bool)procedureArguments["uses_trap"].Value)
-		{
-			Column column = _columns.Find((Column item) => item.Name == _method.TrapColumnName);
-			_experiment.Trap = new ColumnAdapter(column);
-		}
-		else
-		{
-			Column column2 = _columns.Find((Column item) => item.Name == _method.TrapColumnName) ?? _columns.Find((Column item) => item.Name == _facade.BalticConfiguration.NoColumn.Name);
-			_experiment.Trap = new ColumnAdapter(column2);
-		}
-		if ((bool)procedureArguments["uses_separator"].Value)
-		{
-			Column column3 = _columns.Find((Column item) => item.Name == _method.SeparationColumnName);
-			_experiment.Separator = new ColumnAdapter(column3);
-		}
-		else
-		{
-			Column column4 = _columns.Find((Column item) => item.Name == _method.SeparationColumnName) ?? _columns.Find((Column item) => item.Name == _facade.BalticConfiguration.NoColumn.Name);
-			_experiment.Separator = new ColumnAdapter(column4);
-		}
-		_ucGradTable.Experiment = _experiment;
-		procedureArguments = _facade.GenerateArguments(_experiment);
-		procedureArguments2 = _facade.GenerateAdvArguments(_experiment);
-		_method.ToBalticMethod(_columns).Initialize(_experiment, procedureArguments, procedureArguments2, advChildArguments, advHeader, advHeaderFgColor);
-		_method.Refresh(advChildArguments);
-		UpdateOverrideControls(isKeepGradient);
-		UpdateGradientTableControls();
-	}
-
-	public void ToBalticMethod()
-	{
-		_method.ToBalticMethod(_columns);
-	}
-
-	private void expSettings_Expanded(object sender, RoutedEventArgs e)
-	{
-		base.Height = 705.0;
-		SetOverridePressedState();
-	}
-
-	private void SetOverridePressedState()
-	{
-		if (_activeBtn == _btnTrapColEquil)
-		{
-			_btnTrapColEquil.IsChecked = true;
-		}
-		else if (_activeBtn == _btnSepColEquil)
-		{
-			_btnSepColEquil.IsChecked = true;
-		}
-		else if (_activeBtn == _btnSampleLoad)
-		{
-			_btnSampleLoad.IsChecked = true;
-		}
-		else if (_activeBtn == _btnAdvancedSett)
-		{
-			_btnAdvancedSett.IsChecked = true;
-		}
-	}
-
-	private void expSettings_Collapsed(object sender, RoutedEventArgs e)
-	{
-		base.Height = 505.0;
-	}
-
-	private void ucGradMain_TrapSelectionWarning(bool isShow, string message = "")
-	{
-		this.TrapSelectionWarningEvent?.Invoke(isShow, message);
-	}
-
-	private void ucGradMain_EnableMethodControlsEvent(bool isEnable, bool isReset)
-	{
-		if (isReset)
-		{
-			_expGrid.Children.Clear();
-			_expSettings.Visibility = Visibility.Hidden;
-			_imgAllErrorNotify.Visibility = Visibility.Hidden;
-			_isTrapColEquilValid = (_isAnalColEquilValid = (_isSampleLoadValid = (_isGradTableValid = (_isGradMainValid = (_isAdvSettingsValid = true)))));
-			if (_imgTrapErrorNotify != null)
+			if (this._method.UsesSepColumn)
 			{
-				_imgTrapErrorNotify.Visibility = Visibility.Collapsed;
+				this.ucAnalyticalColEquil_ModificationUpdate(Math.Abs(this._method.SeparationColumnEquil.Scale - this._method.SeparationColumnEquil.DefaultScale) > 0.0001 || (int)(this._method.SeparationColumnEquil.Pressure * 100.0) != (int)(this._method.SeparationColumnEquil.DefaultPressure * 100.0));
 			}
-			if (_imgLoadErrorNotify != null)
+			if (this._method.UsesTrapColumn)
 			{
-				_imgLoadErrorNotify.Visibility = Visibility.Collapsed;
+				this.ucTrapColEquil_ModificationUpdate(Math.Abs(this._method.TrapColumnEquil.Scale - this._method.TrapColumnEquil.DefaultScale) > 0.0001 || (int)(this._method.TrapColumnEquil.Pressure * 100.0) != (int)(this._method.TrapColumnEquil.DefaultPressure * 100.0));
 			}
-			if (_imgSepErrorNotify != null)
+			if (this._method.UsesSepColumn || this._method.UsesTrapColumn)
 			{
-				_imgSepErrorNotify.Visibility = Visibility.Collapsed;
+				this.ucSampleLoading_ModificationUpdate(Math.Abs(this._method.SampleLoading.Scale - this._method.SampleLoading.DefaultScale) > 0.0001 || (int)(this._method.SampleLoading.Pressure * 100.0) != (int)(this._method.SampleLoading.DefaultPressure * 100.0) || this._method.SampleLoading.InjectionMethod != this._method.SampleLoading.DefaultInjectionMethod || this._method.SampleLoading.IsBottomSense != this._method.SampleLoading.DefaultIsBottomSense);
 			}
-			if (_imgAdvErrorNotify != null)
+			bool isMod = false;
+			foreach (BindableBalticMethod.AdvancedSett.AdvancedParameter item in this._method.AdvancedSettings.Parameters)
 			{
-				_imgAdvErrorNotify.Visibility = Visibility.Collapsed;
+				object obj = item.Value;
+				if (obj is bool)
+				{
+					bool b = (bool)obj;
+					if (b != (bool)item.DefaultValue)
+					{
+						isMod = true;
+						break;
+					}
+				}
+				else
+				{
+					obj = item.Value;
+					if (obj is double)
+					{
+						double d = (double)obj;
+						if ((int)(d * 1000.0) != (int)((double)item.DefaultValue * 1000.0))
+						{
+							isMod = true;
+							break;
+						}
+					}
+					else
+					{
+						obj = item.Value;
+						if (obj is int)
+						{
+							int i = (int)obj;
+							if (i != (int)item.DefaultValue)
+							{
+								isMod = true;
+								break;
+							}
+						}
+						else
+						{
+							string s = item.Value as string;
+							if (s != null && s != (string)item.DefaultValue)
+							{
+								isMod = true;
+								break;
+							}
+						}
+					}
+				}
 			}
-			UpdateOverrideDefaultErrorIcon();
-		}
-		_methodStateEnabled = isEnable;
-		this.EnableMethodCompleteEvent?.Invoke(isEnable);
-		_expSettings.IsEnabled = isEnable;
-		if (!isEnable)
-		{
-			_expSettings.IsExpanded = false;
-		}
-		UpdateGradientTableControls();
-	}
-
-	private void ucGradMain_GetInitialMethodParamEvent()
-	{
-		ProcedureArguments procedureArguments = _facade.GetElutionProcedure(_method.ElutionName).CreateArguments();
-		_method.IsIsocratic = (bool)procedureArguments["is_isocratic"].Value;
-		_method.UsesTrapColumn = (bool)procedureArguments["uses_trap"].Value;
-		_method.UsesSepColumn = (bool)procedureArguments["uses_separator"].Value;
-		_method.GradientTime = (double)(int)procedureArguments["analysis_time"].Value / 60.0;
-		_method.OvenTemperature = (double)procedureArguments["oven_temperature"].Value;
-	}
-
-	private void ucGradMain_GenerateMethodEvent(bool isKeepGradient = false, bool isKeepAdvancedSettings = false)
-	{
-		GenerateMethod(isKeepGradient, isKeepAdvancedSettings);
-	}
-
-	private void ucGradTable_GradientMainUpdateEvent(WPFConstants.UpdateType updateType)
-	{
-		_ucGradMain.UpdateFromGradientTable(updateType);
-	}
-
-	private void ucTrapColEquil_UpdateInputValidation(bool isValid)
-	{
-		_isTrapColEquilValid = isValid;
-		_imgTrapErrorNotify.Visibility = (_isTrapColEquilValid ? Visibility.Collapsed : Visibility.Visible);
-		UpdateOverrideDefaultErrorIcon();
-		this.ValidateInputUpdateEvent?.Invoke(IsMethodDataValid);
-	}
-
-	private void ucAnalyticalColEquil_UpdateInputValidation(bool isValid)
-	{
-		_isAnalColEquilValid = isValid;
-		_imgSepErrorNotify.Visibility = (_isAnalColEquilValid ? Visibility.Collapsed : Visibility.Visible);
-		UpdateOverrideDefaultErrorIcon();
-		this.ValidateInputUpdateEvent?.Invoke(IsMethodDataValid && _methodStateEnabled);
-	}
-
-	private void ucSampleLoading_UpdateInputValidation(bool isValid)
-	{
-		_isSampleLoadValid = isValid;
-		_imgLoadErrorNotify.Visibility = (_isSampleLoadValid ? Visibility.Collapsed : Visibility.Visible);
-		UpdateOverrideDefaultErrorIcon();
-		this.ValidateInputUpdateEvent?.Invoke(IsMethodDataValid && _methodStateEnabled);
-	}
-
-	private void ucGradMain_UpdateInputValidation(bool isValid)
-	{
-		_isGradMainValid = isValid;
-		this.ValidateInputUpdateEvent?.Invoke(IsMethodDataValid && _methodStateEnabled);
-	}
-
-	private void UpdateOverrideDefaultErrorIcon()
-	{
-		_imgAllErrorNotify.Visibility = (IsOverrideSettingsValid ? Visibility.Collapsed : Visibility.Visible);
-	}
-
-	private void ucGradTable_UpdateInputValidation(bool isValid, string header = "", string subject = "", string message = "")
-	{
-		_isGradTableValid = isValid;
-		if (header != "")
-		{
-			ucAdvancedSett_ValidationUpdateEvent(isValid: false);
-			if (_activeUc is AdvParamSettingsUserControl advParamSettingsUserControl)
+			foreach (BindableBalticMethod.AdvancedSett.AdvancedChildParameter item2 in this._method.AdvancedSettings.ChildParameters)
 			{
-				advParamSettingsUserControl.ValidateParameters();
+				object obj = item2.Value;
+				if (obj is bool)
+				{
+					bool b2 = (bool)obj;
+					if (b2 != (bool)item2.DefaultValue)
+					{
+						isMod = true;
+						break;
+					}
+				}
+				else
+				{
+					obj = item2.Value;
+					if (obj is double)
+					{
+						double d2 = (double)obj;
+						if ((int)(d2 * 1000.0) != (int)((double)item2.DefaultValue * 1000.0))
+						{
+							isMod = true;
+							break;
+						}
+					}
+					else
+					{
+						obj = item2.Value;
+						if (obj is int)
+						{
+							int j = (int)obj;
+							if (j != (int)item2.DefaultValue)
+							{
+								isMod = true;
+								break;
+							}
+						}
+						else
+						{
+							string s2 = item2.Value as string;
+							if (s2 != null && s2 != (string)item2.DefaultValue)
+							{
+								isMod = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+			this.ucAdvancedSett_ModificationUpdate(isMod);
+		}
+
+		// Token: 0x0600027C RID: 636 RVA: 0x00011B2C File Offset: 0x0000FD2C
+		private void CheckModifiedAll()
+		{
+			bool trapModified = this._method.UsesTrapColumn && this._tbTrapModified.Text == "(MODIFIED)";
+			bool separatorModified = this._method.UsesSepColumn && this._tbSepModified.Text == "(MODIFIED)";
+			bool loadModified = (this._method.UsesSepColumn || this._method.UsesTrapColumn) && this._tbLoadModified.Text == "(MODIFIED)";
+			bool advModified = this._tbAdvModified.Text == "(MODIFIED)";
+			this._tbModifiedAll.Text = ((trapModified || separatorModified || loadModified || advModified) ? "(MODIFIED)" : "");
+		}
+
+		// Token: 0x0600027D RID: 637 RVA: 0x00011BF0 File Offset: 0x0000FDF0
+		private void gridChild_Click(object sender, RoutedEventArgs e)
+		{
+			if (this._activeUc != null)
+			{
+				this._expGrid.Children.Remove(this._activeUc);
+			}
+			RadioButton childButton = sender as RadioButton;
+			if (childButton == this._btnTrapColEquil)
+			{
+				TrapColEquilUserControl userControl = new TrapColEquilUserControl(this._method, this._facade, this._isPressurePSI, this._experiment)
+				{
+					Height = this._ucHeight,
+					Width = this._ucWidth
+				};
+				userControl.ValidationUpdateEvent += this.ucTrapColEquil_UpdateInputValidation;
+				userControl.ModificationUpdateEvent += this.ucTrapColEquil_ModificationUpdate;
+				this._activeBtn = this._btnTrapColEquil;
+				this._activeUc = userControl;
+				Grid.SetRow(userControl, 0);
+				Grid.SetColumn(userControl, 1);
+				Grid.SetRowSpan(userControl, 5);
+				this._expGrid.Children.Add(userControl);
+				this.SetOverridePressedState();
+				return;
+			}
+			if (childButton == this._btnSepColEquil)
+			{
+				AnalyticalColEquilUserControl userControl2 = new AnalyticalColEquilUserControl(this._method, this._facade, this._isPressurePSI, this._experiment)
+				{
+					Height = this._ucHeight,
+					Width = this._ucWidth
+				};
+				userControl2.ValidationUpdateEvent += this.ucAnalyticalColEquil_UpdateInputValidation;
+				userControl2.ModificationUpdateEvent += this.ucAnalyticalColEquil_ModificationUpdate;
+				this._activeBtn = this._btnSepColEquil;
+				this._activeUc = userControl2;
+				Grid.SetRow(userControl2, 0);
+				Grid.SetColumn(userControl2, 1);
+				Grid.SetRowSpan(userControl2, 5);
+				this._expGrid.Children.Add(userControl2);
+				this.SetOverridePressedState();
+				return;
+			}
+			if (childButton == this._btnSampleLoad)
+			{
+				SampleLoadingUserControl userControl3 = new SampleLoadingUserControl(this._method, this._facade, this._isPressurePSI, this._experiment)
+				{
+					Height = this._ucHeight,
+					Width = this._ucWidth
+				};
+				userControl3.ValidationUpdateEvent += this.ucSampleLoading_UpdateInputValidation;
+				userControl3.ModificationUpdateEvent += this.ucSampleLoading_ModificationUpdate;
+				this._activeBtn = this._btnSampleLoad;
+				this._activeUc = userControl3;
+				Grid.SetRow(userControl3, 0);
+				Grid.SetColumn(userControl3, 1);
+				Grid.SetRowSpan(userControl3, 5);
+				this._expGrid.Children.Add(userControl3);
+				this.SetOverridePressedState();
+				return;
+			}
+			if (childButton == this._btnAdvancedSett)
+			{
+				AdvParamSettingsUserControl userControl4 = new AdvParamSettingsUserControl(this._method, this._facade, this._experiment, this._isService)
+				{
+					Height = this._ucHeight,
+					Width = this._ucWidth
+				};
+				userControl4.ModificationUpdateEvent += this.ucAdvancedSett_ModificationUpdate;
+				userControl4.ValidationUpdateEvent += this.ucAdvancedSett_ValidationUpdateEvent;
+				this._activeBtn = this._btnAdvancedSett;
+				this._activeUc = userControl4;
+				Grid.SetRow(userControl4, 0);
+				Grid.SetColumn(userControl4, 1);
+				Grid.SetRowSpan(userControl4, 5);
+				this._expGrid.Children.Add(userControl4);
+				this.SetOverridePressedState();
 			}
 		}
-		else
+
+		// Token: 0x0600027E RID: 638 RVA: 0x00011EC8 File Offset: 0x000100C8
+		private void CheckExistingMethod()
 		{
-			ucAdvancedSett_ValidationUpdateEvent(isValid: true);
-			UpdateActiveUserControl();
-			this.ValidateInputUpdateEvent?.Invoke(IsMethodDataValid && _methodStateEnabled);
+			ProcedureInfo info = this._facade.GetElutionProcedure(this._method.ElutionName);
+			if (info != null)
+			{
+				ProcedureArguments advArguments = info.CreateAdvancedArguments();
+				ChildProcedureArguments advChildArguments = info.CreateAdvancedChildArguments();
+				using (IEnumerator<ProcedureArgument> enumerator = advArguments.GetEnumerator())
+				{
+					while (enumerator.MoveNext())
+					{
+						ProcedureArgument item2 = enumerator.Current;
+						if (this._method.AdvancedSettings.Parameters.Find((BindableBalticMethod.AdvancedSett.AdvancedParameter x) => x.Name == item2.Name) == null)
+						{
+							this._method.AdvancedSettings.Parameters.Add(new BindableBalticMethod.AdvancedSett.AdvancedParameter(item2.Name, item2.Value, item2.Value, item2.Unit));
+						}
+					}
+				}
+				using (List<ChildProcedureArgument>.Enumerator enumerator2 = advChildArguments.GetEnumerator())
+				{
+					while (enumerator2.MoveNext())
+					{
+						ChildProcedureArgument item = enumerator2.Current;
+						BindableBalticMethod.AdvancedSett.AdvancedChildParameter childArgument = this._method.AdvancedSettings.ChildParameters.Find((BindableBalticMethod.AdvancedSett.AdvancedChildParameter x) => x.Name == item.Name && x.Header == item.Header);
+						if (childArgument == null)
+						{
+							this._method.AdvancedSettings.ChildParameters.Add(new BindableBalticMethod.AdvancedSett.AdvancedChildParameter(item.Header, item.ProcArg.Name, item.ProcArg.Value, item.ProcArg.Value, item.ProcArg.Unit, item.IsService));
+						}
+						else
+						{
+							childArgument.IsService = item.IsService;
+						}
+					}
+				}
+				this._method.ToBalticMethod(this._columns);
+			}
 		}
-	}
 
-	private void UpdateActiveUserControl()
-	{
-		if (_activeUc is AdvParamSettingsUserControl advParamSettingsUserControl)
+		// Token: 0x0600027F RID: 639 RVA: 0x000120C4 File Offset: 0x000102C4
+		private void GenerateMethod(bool isKeepGradient = false, bool isKeepAdvancedSettings = false)
 		{
-			advParamSettingsUserControl.ValidateParameters();
+			ProcedureInfo elutionProcedure = this._facade.GetElutionProcedure(this._method.ElutionName);
+			ProcedureArguments arguments = elutionProcedure.CreateArguments();
+			ProcedureArguments advArguments = elutionProcedure.CreateAdvancedArguments();
+			ChildProcedureArguments advChildArguments = elutionProcedure.CreateAdvancedChildArguments();
+			string advHeader = elutionProcedure.AdvHeader;
+			int[] advHeaderFgColor = elutionProcedure.AdvHeaderFgColor;
+			this._experiment = new ExperimentInfo
+			{
+				ElutionName = this._method.ElutionName,
+				AnalysisTime = TimeSpan.FromMinutes(this._method.GradientTime),
+				OvenTemperature = this._method.OvenTemperature,
+				IsKeepGradient = isKeepGradient,
+				IsKeepAdvancedSettings = isKeepAdvancedSettings,
+				AppKey = this._facade.AppKey
+			};
+			if ((bool)arguments["uses_trap"].Value)
+			{
+				Column column = this._columns.Find((Column item) => item.Name == this._method.TrapColumnName);
+				this._experiment.Trap = new ColumnAdapter(column);
+			}
+			else
+			{
+				Column column2 = this._columns.Find((Column item) => item.Name == this._method.TrapColumnName) ?? this._columns.Find(delegate(Column item)
+				{
+					if (MethodUserControl._co_66._cp_3 == null)
+					{
+						MethodUserControl._co_66._cp_3 = CallSite<Func<CallSite, object, bool>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof(bool), typeof(MethodUserControl)));
+					}
+					Func<CallSite, object, bool> target = MethodUserControl._co_66._cp_3.Target;
+					CallSite _cpl = MethodUserControl._co_66._cp_3;
+					if (MethodUserControl._co_66._cp_2 == null)
+					{
+						MethodUserControl._co_66._cp_2 = CallSite<Func<CallSite, string, object, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, ExpressionType.Equal, typeof(MethodUserControl), new CSharpArgumentInfo[]
+						{
+							CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null),
+							CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)
+						}));
+					}
+					Func<CallSite, string, object, object> target2 = MethodUserControl._co_66._cp_2.Target;
+					CallSite _cp_2 = MethodUserControl._co_66._cp_2;
+					string name = item.Name;
+					if (MethodUserControl._co_66._cp_1 == null)
+					{
+						MethodUserControl._co_66._cp_1 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "Name", typeof(MethodUserControl), new CSharpArgumentInfo[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) }));
+					}
+					Func<CallSite, object, object> target3 = MethodUserControl._co_66._cp_1.Target;
+					CallSite _cp_3 = MethodUserControl._co_66._cp_1;
+					if (MethodUserControl._co_66._cp_0 == null)
+					{
+						MethodUserControl._co_66._cp_0 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "NoColumn", typeof(MethodUserControl), new CSharpArgumentInfo[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) }));
+					}
+					return target(_cpl, target2(_cp_2, name, target3(_cp_3, MethodUserControl._co_66._cp_0.Target(MethodUserControl._co_66._cp_0, this._facade.BalticConfiguration))));
+				});
+				this._experiment.Trap = new ColumnAdapter(column2);
+			}
+			if ((bool)arguments["uses_separator"].Value)
+			{
+				Column column3 = this._columns.Find((Column item) => item.Name == this._method.SeparationColumnName);
+				this._experiment.Separator = new ColumnAdapter(column3);
+			}
+			else
+			{
+				Column column4 = this._columns.Find((Column item) => item.Name == this._method.SeparationColumnName) ?? this._columns.Find(delegate(Column item)
+				{
+					if (MethodUserControl._co_66._cp_7 == null)
+					{
+						MethodUserControl._co_66._cp_7 = CallSite<Func<CallSite, object, bool>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof(bool), typeof(MethodUserControl)));
+					}
+					Func<CallSite, object, bool> target4 = MethodUserControl._co_66._cp_7.Target;
+					CallSite _cp_4 = MethodUserControl._co_66._cp_7;
+					if (MethodUserControl._co_66._cp_6 == null)
+					{
+						MethodUserControl._co_66._cp_6 = CallSite<Func<CallSite, string, object, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, ExpressionType.Equal, typeof(MethodUserControl), new CSharpArgumentInfo[]
+						{
+							CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null),
+							CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)
+						}));
+					}
+					Func<CallSite, string, object, object> target5 = MethodUserControl._co_66._cp_6.Target;
+					CallSite _cp_5 = MethodUserControl._co_66._cp_6;
+					string name2 = item.Name;
+					if (MethodUserControl._co_66._cp_5 == null)
+					{
+						MethodUserControl._co_66._cp_5 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "Name", typeof(MethodUserControl), new CSharpArgumentInfo[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) }));
+					}
+					Func<CallSite, object, object> target6 = MethodUserControl._co_66._cp_5.Target;
+					CallSite _cp_6 = MethodUserControl._co_66._cp_5;
+					if (MethodUserControl._co_66._cp_4 == null)
+					{
+						MethodUserControl._co_66._cp_4 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "NoColumn", typeof(MethodUserControl), new CSharpArgumentInfo[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) }));
+					}
+					return target4(_cp_4, target5(_cp_5, name2, target6(_cp_6, MethodUserControl._co_66._cp_4.Target(MethodUserControl._co_66._cp_4, this._facade.BalticConfiguration))));
+				});
+				this._experiment.Separator = new ColumnAdapter(column4);
+			}
+			this._ucGradTable.Experiment = this._experiment;
+			arguments = this._facade.GenerateArguments(this._experiment);
+			advArguments = this._facade.GenerateAdvArguments(this._experiment);
+			this._method.ToBalticMethod(this._columns).Initialize(this._experiment, arguments, advArguments, advChildArguments, advHeader, advHeaderFgColor);
+			this._method.Refresh(advChildArguments);
+			this.UpdateOverrideControls(isKeepGradient);
+			this.UpdateGradientTableControls();
 		}
-		else if (_activeUc is TrapColEquilUserControl trapColEquilUserControl)
+
+		// Token: 0x06000280 RID: 640 RVA: 0x000122F0 File Offset: 0x000104F0
+		public void ToBalticMethod()
 		{
-			trapColEquilUserControl.ValidateParameters();
+			this._method.ToBalticMethod(this._columns);
 		}
-		else if (_activeUc is AnalyticalColEquilUserControl analyticalColEquilUserControl)
+
+		// Token: 0x06000281 RID: 641 RVA: 0x00012304 File Offset: 0x00010504
+		private void expSettings_Expanded(object sender, RoutedEventArgs e)
 		{
-			analyticalColEquilUserControl.ValidateParameters();
+			base.Height = 705.0;
+			this.SetOverridePressedState();
 		}
-		else if (_activeUc is SampleLoadingUserControl sampleLoadingUserControl)
+
+		// Token: 0x06000282 RID: 642 RVA: 0x0001231C File Offset: 0x0001051C
+		private void SetOverridePressedState()
 		{
-			sampleLoadingUserControl.ValidateParameters();
+			if (this._activeBtn == this._btnTrapColEquil)
+			{
+				this._btnTrapColEquil.IsChecked = new bool?(true);
+				return;
+			}
+			if (this._activeBtn == this._btnSepColEquil)
+			{
+				this._btnSepColEquil.IsChecked = new bool?(true);
+				return;
+			}
+			if (this._activeBtn == this._btnSampleLoad)
+			{
+				this._btnSampleLoad.IsChecked = new bool?(true);
+				return;
+			}
+			if (this._activeBtn == this._btnAdvancedSett)
+			{
+				this._btnAdvancedSett.IsChecked = new bool?(true);
+			}
 		}
+
+		// Token: 0x06000283 RID: 643 RVA: 0x000123A8 File Offset: 0x000105A8
+		private void expSettings_Collapsed(object sender, RoutedEventArgs e)
+		{
+			base.Height = 505.0;
+		}
+
+		// Token: 0x06000284 RID: 644 RVA: 0x000123B9 File Offset: 0x000105B9
+		private void ucGradMain_TrapSelectionWarning(bool isShow, string message = "")
+		{
+			MethodUserControl.TrapSelectionWarning trapSelectionWarningEvent = this.TrapSelectionWarningEvent;
+			if (trapSelectionWarningEvent == null)
+			{
+				return;
+			}
+			trapSelectionWarningEvent(isShow, message);
+		}
+
+		// Token: 0x06000285 RID: 645 RVA: 0x000123D0 File Offset: 0x000105D0
+		private void ucGradMain_EnableMethodControlsEvent(bool isEnable, bool isReset)
+		{
+			if (isReset)
+			{
+				this._expGrid.Children.Clear();
+				this._expSettings.Visibility = Visibility.Hidden;
+				this._imgAllErrorNotify.Visibility = Visibility.Hidden;
+				this._isTrapColEquilValid = (this._isAnalColEquilValid = (this._isSampleLoadValid = (this._isGradTableValid = (this._isGradMainValid = (this._isAdvSettingsValid = true)))));
+				if (this._imgTrapErrorNotify != null)
+				{
+					this._imgTrapErrorNotify.Visibility = Visibility.Collapsed;
+				}
+				if (this._imgLoadErrorNotify != null)
+				{
+					this._imgLoadErrorNotify.Visibility = Visibility.Collapsed;
+				}
+				if (this._imgSepErrorNotify != null)
+				{
+					this._imgSepErrorNotify.Visibility = Visibility.Collapsed;
+				}
+				if (this._imgAdvErrorNotify != null)
+				{
+					this._imgAdvErrorNotify.Visibility = Visibility.Collapsed;
+				}
+				this.UpdateOverrideDefaultErrorIcon();
+			}
+			this._methodStateEnabled = isEnable;
+			MethodUserControl.EnableMethodComplete enableMethodCompleteEvent = this.EnableMethodCompleteEvent;
+			if (enableMethodCompleteEvent != null)
+			{
+				enableMethodCompleteEvent(isEnable);
+			}
+			this._expSettings.IsEnabled = isEnable;
+			if (!isEnable)
+			{
+				this._expSettings.IsExpanded = false;
+			}
+			this.UpdateGradientTableControls();
+		}
+
+		// Token: 0x06000286 RID: 646 RVA: 0x000124D0 File Offset: 0x000106D0
+		private void ucGradMain_GetInitialMethodParamEvent()
+		{
+			ProcedureArguments arguments = this._facade.GetElutionProcedure(this._method.ElutionName).CreateArguments();
+			this._method.IsIsocratic = (bool)arguments["is_isocratic"].Value;
+			this._method.UsesTrapColumn = (bool)arguments["uses_trap"].Value;
+			this._method.UsesSepColumn = (bool)arguments["uses_separator"].Value;
+			this._method.GradientTime = (double)((int)arguments["analysis_time"].Value) / 60.0;
+			this._method.OvenTemperature = (double)arguments["oven_temperature"].Value;
+		}
+
+		// Token: 0x06000287 RID: 647 RVA: 0x000125A4 File Offset: 0x000107A4
+		private void ucGradMain_GenerateMethodEvent(bool isKeepGradient = false, bool isKeepAdvancedSettings = false)
+		{
+			this.GenerateMethod(isKeepGradient, isKeepAdvancedSettings);
+		}
+
+		// Token: 0x06000288 RID: 648 RVA: 0x000125AE File Offset: 0x000107AE
+		private void ucGradTable_GradientMainUpdateEvent(WPFConstants.UpdateType updateType)
+		{
+			this._ucGradMain.UpdateFromGradientTable(updateType);
+		}
+
+		// Token: 0x06000289 RID: 649 RVA: 0x000125BC File Offset: 0x000107BC
+		private void ucTrapColEquil_UpdateInputValidation(bool isValid)
+		{
+			this._isTrapColEquilValid = isValid;
+			this._imgTrapErrorNotify.Visibility = (this._isTrapColEquilValid ? Visibility.Collapsed : Visibility.Visible);
+			this.UpdateOverrideDefaultErrorIcon();
+			MethodUserControl.ValidateInputUpdate validateInputUpdateEvent = this.ValidateInputUpdateEvent;
+			if (validateInputUpdateEvent == null)
+			{
+				return;
+			}
+			validateInputUpdateEvent(this.IsMethodDataValid);
+		}
+
+		// Token: 0x0600028A RID: 650 RVA: 0x000125F8 File Offset: 0x000107F8
+		private void ucAnalyticalColEquil_UpdateInputValidation(bool isValid)
+		{
+			this._isAnalColEquilValid = isValid;
+			this._imgSepErrorNotify.Visibility = (this._isAnalColEquilValid ? Visibility.Collapsed : Visibility.Visible);
+			this.UpdateOverrideDefaultErrorIcon();
+			MethodUserControl.ValidateInputUpdate validateInputUpdateEvent = this.ValidateInputUpdateEvent;
+			if (validateInputUpdateEvent == null)
+			{
+				return;
+			}
+			validateInputUpdateEvent(this.IsMethodDataValid && this._methodStateEnabled);
+		}
+
+		// Token: 0x0600028B RID: 651 RVA: 0x0001264C File Offset: 0x0001084C
+		private void ucSampleLoading_UpdateInputValidation(bool isValid)
+		{
+			this._isSampleLoadValid = isValid;
+			this._imgLoadErrorNotify.Visibility = (this._isSampleLoadValid ? Visibility.Collapsed : Visibility.Visible);
+			this.UpdateOverrideDefaultErrorIcon();
+			MethodUserControl.ValidateInputUpdate validateInputUpdateEvent = this.ValidateInputUpdateEvent;
+			if (validateInputUpdateEvent == null)
+			{
+				return;
+			}
+			validateInputUpdateEvent(this.IsMethodDataValid && this._methodStateEnabled);
+		}
+
+		// Token: 0x0600028C RID: 652 RVA: 0x0001269E File Offset: 0x0001089E
+		private void ucGradMain_UpdateInputValidation(bool isValid)
+		{
+			this._isGradMainValid = isValid;
+			MethodUserControl.ValidateInputUpdate validateInputUpdateEvent = this.ValidateInputUpdateEvent;
+			if (validateInputUpdateEvent == null)
+			{
+				return;
+			}
+			validateInputUpdateEvent(this.IsMethodDataValid && this._methodStateEnabled);
+		}
+
+		// Token: 0x0600028D RID: 653 RVA: 0x000126C8 File Offset: 0x000108C8
+		private void UpdateOverrideDefaultErrorIcon()
+		{
+			this._imgAllErrorNotify.Visibility = (this.IsOverrideSettingsValid ? Visibility.Collapsed : Visibility.Visible);
+		}
+
+		// Token: 0x0600028E RID: 654 RVA: 0x000126E4 File Offset: 0x000108E4
+		private void ucGradTable_UpdateInputValidation(bool isValid, string header = "", string subject = "", string message = "")
+		{
+			this._isGradTableValid = isValid;
+			if (header != "")
+			{
+				this.ucAdvancedSett_ValidationUpdateEvent(false);
+				AdvParamSettingsUserControl uc = this._activeUc as AdvParamSettingsUserControl;
+				if (uc != null)
+				{
+					uc.ValidateParameters();
+					return;
+				}
+			}
+			else
+			{
+				this.ucAdvancedSett_ValidationUpdateEvent(true);
+				this.UpdateActiveUserControl();
+				MethodUserControl.ValidateInputUpdate validateInputUpdateEvent = this.ValidateInputUpdateEvent;
+				if (validateInputUpdateEvent == null)
+				{
+					return;
+				}
+				validateInputUpdateEvent(this.IsMethodDataValid && this._methodStateEnabled);
+			}
+		}
+
+		// Token: 0x0600028F RID: 655 RVA: 0x00012750 File Offset: 0x00010950
+		private void UpdateActiveUserControl()
+		{
+			AdvParamSettingsUserControl advUc = this._activeUc as AdvParamSettingsUserControl;
+			if (advUc != null)
+			{
+				advUc.ValidateParameters();
+				return;
+			}
+			TrapColEquilUserControl trapUc = this._activeUc as TrapColEquilUserControl;
+			if (trapUc != null)
+			{
+				trapUc.ValidateParameters();
+				return;
+			}
+			AnalyticalColEquilUserControl analyticalUc = this._activeUc as AnalyticalColEquilUserControl;
+			if (analyticalUc != null)
+			{
+				analyticalUc.ValidateParameters();
+				return;
+			}
+			SampleLoadingUserControl sampleLoadingUc = this._activeUc as SampleLoadingUserControl;
+			if (sampleLoadingUc != null)
+			{
+				sampleLoadingUc.ValidateParameters();
+			}
+		}
+
+		// Token: 0x06000290 RID: 656 RVA: 0x000127B4 File Offset: 0x000109B4
+		private void ucAdvancedSett_ValidationUpdateEvent(bool isValid)
+		{
+			this._isAdvSettingsValid = isValid;
+			this._imgAdvErrorNotify.Visibility = (this._isAdvSettingsValid ? Visibility.Collapsed : Visibility.Visible);
+			this.UpdateOverrideDefaultErrorIcon();
+			MethodUserControl.ValidateInputUpdate validateInputUpdateEvent = this.ValidateInputUpdateEvent;
+			if (validateInputUpdateEvent == null)
+			{
+				return;
+			}
+			validateInputUpdateEvent(this.IsMethodDataValid && this._methodStateEnabled);
+		}
+
+		// Token: 0x06000291 RID: 657 RVA: 0x00012806 File Offset: 0x00010A06
+		private void ucTrapColEquil_ModificationUpdate(bool isModified)
+		{
+			this._tbTrapModified.Text = (isModified ? "(MODIFIED)" : "");
+			this.CheckModifiedAll();
+			this.UpdateGradientTableControls();
+		}
+
+		// Token: 0x06000292 RID: 658 RVA: 0x0001282E File Offset: 0x00010A2E
+		private void ucAnalyticalColEquil_ModificationUpdate(bool isModified)
+		{
+			this._tbSepModified.Text = (isModified ? "(MODIFIED)" : "");
+			this.CheckModifiedAll();
+			this.UpdateGradientTableControls();
+		}
+
+		// Token: 0x06000293 RID: 659 RVA: 0x00012856 File Offset: 0x00010A56
+		private void ucSampleLoading_ModificationUpdate(bool isModified)
+		{
+			this._tbLoadModified.Text = (isModified ? "(MODIFIED)" : "");
+			this.CheckModifiedAll();
+			this.UpdateGradientTableControls();
+		}
+
+		// Token: 0x06000294 RID: 660 RVA: 0x0001287E File Offset: 0x00010A7E
+		private void ucAdvancedSett_ModificationUpdate(bool isModified)
+		{
+			this._tbAdvModified.Text = (isModified ? "(MODIFIED)" : "");
+			this.CheckModifiedAll();
+			this.UpdateGradientTableControls();
+		}
+
+		// Token: 0x0400017A RID: 378
+		private const int _heightCollapsed = 505;
+
+		// Token: 0x0400017B RID: 379
+		private const int _heightExpanded = 705;
+
+		// Token: 0x0400017C RID: 380
+		private bool _methodStateEnabled;
+
+		// Token: 0x0400017D RID: 381
+		private readonly bool _isPressurePSI;
+
+		// Token: 0x0400017E RID: 382
+		private readonly bool _isOvenDetected;
+
+		// Token: 0x0400017F RID: 383
+		private bool _isTrapColEquilValid = true;
+
+		// Token: 0x04000180 RID: 384
+		private bool _isAnalColEquilValid = true;
+
+		// Token: 0x04000181 RID: 385
+		private bool _isSampleLoadValid = true;
+
+		// Token: 0x04000182 RID: 386
+		private bool _isGradTableValid = true;
+
+		// Token: 0x04000183 RID: 387
+		private bool _isGradMainValid = true;
+
+		// Token: 0x04000184 RID: 388
+		private bool _isAdvSettingsValid = true;
+
+		// Token: 0x04000185 RID: 389
+		private readonly bool _isService;
+
+		// Token: 0x04000186 RID: 390
+		private readonly BindableBalticMethod _method;
+
+		// Token: 0x04000187 RID: 391
+		private readonly BalticInstrumentFacade _facade;
+
+		// Token: 0x04000188 RID: 392
+		private Expander _expSettings;
+
+		// Token: 0x04000189 RID: 393
+		private GradientMainUserControl _ucGradMain;
+
+		// Token: 0x0400018A RID: 394
+		private GradientTableUserControl _ucGradTable;
+
+		// Token: 0x0400018B RID: 395
+		private readonly RadioButton _btnTrapColEquil = new RadioButton();
+
+		// Token: 0x0400018C RID: 396
+		private readonly RadioButton _btnSepColEquil = new RadioButton();
+
+		// Token: 0x0400018D RID: 397
+		private readonly RadioButton _btnSampleLoad = new RadioButton();
+
+		// Token: 0x0400018E RID: 398
+		private readonly RadioButton _btnAdvancedSett = new RadioButton();
+
+		// Token: 0x0400018F RID: 399
+		private TextBlock _tbTrapModified;
+
+		// Token: 0x04000190 RID: 400
+		private TextBlock _tbSepModified;
+
+		// Token: 0x04000191 RID: 401
+		private TextBlock _tbLoadModified;
+
+		// Token: 0x04000192 RID: 402
+		private TextBlock _tbAdvModified;
+
+		// Token: 0x04000193 RID: 403
+		private TextBlock _tbModifiedAll;
+
+		// Token: 0x04000194 RID: 404
+		private Image _imgTrapErrorNotify;
+
+		// Token: 0x04000195 RID: 405
+		private Image _imgSepErrorNotify;
+
+		// Token: 0x04000196 RID: 406
+		private Image _imgLoadErrorNotify;
+
+		// Token: 0x04000197 RID: 407
+		private Image _imgAdvErrorNotify;
+
+		// Token: 0x04000198 RID: 408
+		private Image _imgAllErrorNotify;
+
+		// Token: 0x04000199 RID: 409
+		private UserControl _activeUc;
+
+		// Token: 0x0400019A RID: 410
+		private RadioButton _activeBtn;
+
+		// Token: 0x0400019B RID: 411
+		private Grid _expGrid;
+
+		// Token: 0x0400019C RID: 412
+		private double _ucWidth;
+
+		// Token: 0x0400019D RID: 413
+		private double _ucHeight;
+
+		// Token: 0x0400019E RID: 414
+		private readonly Window _owner;
+
+		// Token: 0x0400019F RID: 415
+		private ExperimentInfo _experiment;
+
+		// Token: 0x040001A0 RID: 416
+		private readonly BalticColumnList _columns;
+
+		// Token: 0x040001A1 RID: 417
+		private readonly ColumnSelections _columnSelections;
+
+		// Token: 0x040001A2 RID: 418
+		private readonly ResourceDictionary _myResDictionary = new ResourceDictionary();
+
+		// Token: 0x020000EF RID: 239
+		// (Invoke) Token: 0x06000784 RID: 1924
+		public delegate void ValidateInputUpdate(bool isValid);
+
+		// Token: 0x020000F0 RID: 240
+		// (Invoke) Token: 0x06000788 RID: 1928
+		public delegate void EnableMethodComplete(bool isEnabled);
+
+		// Token: 0x020000F1 RID: 241
+		// (Invoke) Token: 0x0600078C RID: 1932
+		public delegate void TrapSelectionWarning(bool isShow, string message = "");
 	}
-
-	private void ucAdvancedSett_ValidationUpdateEvent(bool isValid)
-	{
-		_isAdvSettingsValid = isValid;
-		_imgAdvErrorNotify.Visibility = (_isAdvSettingsValid ? Visibility.Collapsed : Visibility.Visible);
-		UpdateOverrideDefaultErrorIcon();
-		this.ValidateInputUpdateEvent?.Invoke(IsMethodDataValid && _methodStateEnabled);
-	}
-
-	private void ucTrapColEquil_ModificationUpdate(bool isModified)
-	{
-		_tbTrapModified.Text = (isModified ? "(MODIFIED)" : "");
-		CheckModifiedAll();
-		UpdateGradientTableControls();
-	}
-
-	private void ucAnalyticalColEquil_ModificationUpdate(bool isModified)
-	{
-		_tbSepModified.Text = (isModified ? "(MODIFIED)" : "");
-		CheckModifiedAll();
-		UpdateGradientTableControls();
-	}
-
-	private void ucSampleLoading_ModificationUpdate(bool isModified)
-	{
-		_tbLoadModified.Text = (isModified ? "(MODIFIED)" : "");
-		CheckModifiedAll();
-		UpdateGradientTableControls();
-	}
-
-	private void ucAdvancedSett_ModificationUpdate(bool isModified)
-	{
-		_tbAdvModified.Text = (isModified ? "(MODIFIED)" : "");
-		CheckModifiedAll();
-		UpdateGradientTableControls();
-	}
-
-
-}
 }

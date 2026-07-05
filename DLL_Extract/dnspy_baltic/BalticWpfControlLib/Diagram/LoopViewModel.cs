@@ -88,11 +88,11 @@ namespace BalticWpfControlLib.Diagram
 
 		// Token: 0x17000124 RID: 292
 		// (get) Token: 0x06000594 RID: 1428 RVA: 0x0003946C File Offset: 0x0003766C
-		public bool IsEditable { get; private set; }
+		public bool IsEditable { get; }
 
 		// Token: 0x17000125 RID: 293
 		// (get) Token: 0x06000595 RID: 1429 RVA: 0x00039474 File Offset: 0x00037674
-		public bool IsPopupVisible { get; private set; }
+		public bool IsPopupVisible { get; }
 
 		// Token: 0x17000126 RID: 294
 		// (get) Token: 0x06000596 RID: 1430 RVA: 0x0003947C File Offset: 0x0003767C
@@ -106,7 +106,7 @@ namespace BalticWpfControlLib.Diagram
 
 		// Token: 0x17000128 RID: 296
 		// (get) Token: 0x0600059A RID: 1434 RVA: 0x0003949E File Offset: 0x0003769E
-		public ICommand EditLinkCommand { get; private set; }
+		public ICommand EditLinkCommand { get; }
 
 		// Token: 0x0600059B RID: 1435 RVA: 0x000036D0 File Offset: 0x000018D0
 		public bool CanEditLink(object obj)

@@ -45,7 +45,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000011 RID: 17
 		// (get) Token: 0x06000063 RID: 99 RVA: 0x000034FF File Offset: 0x000016FF
-		public Type Type { get; private set; }
+		public Type Type { get; }
 
 		// Token: 0x17000012 RID: 18
 		// (get) Token: 0x06000064 RID: 100 RVA: 0x00003507 File Offset: 0x00001707
@@ -69,7 +69,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000015 RID: 21
 		// (get) Token: 0x06000069 RID: 105 RVA: 0x00003546 File Offset: 0x00001746
-		public ICommand ChildSettingsCmd { get; private set; }
+		public ICommand ChildSettingsCmd { get; }
 
 		// Token: 0x17000016 RID: 22
 		// (get) Token: 0x0600006A RID: 106 RVA: 0x0000354E File Offset: 0x0000174E

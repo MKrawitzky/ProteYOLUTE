@@ -12,7 +12,7 @@ namespace BalticWpfControlLib.Diagram
 		// Token: 0x17000107 RID: 263
 		// (get) Token: 0x06000557 RID: 1367 RVA: 0x00038E9D File Offset: 0x0003709D
 		// (set) Token: 0x06000558 RID: 1368 RVA: 0x00038EA5 File Offset: 0x000370A5
-		public string Header { get; set; }
+		public string Header { get; set; } = "unknown";
 
 		// Token: 0x17000108 RID: 264
 		// (get) Token: 0x06000559 RID: 1369 RVA: 0x00038EAE File Offset: 0x000370AE
@@ -33,7 +33,7 @@ namespace BalticWpfControlLib.Diagram
 		// Token: 0x17000109 RID: 265
 		// (get) Token: 0x0600055B RID: 1371 RVA: 0x00038ECA File Offset: 0x000370CA
 		// (set) Token: 0x0600055C RID: 1372 RVA: 0x00038ED2 File Offset: 0x000370D2
-		public string LengthUnit { get; set; }
+		public string LengthUnit { get; set; } = "mm";
 
 		// Token: 0x1700010A RID: 266
 		// (get) Token: 0x0600055D RID: 1373 RVA: 0x00038EDB File Offset: 0x000370DB
@@ -43,12 +43,12 @@ namespace BalticWpfControlLib.Diagram
 		// Token: 0x1700010B RID: 267
 		// (get) Token: 0x0600055F RID: 1375 RVA: 0x00038EEC File Offset: 0x000370EC
 		// (set) Token: 0x06000560 RID: 1376 RVA: 0x00038EF4 File Offset: 0x000370F4
-		public double MaxLength { get; set; }
+		public double MaxLength { get; set; } = 1000.0;
 
 		// Token: 0x1700010C RID: 268
 		// (get) Token: 0x06000561 RID: 1377 RVA: 0x00038EFD File Offset: 0x000370FD
 		// (set) Token: 0x06000562 RID: 1378 RVA: 0x00038F05 File Offset: 0x00037105
-		public double DefaultLength { get; set; }
+		public double DefaultLength { get; set; } = 1.0;
 
 		// Token: 0x1700010D RID: 269
 		// (get) Token: 0x06000563 RID: 1379 RVA: 0x00038F0E File Offset: 0x0003710E
@@ -74,49 +74,49 @@ namespace BalticWpfControlLib.Diagram
 		// Token: 0x1700010F RID: 271
 		// (get) Token: 0x06000567 RID: 1383 RVA: 0x00038F3B File Offset: 0x0003713B
 		// (set) Token: 0x06000568 RID: 1384 RVA: 0x00038F43 File Offset: 0x00037143
-		public double MaxID { get; set; }
+		public double MaxID { get; set; } = 1000.0;
 
 		// Token: 0x17000110 RID: 272
 		// (get) Token: 0x06000569 RID: 1385 RVA: 0x00038F4C File Offset: 0x0003714C
 		// (set) Token: 0x0600056A RID: 1386 RVA: 0x00038F54 File Offset: 0x00037154
-		public double DefaultID { get; set; }
+		public double DefaultID { get; set; } = 1.0;
 
 		// Token: 0x17000111 RID: 273
 		// (get) Token: 0x0600056B RID: 1387 RVA: 0x00038F5D File Offset: 0x0003715D
 		// (set) Token: 0x0600056C RID: 1388 RVA: 0x00038F65 File Offset: 0x00037165
-		public string IDUnit { get; set; }
+		public string IDUnit { get; set; } = "µm";
 
 		// Token: 0x17000112 RID: 274
 		// (get) Token: 0x0600056D RID: 1389 RVA: 0x00038F6E File Offset: 0x0003716E
 		// (set) Token: 0x0600056E RID: 1390 RVA: 0x00038F76 File Offset: 0x00037176
-		public string LengthTitle { get; set; }
+		public string LengthTitle { get; set; } = "Length:";
 
 		// Token: 0x17000113 RID: 275
 		// (get) Token: 0x0600056F RID: 1391 RVA: 0x00038F7F File Offset: 0x0003717F
 		// (set) Token: 0x06000570 RID: 1392 RVA: 0x00038F87 File Offset: 0x00037187
-		public string InnerDiameterTitle { get; set; }
+		public string InnerDiameterTitle { get; set; } = "Inner Diameter:";
 
 		// Token: 0x17000114 RID: 276
 		// (get) Token: 0x06000571 RID: 1393 RVA: 0x00038F90 File Offset: 0x00037190
-		public bool IsEditable { get; private set; }
+		public bool IsEditable { get; }
 
 		// Token: 0x17000115 RID: 277
 		// (get) Token: 0x06000572 RID: 1394 RVA: 0x00038F98 File Offset: 0x00037198
-		public bool IsPopupVisible { get; private set; }
+		public bool IsPopupVisible { get; }
 
 		// Token: 0x17000116 RID: 278
 		// (get) Token: 0x06000573 RID: 1395 RVA: 0x00038FA0 File Offset: 0x000371A0
 		// (set) Token: 0x06000574 RID: 1396 RVA: 0x00038FA8 File Offset: 0x000371A8
-		public double FactoryLength { get; set; }
+		public double FactoryLength { get; set; } = 1.0;
 
 		// Token: 0x17000117 RID: 279
 		// (get) Token: 0x06000575 RID: 1397 RVA: 0x00038FB1 File Offset: 0x000371B1
 		// (set) Token: 0x06000576 RID: 1398 RVA: 0x00038FB9 File Offset: 0x000371B9
-		public double FactoryID { get; set; }
+		public double FactoryID { get; set; } = 1.0;
 
 		// Token: 0x17000118 RID: 280
 		// (get) Token: 0x06000577 RID: 1399 RVA: 0x00038FC2 File Offset: 0x000371C2
-		public ICommand EditLinkCommand { get; private set; }
+		public ICommand EditLinkCommand { get; }
 
 		// Token: 0x06000578 RID: 1400 RVA: 0x000036D0 File Offset: 0x000018D0
 		public bool CanEditLink(object obj)

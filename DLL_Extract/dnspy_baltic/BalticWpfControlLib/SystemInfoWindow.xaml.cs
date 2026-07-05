@@ -64,7 +64,7 @@ namespace BalticWpfControlLib
 		// Token: 0x060003B7 RID: 951 RVA: 0x00017D0E File Offset: 0x00015F0E
 		private void timer_Tick(object sender, EventArgs e)
 		{
-			base.Dispatcher.Invoke(new Action(this._timer_Tick_local_Action_8_0));
+			base.Dispatcher.Invoke(new Action(this._mg_timer_Tick_Action_8_0));
 		}
 
 		// Token: 0x060003B8 RID: 952 RVA: 0x00017D27 File Offset: 0x00015F27
@@ -75,7 +75,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x060003BB RID: 955 RVA: 0x00017DDC File Offset: 0x00015FDC
 		[CompilerGenerated]
-		private void _timer_Tick_local_Action_8_0()
+		private void _mg_timer_Tick_Action_8_0()
 		{
 			try
 			{

@@ -12,19 +12,19 @@ namespace BalticWpfControlLib
 	{
 		// Token: 0x17000067 RID: 103
 		// (get) Token: 0x060002EE RID: 750 RVA: 0x00013F0B File Offset: 0x0001210B
-		public ProcedureArgument Argument { get; private set; }
+		public ProcedureArgument Argument { get; }
 
 		// Token: 0x17000068 RID: 104
 		// (get) Token: 0x060002EF RID: 751 RVA: 0x00013F13 File Offset: 0x00012113
-		public string Unit { get; private set; }
+		public string Unit { get; }
 
 		// Token: 0x17000069 RID: 105
 		// (get) Token: 0x060002F0 RID: 752 RVA: 0x00013F1B File Offset: 0x0001211B
-		public Type Type { get; private set; }
+		public Type Type { get; }
 
 		// Token: 0x1700006A RID: 106
 		// (get) Token: 0x060002F1 RID: 753 RVA: 0x00013F23 File Offset: 0x00012123
-		public string Group { get; private set; }
+		public string Group { get; }
 
 		// Token: 0x1700006B RID: 107
 		// (get) Token: 0x060002F2 RID: 754 RVA: 0x00013F2B File Offset: 0x0001212B
@@ -43,11 +43,11 @@ namespace BalticWpfControlLib
 
 		// Token: 0x1700006E RID: 110
 		// (get) Token: 0x060002F8 RID: 760 RVA: 0x00013F5E File Offset: 0x0001215E
-		public int Indent { get; private set; }
+		public int Indent { get; }
 
 		// Token: 0x1700006F RID: 111
 		// (get) Token: 0x060002F9 RID: 761 RVA: 0x00013F66 File Offset: 0x00012166
-		public int Decimals { get; private set; }
+		public int Decimals { get; }
 
 		// Token: 0x17000070 RID: 112
 		// (get) Token: 0x060002FA RID: 762 RVA: 0x00013F6E File Offset: 0x0001216E

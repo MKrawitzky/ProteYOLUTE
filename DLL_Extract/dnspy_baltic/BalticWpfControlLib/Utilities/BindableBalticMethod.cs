@@ -103,22 +103,22 @@ namespace BalticWpfControlLib.Utilities
 		// Token: 0x170000CF RID: 207
 		// (get) Token: 0x0600045E RID: 1118 RVA: 0x00019765 File Offset: 0x00017965
 		// (set) Token: 0x0600045F RID: 1119 RVA: 0x0001976D File Offset: 0x0001796D
-		public BindableBalticMethod.ColumnEquilibration TrapColumnEquil { get; set; }
+		public BindableBalticMethod.ColumnEquilibration TrapColumnEquil { get; set; } = new BindableBalticMethod.ColumnEquilibration();
 
 		// Token: 0x170000D0 RID: 208
 		// (get) Token: 0x06000460 RID: 1120 RVA: 0x00019776 File Offset: 0x00017976
 		// (set) Token: 0x06000461 RID: 1121 RVA: 0x0001977E File Offset: 0x0001797E
-		public BindableBalticMethod.ColumnEquilibration SeparationColumnEquil { get; set; }
+		public BindableBalticMethod.ColumnEquilibration SeparationColumnEquil { get; set; } = new BindableBalticMethod.ColumnEquilibration();
 
 		// Token: 0x170000D1 RID: 209
 		// (get) Token: 0x06000462 RID: 1122 RVA: 0x00019787 File Offset: 0x00017987
 		// (set) Token: 0x06000463 RID: 1123 RVA: 0x0001978F File Offset: 0x0001798F
-		public BindableBalticMethod.ColumnEquilibration SampleLoading { get; set; }
+		public BindableBalticMethod.ColumnEquilibration SampleLoading { get; set; } = new BindableBalticMethod.ColumnEquilibration();
 
 		// Token: 0x170000D2 RID: 210
 		// (get) Token: 0x06000464 RID: 1124 RVA: 0x00019798 File Offset: 0x00017998
 		// (set) Token: 0x06000465 RID: 1125 RVA: 0x000197A0 File Offset: 0x000179A0
-		public BindableBalticMethod.AdvancedSett AdvancedSettings { get; set; }
+		public BindableBalticMethod.AdvancedSett AdvancedSettings { get; set; } = new BindableBalticMethod.AdvancedSett();
 
 		// Token: 0x170000D3 RID: 211
 		// (get) Token: 0x06000466 RID: 1126 RVA: 0x000197A9 File Offset: 0x000179A9
@@ -1045,6 +1045,10 @@ namespace BalticWpfControlLib.Utilities
 			// Token: 0x06000825 RID: 2085 RVA: 0x0003EBCC File Offset: 0x0003CDCC
 			public ElutionType(string name, string displayName, string legacyName, bool isLegacy)
 			{
+				this.Name = name;
+				this.DisplayName = displayName;
+				this.LegacyName = legacyName;
+				this.IsLegacy = isLegacy;
 			}
 
 			// Token: 0x17000191 RID: 401

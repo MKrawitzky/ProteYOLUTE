@@ -1,16 +1,15 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="Build">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BCB08B90-10AE-49F0-ADCB-15514EFAFA73}</ProjectGuid>
+    <ProjectGuid>{436CCC21-407F-4C4C-8F7D-816ADAD4D4EB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BalticWpfControlLib</RootNamespace>
     <AssemblyName>BalticWpfControlLib</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <UseWPF>true</UseWPF>
     <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,28 +33,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BalticClassLib">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BalticClassLib.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BalticClassLib.dll</HintPath>
     </Reference>
     <Reference Include="Bruker.Lc">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Bruker.Lc.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Bruker.Lc.dll</HintPath>
     </Reference>
     <Reference Include="BrukerLC.Interfaces">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="BrukerLC.Utils">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Utils.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Syncfusion.SfChart.WPF">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfChart.WPF.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfChart.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfTextInputLayout.WPF">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfTextInputLayout.WPF.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfTextInputLayout.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.Shared.Wpf">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.Shared.Wpf.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.Shared.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -502,5 +501,4 @@
     <Resource Include="images\wrench_20.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
 </Project>

@@ -190,6 +190,7 @@ namespace BalticWpfControlLib
 			return true;
 		}
 
+
 		// Token: 0x040001C5 RID: 453
 		private readonly List<ProcParam> _parameters = new List<ProcParam>();
 

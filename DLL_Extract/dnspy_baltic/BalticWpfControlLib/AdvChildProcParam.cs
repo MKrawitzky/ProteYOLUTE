@@ -25,7 +25,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000003 RID: 3
 		// (get) Token: 0x06000021 RID: 33 RVA: 0x0000276C File Offset: 0x0000096C
-		public string Header { get; private set; }
+		public string Header { get; }
 
 		// Token: 0x17000004 RID: 4
 		// (get) Token: 0x06000022 RID: 34 RVA: 0x00002774 File Offset: 0x00000974
@@ -34,7 +34,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000005 RID: 5
 		// (get) Token: 0x06000024 RID: 36 RVA: 0x00002785 File Offset: 0x00000985
-		public Type Type { get; private set; }
+		public Type Type { get; }
 
 		// Token: 0x17000006 RID: 6
 		// (get) Token: 0x06000025 RID: 37 RVA: 0x0000278D File Offset: 0x0000098D

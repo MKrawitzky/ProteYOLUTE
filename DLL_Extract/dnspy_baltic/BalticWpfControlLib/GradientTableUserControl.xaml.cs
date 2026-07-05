@@ -92,7 +92,7 @@ namespace BalticWpfControlLib
 
 		// Token: 0x17000032 RID: 50
 		// (get) Token: 0x06000141 RID: 321 RVA: 0x00009117 File Offset: 0x00007317
-		public BindableBalticMethod Method { get; private set; }
+		public BindableBalticMethod Method { get; }
 
 		// Token: 0x17000033 RID: 51
 		// (get) Token: 0x06000142 RID: 322 RVA: 0x0000911F File Offset: 0x0000731F

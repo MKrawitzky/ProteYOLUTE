@@ -16,7 +16,7 @@ namespace BalticWpfControlLib
 	{
 		// Token: 0x17000058 RID: 88
 		// (get) Token: 0x0600029F RID: 671 RVA: 0x00012BAA File Offset: 0x00010DAA
-		public PasswordWindow.PasswordViewModel Vm { get; private set; }
+		public PasswordWindow.PasswordViewModel Vm { get; }
 
 		// Token: 0x060002A0 RID: 672 RVA: 0x00012BB2 File Offset: 0x00010DB2
 		public PasswordWindow()
@@ -48,7 +48,7 @@ namespace BalticWpfControlLib
 		}
 
 		// Token: 0x020000F5 RID: 245
-		public partial class PasswordViewModel : NotificationObject
+		public class PasswordViewModel : NotificationObject
 		{
 			// Token: 0x17000173 RID: 371
 			// (get) Token: 0x06000793 RID: 1939 RVA: 0x0003D83E File Offset: 0x0003BA3E
