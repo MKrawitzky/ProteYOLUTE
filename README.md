@@ -19,7 +19,7 @@ Proxeon UHPLC (Odense, Denmark) — touch screen, manual valve control
       -> proteoElute (Bruker) — PAL3 Series II, rainbow LED, outsourced plugin
 ```
 
-When Bruker moved from nanoElute to proteoElute, they outsourced the plugin development to cut costs. The result: quality dropped, error messages became cryptic (`"!!! Reloading gradient failed 10 times !!!"` followed by `"Contact service department"`), manual valve control disappeared, and the rainbow LED hardware sat mostly unused.
+When the plugin transitioned from nanoElute to proteoElute, there was room for improvement. Error messages were cryptic (`"!!! Reloading gradient failed 10 times !!!"` followed by `"Contact service department"`), manual valve control was no longer available, and the rainbow LED hardware sat mostly unused.
 
 ProteYOLUTE fixes all of that.
 
