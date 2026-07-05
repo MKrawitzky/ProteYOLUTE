@@ -79,11 +79,31 @@ function Initialize(context)
 	context:DeclareParameter("Enable LED theme", false, nil, "check", false,
 		"Set a custom LED color theme on the instrument", "")
 
-	context:DeclareParameter("LED theme", "Blue & White", nil, "text", false,
-		"Choose: Rainbow / Ocean / Sunset / Forest / Lava / Ice / Night / Orange & Black / Red & Black / Blue & White / Green & Black / Purple & Black / Amber & Black / Pink & Black / Cyan & Black / White Pulse / Warm Glow", "")
+	-- LED Theme presets (radio group "T")
+	context:DeclareParameter("Rainbow", false, nil, "radio", false, "Cycle through all colors", "", 30, "T")
+	context:DeclareParameter("Ocean", false, nil, "radio", false, "Blue and Cyan", "", 30, "T")
+	context:DeclareParameter("Sunset", false, nil, "radio", false, "Orange and Red", "", 30, "T")
+	context:DeclareParameter("Forest", false, nil, "radio", false, "Green and Teal", "", 30, "T")
+	context:DeclareParameter("Lava", false, nil, "radio", false, "Red and Orange", "", 30, "T")
+	context:DeclareParameter("Ice", false, nil, "radio", false, "Cool Blue and White", "", 30, "T")
+	context:DeclareParameter("Night", false, nil, "radio", false, "Indigo and Black", "", 30, "T")
+	context:DeclareParameter("Orange & Black", false, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("Red & Black", false, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("Blue & White", true, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("Green & Black", false, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("Purple & Black", false, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("Amber & Black", false, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("Pink & Black", false, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("Cyan & Black", false, nil, "radio", false, "", "", 30, "T")
+	context:DeclareParameter("White Pulse", false, nil, "radio", false, "Soft breathing white", "", 30, "T")
+	context:DeclareParameter("Warm Glow", false, nil, "radio", false, "Warm amber tones", "", 30, "T")
 
-	context:DeclareParameter("LED pattern", "Pulsating", nil, "text", false,
-		"Pulsating / Moving / Solid", "")
+	context:DeclareParameter("header_pattern", "", nil, "separator", "", "")
+
+	-- LED Pattern presets (radio group "P")
+	context:DeclareParameter("Pulsating", true, nil, "radio", false, "Breathing effect between two colors", "", 30, "P")
+	context:DeclareParameter("Moving", false, nil, "radio", false, "Chasing/flowing effect", "", 30, "P")
+	context:DeclareParameter("Solid", false, nil, "radio", false, "Steady single color, no animation", "", 30, "P")
 
 	-- === Live Monitoring Section ===
 	context:DeclareParameter("header_monitor", "", nil, "separator", "", "")
@@ -198,14 +218,31 @@ function Main(installed, context)
 	-- ========================================
 	local enableLed = context:GetArgumentValue("Enable LED theme")
 	if enableLed then
-		local themeName = context:GetArgumentValue("LED theme")
-		local patternName = string.lower(context:GetArgumentValue("LED pattern") or "pulsating")
+		-- Find selected theme from radio group
+		local themeList = {
+			"Rainbow", "Ocean", "Sunset", "Forest", "Lava", "Ice", "Night",
+			"Orange & Black", "Red & Black", "Blue & White", "Green & Black",
+			"Purple & Black", "Amber & Black", "Pink & Black", "Cyan & Black",
+			"White Pulse", "Warm Glow"
+		}
+		local themeName = "Blue & White"
+		for _, name in ipairs(themeList) do
+			if context:GetArgumentValue(name) == true then
+				themeName = name
+				break
+			end
+		end
+
+		-- Find selected pattern from radio group
+		local patternName = "pulsating"
+		if context:GetArgumentValue("Moving") == true then patternName = "moving"
+		elseif context:GetArgumentValue("Solid") == true then patternName = "solid"
+		end
+
 		context:Log("Setting LED theme: {0} ({1})", themeName, patternName)
 		status:SetStatus("Setting LED theme: "..themeName)
 
-		local theme = led.Themes[themeName]
-		if theme and theme.cycle then
-			-- Rainbow: run a few cycles so the user sees it
+		if themeName == "Rainbow" then
 			led.ApplyTheme(pump, themeName, patternName)
 			context:Log("Rainbow LED mode activated")
 		else
@@ -361,8 +398,7 @@ function Main(installed, context)
 
 		-- Rainbow LED cycling during monitoring
 		local rainbowStep = 1
-		local isRainbow = enableLed and led.Themes[context:GetArgumentValue("LED theme") or ""] ~= nil
-			and (led.Themes[context:GetArgumentValue("LED theme")].cycle == true)
+		local isRainbow = enableLed and context:GetArgumentValue("Rainbow") == true
 
 		while true do
 			local pA = pf.noExp(pump:GetCurrentPressure(zr.A), 1)
