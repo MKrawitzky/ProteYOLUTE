@@ -1,0 +1,94 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:attached="clr-namespace:BrukerLC.Utils.Attached;assembly=BrukerLC.Utils">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/FrameworkElement.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Converters/Converters.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="DefaultBlindPlugControlStyle"
+		TargetType="{x:Type BlindPlugControl}"
+		BasedOn="{StaticResource FrameworkElementStyle}">
+		<Setter
+			Property="Width"
+			Value="29" />
+		<Setter
+			Property="Height"
+			Value="29" />
+		<Setter
+			Property="Background"
+			Value="{StaticResource LightGrayBrush}" />
+		<Setter
+			Property="Foreground"
+			Value="{StaticResource WhiteBrush}" />
+		<Setter
+			Property="HorizontalContentAlignment"
+			Value="Stretch" />
+		<Setter
+			Property="VerticalContentAlignment"
+			Value="Stretch" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsVisible"
+			Value="{Binding IsVisible, FallbackValue=True}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsNearTransparent"
+			Value="{Binding IsNearTransparent, FallbackValue=False}" />
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type BlindPlugControl}">
+					<Grid
+						Visibility="{Binding Path=(attached:APVisibleEnableable.IsVisible), Converter={StaticResource VisibilityConverter}, RelativeSource={RelativeSource Self}}"
+						Opacity="{Binding Path=(attached:APVisibleEnableable.IsNearTransparent), Converter={StaticResource OpacityConverter}, RelativeSource={RelativeSource Self}}">
+						<Ellipse
+							Width="{TemplateBinding FrameworkElement.Width}"
+							Height="{TemplateBinding FrameworkElement.Height}"
+							Fill="{TemplateBinding Control.Background}" />
+						<Rectangle
+							Height="5"
+							Margin="5 0"
+							Fill="{TemplateBinding Control.Foreground}"
+							RenderTransformOrigin="0.5,0.5">
+							<UIElement.RenderTransform>
+								<RotateTransform
+									Angle="45" />
+							</UIElement.RenderTransform>
+						</Rectangle>
+						<Rectangle
+							Height="5"
+							Margin="5 0"
+							Fill="{TemplateBinding Control.Foreground}"
+							RenderTransformOrigin="0.5,0.5">
+							<UIElement.RenderTransform>
+								<RotateTransform
+									Angle="-45" />
+							</UIElement.RenderTransform>
+						</Rectangle>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger
+				Property="attached:APValidation.HasError"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{StaticResource ErrorBrush}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APVisibleEnableable.IsVisible"
+				Value="False">
+				<Setter
+					Property="Visibility"
+					Value="Hidden" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

@@ -1,0 +1,50 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\DLL_Extract\\dnspy_baltic\\BalticWpfControlLib\\BalticWpfControlLib.csproj": {}
+  },
+  "projects": {
+    "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\DLL_Extract\\dnspy_baltic\\BalticWpfControlLib\\BalticWpfControlLib.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\DLL_Extract\\dnspy_baltic\\BalticWpfControlLib\\BalticWpfControlLib.csproj",
+        "projectName": "BalticWpfControlLib",
+        "projectPath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\DLL_Extract\\dnspy_baltic\\BalticWpfControlLib\\BalticWpfControlLib.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\DLL_Extract\\dnspy_baltic\\BalticWpfControlLib\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "UsingMicrosoftNETSdk": false,
+        "configFilePaths": [
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "dependencies": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "target": "Package",
+              "version": "[1.0.3, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}

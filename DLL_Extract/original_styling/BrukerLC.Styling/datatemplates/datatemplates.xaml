@@ -1,0 +1,27 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DataTemplate
+		x:Key="{DataTemplateKey {x:Type FontIcon}}"
+		DataType="{x:Type FontIcon}">
+		<TextBlock
+			x:Name="Icon"
+			FontStyle="Normal"
+			FontWeight="Normal"
+			Margin="{Binding Path=(APIcon.IconMargin), RelativeSource={RelativeSource TemplatedParent}}"
+			FontFamily="{Binding FontFamily}"
+			FontSize="{Binding Path=(APIcon.IconSize), RelativeSource={RelativeSource TemplatedParent}}"
+			Foreground="{Binding Path=(APIcon.IconBrush), RelativeSource={RelativeSource TemplatedParent}}"
+			Text="{Binding FontString}" />
+		<DataTemplate.Triggers>
+			<DataTrigger
+				Binding="{Binding Path=(APIcon.IconBrush), RelativeSource={RelativeSource TemplatedParent}}"
+				Value="{x:Null}">
+				<Setter
+					TargetName="Icon"
+					Property="TextBlock.Foreground"
+					Value="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource TemplatedParent}}" />
+			</DataTrigger>
+		</DataTemplate.Triggers>
+	</DataTemplate>
+</ResourceDictionary>

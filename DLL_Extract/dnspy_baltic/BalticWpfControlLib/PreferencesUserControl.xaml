@@ -1,0 +1,335 @@
+<UserControl
+	x:Class="BalticWpfControlLib.PreferencesUserControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+	xmlns:local="clr-namespace:BalticWpfControlLib">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="Resources/MyResourceDictionary.xaml" />
+				<ResourceDictionary
+					Source="Resources/SyncfusionStyle.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<Grid
+		Margin="5">
+		<FrameworkElement.Resources>
+			<ResourceDictionary>
+				<Style
+					x:Key="titleText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Setter
+						Property="FontSize"
+						Value="10" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="Left" />
+					<Setter
+						Property="Foreground"
+						Value="#0071BC" />
+					<Setter
+						Property="Margin"
+						Value="8,8,8,0" />
+				</Style>
+				<Style
+					x:Key="itemText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="VerticalAlignment"
+						Value="Center" />
+					<Setter
+						Property="Margin"
+						Value="0,6,0,6" />
+				</Style>
+				<Style
+					x:Key="{x:Type TextBox}"
+					TargetType="{x:Type TextBox}">
+					<Setter
+						Property="Validation.ErrorTemplate">
+						<Setter.Value>
+							<ControlTemplate>
+								<DockPanel
+									LastChildFill="True">
+									<Border
+										BorderBrush="#FFFF0000"
+										BorderThickness="2">
+										<AdornedElementPlaceholder />
+									</Border>
+								</DockPanel>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+					<Style.Triggers>
+						<Trigger
+							Property="Validation.HasError"
+							Value="true">
+							<Setter
+								Property="FrameworkElement.ToolTip"
+								Value="{Binding Path=(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ResourceDictionary>
+		</FrameworkElement.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock
+			Text="IDLE FLOW:"
+			Style="{StaticResource titleText}" />
+		<Grid
+			Row="1"
+			Margin="14,0,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="Auto" />
+			</Grid.RowDefinitions>
+			<CheckBox
+				Content="Enable Idle Flow on Standby"
+				VerticalAlignment="Center"
+				Margin="6"
+				IsChecked="{Binding IsIdleFlowOnStandby, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			<CheckBox
+				Grid.Row="1"
+				Content="Enable Idle Flow on Acquisition Error"
+				VerticalAlignment="Center"
+				Margin="6"
+				IsChecked="{Binding IsIdleFlowOnError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			<CheckBox
+				Name="cbViaTrap"
+				Grid.Row="2"
+				Content="Enable Idle Flow Via Trap"
+				VerticalAlignment="Center"
+				Margin="6"
+				IsChecked="{Binding IsViaTrap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				Click="ViaTrapCheckBox_Click" />
+			<Grid
+				Row="3"
+				Margin="6,6,6,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<TextBlock
+					Text="Idle Flow:"
+					Style="{StaticResource itemText}"
+					HorizontalAlignment="Right" />
+				<syncfusion:DoubleTextBox
+					Name="txtStandby"
+					Grid.Column="1"
+					Width="45"
+					MinHeight="22"
+					VerticalAlignment="Center"
+					TextAlignment="Right"
+					NumberDecimalDigits="2"
+					ScrollInterval="0.1"
+					Value="{Binding StandbyFlow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+					Validation.Error="Validation_Error"
+					ValueChanged="txtStandby_ValueChanged"
+					MouseWheel="StandbyFlowDoubleTextBox_MouseWheel" />
+				<TextBlock
+					Grid.Column="2"
+					Text="µL/min"
+					VerticalAlignment="Center"
+					Margin="2,6,6,6" />
+				<TextBlock
+					Grid.Row="1"
+					Text="Idle Flow Composition:"
+					Style="{StaticResource itemText}"
+					HorizontalAlignment="Right" />
+				<syncfusion:IntegerTextBox
+					Name="txtComposition"
+					Grid.Row="1"
+					Grid.Column="1"
+					Width="45"
+					MinHeight="22"
+					VerticalAlignment="Center"
+					Margin="6"
+					TextAlignment="Right"
+					Text="{Binding Composition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0}}"
+					Validation.Error="Validation_Error"
+					TextChanged="CompIntegerTextBox_TextChanged"
+					MouseWheel="CompIntegerTextBox_MouseWheel" />
+				<TextBlock
+					Grid.Row="1"
+					Grid.Column="2"
+					Text="%B"
+					VerticalAlignment="Center"
+					Margin="2,6,6,6" />
+			</Grid>
+		</Grid>
+		<TextBlock
+			Grid.Row="2"
+			Text="AUTOSAMPLER:"
+			Style="{StaticResource titleText}" />
+		<StackPanel
+			Grid.Row="3"
+			HorizontalAlignment="Left"
+			Margin="20,6,0,0">
+			<CheckBox
+				Content="Skip Missing Vial"
+				Margin="0,2,0,4"
+				IsChecked="{Binding IsSkipVialAndContinue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+		</StackPanel>
+		<TextBlock
+			Grid.Row="4"
+			Text="COLUMN OVEN:"
+			Style="{StaticResource titleText}" />
+		<Grid
+			Row="5"
+			Margin="20,0,0,4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="Auto" />
+			</Grid.RowDefinitions>
+			<TextBlock
+				Text="Set Temperature:"
+				Style="{StaticResource itemText}" />
+			<syncfusion:DoubleTextBox
+				Name="txtTemp"
+				Grid.Column="1"
+				Width="45"
+				VerticalAlignment="Center"
+				Margin="6"
+				TextAlignment="Right"
+				NumberDecimalDigits="1"
+				ScrollInterval="0.1"
+				Value="{Binding OvenTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+				Validation.Error="Validation_Error"
+				ValueChanged="txtTemp_ValueChanged"
+				MouseWheel="OvenTempSetPtDoubleTextBox_MouseWheel" />
+			<TextBlock
+				Grid.Column="2"
+				Text="ºC"
+				VerticalAlignment="Center"
+				Margin="2,6,6,6" />
+		</Grid>
+		<TextBlock
+			Grid.Row="6"
+			Text="DIAGNOSTICS:"
+			Style="{StaticResource titleText}" />
+		<StackPanel
+			Grid.Row="7"
+			HorizontalAlignment="Left"
+			Margin="20,6,0,0">
+			<CheckBox
+				Content="Enable self-diagnostics during idle time"
+				Margin="0,2,0,4"
+				IsChecked="{Binding IsSelfDiagnosticsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+		</StackPanel>
+		<TextBlock
+			Grid.Row="8"
+			Text="LOGGING:"
+			Style="{StaticResource titleText}" />
+		<StackPanel
+			Grid.Row="9"
+			HorizontalAlignment="Left"
+			Margin="20,6,0,0">
+			<CheckBox
+				Content="Extended logging"
+				Margin="0,2,0,4"
+				IsChecked="{Binding IsExtendedLoggingEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			<CheckBox
+				Content="Pump firmware logging"
+				Margin="0,2,0,4"
+				IsChecked="{Binding IsPumpFirmwareLoggingEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+		</StackPanel>
+		<TextBlock
+			Grid.Row="10"
+			Text="LED:"
+			Style="{StaticResource titleText}" />
+		<StackPanel
+			Grid.Row="11"
+			HorizontalAlignment="Left"
+			Margin="20,0,0,0"
+			Orientation="Horizontal">
+			<TextBlock
+				Text="Brightness:"
+				Style="{StaticResource itemText}"
+				Margin="0,0,6,0" />
+			<ComboBox
+				Margin="0,2,0,4"
+				MinWidth="120"
+				SelectedValue="{Binding LedBrightness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				ItemsSource="{Binding LedBrightnessValues}" />
+		</StackPanel>
+		<Button
+			Name="btnRevert"
+			Grid.Column="0"
+			Grid.Row="12"
+			Style="{StaticResource BalticButtonStyle}"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Bottom"
+			Height="22"
+			Margin="8,12,8,8"
+			Click="btnRevert_Click">
+			<StackPanel
+				Orientation="Horizontal">
+				<Image
+					Source="Images/undo_24.png"
+					Height="18" />
+				<TextBlock
+					Text="Revert to Default"
+					FontSize="11"
+					Margin="2,0,2,0"
+					VerticalAlignment="Center" />
+			</StackPanel>
+		</Button>
+	</Grid>
+</UserControl>

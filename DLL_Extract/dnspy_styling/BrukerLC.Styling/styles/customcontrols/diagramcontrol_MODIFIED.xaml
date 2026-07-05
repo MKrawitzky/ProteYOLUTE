@@ -1,0 +1,533 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/FrameworkElement.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="DefaultDiagramControlStyle"
+		TargetType="{x:Type DiagramControl}">
+		<Setter
+			Property="HorizontalContentAlignment"
+			Value="Stretch" />
+		<Setter
+			Property="VerticalContentAlignment"
+			Value="Stretch" />
+		<Setter
+			Property="Background"
+			Value="{StaticResource WhiteBrush}" />
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type DiagramControl}">
+					<Viewbox
+						Stretch="Uniform">
+						<Canvas
+							Width="560"
+							Height="600"
+							Margin="10,0,0,0"
+							HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+							VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+							Background="{TemplateBinding Control.Background}">
+
+							<!-- ============================================ -->
+							<!-- PUMPS (bottom) -->
+							<!-- ============================================ -->
+							<PumpControl
+								Canvas.Left="5"
+								Canvas.Top="390"
+								DataContext="{TemplateBinding DiagramControl.PumpADataContext}"
+								PumpOrientation="Left"
+								Title="Pump A Details:" />
+							<PumpControl
+								Canvas.Left="450"
+								Canvas.Top="390"
+								DataContext="{TemplateBinding DiagramControl.PumpBDataContext}"
+								PumpOrientation="Right"
+								Title="Pump B Details:" />
+
+							<!-- ============================================ -->
+							<!-- PUMP VOLUME LOG (top-left) -->
+							<!-- ============================================ -->
+							<TableControl
+								Canvas.Left="-16"
+								Canvas.Top="18"
+								DataContext="{TemplateBinding DiagramControl.PumpLogDataContext}"
+								Heading="Pump Volume Log" />
+
+							<!-- ============================================ -->
+							<!-- VALVES -->
+							<!-- Valve D = Pump A valve (left) -->
+							<!-- Valve C = Pump B valve (right) -->
+							<!-- Valve A = Trap valve (upper center) -->
+							<!-- Valve B = Injection valve (middle center) -->
+							<!-- ============================================ -->
+
+							<!-- Valve D (Pump A) -->
+							<ValveControl
+								Canvas.Left="120"
+								Canvas.Top="420"
+								DataContext="{TemplateBinding DiagramControl.ValveDDataContext}"
+								ItemsSource="{Binding Path=Connections}" />
+
+							<!-- Valve C (Pump B) -->
+							<ValveControl
+								Canvas.Left="340"
+								Canvas.Top="420"
+								DataContext="{TemplateBinding DiagramControl.ValveCDataContext}"
+								ItemsSource="{Binding Path=Connections}" />
+
+							<!-- Valve A (Trap/Selector) - upper -->
+							<ValveControl
+								Canvas.Left="310"
+								Canvas.Top="85"
+								DataContext="{TemplateBinding DiagramControl.ValveADataContext}"
+								ItemsSource="{Binding Path=Connections}" />
+
+							<!-- Valve B (Injection) - middle -->
+							<ValveControl
+								Canvas.Left="310"
+								Canvas.Top="190"
+								DataContext="{TemplateBinding DiagramControl.ValveBDataContext}"
+								ItemsSource="{Binding Path=Connections}" />
+
+							<!-- ============================================ -->
+							<!-- INJECTION CONTROL (top) -->
+							<!-- ============================================ -->
+							<InjectionControl
+								Canvas.Left="320"
+								Canvas.Top="30"
+								DataContext="{TemplateBinding DiagramControl.InjectionDataContext}" />
+
+							<!-- ============================================ -->
+							<!-- OUTPUT / SEPARATOR (right) -->
+							<!-- ============================================ -->
+							<OutputControl
+								Canvas.Left="430"
+								Canvas.Top="218"
+								DataContext="{TemplateBinding DiagramControl.OutputDataContext}" />
+
+							<!-- ============================================ -->
+							<!-- TEMPERATURE / OVEN -->
+							<!-- ============================================ -->
+							<TemperatureControl
+								Canvas.Left="450"
+								Canvas.Top="240"
+								DataContext="{TemplateBinding DiagramControl.TemperatureDataContext}" />
+
+							<!-- ============================================ -->
+							<!-- MIXING TEE (center) - represented as a junction -->
+							<!-- ============================================ -->
+							<Border
+								Canvas.Left="228"
+								Canvas.Top="290"
+								Width="24"
+								Height="24"
+								Background="#FFB0B0B0"
+								CornerRadius="12"
+								BorderBrush="#FF808080"
+								BorderThickness="1.5"
+								ToolTip="Mixing Tee">
+								<TextBlock
+									Text="T"
+									FontSize="10"
+									FontWeight="Bold"
+									Foreground="#FF404040"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center" />
+							</Border>
+
+							<!-- ============================================ -->
+							<!-- FLOW SENSORS -->
+							<!-- ============================================ -->
+							<SensorControl
+								Canvas.Left="185"
+								Canvas.Top="310"
+								DataContext="{TemplateBinding DiagramControl.SensorADataContext}"
+								SensorOrientation="Left" />
+							<SensorControl
+								Canvas.Left="300"
+								Canvas.Top="310"
+								DataContext="{TemplateBinding DiagramControl.SensorBDataContext}"
+								SensorOrientation="Right" />
+
+							<!-- ============================================ -->
+							<!-- LOOP (upper right, near injection) -->
+							<!-- ============================================ -->
+							<LoopControl
+								Canvas.Left="312"
+								Canvas.Top="96"
+								DataContext="{TemplateBinding DiagramControl.LoopDataContext}" />
+
+							<!-- ============================================ -->
+							<!-- TRAP COLUMN (middle, near valve B) -->
+							<!-- ============================================ -->
+							<TrapControl
+								Canvas.Left="328"
+								Canvas.Top="198"
+								DataContext="{TemplateBinding DiagramControl.TrapDataContext}" />
+
+							<!-- ============================================ -->
+							<!-- WASTE PORTS -->
+							<!-- ============================================ -->
+							<WasteControl
+								x:Name="WasteA"
+								Canvas.Left="272"
+								Canvas.Top="82" />
+							<WasteControl
+								x:Name="WasteB"
+								Canvas.Left="272"
+								Canvas.Top="188"
+								DataContext="{TemplateBinding DiagramControl.WasteBDataContext}" />
+							<WasteControl
+								x:Name="WasteC"
+								Canvas.Left="318"
+								Canvas.Top="395" />
+							<WasteControl
+								x:Name="WasteD"
+								Canvas.Left="98"
+								Canvas.Top="395" />
+
+							<!-- ============================================ -->
+							<!-- SOLVENT BOTTLES -->
+							<!-- ============================================ -->
+							<SolventControl
+								Canvas.Left="98"
+								Canvas.Top="468"
+								DataContext="{TemplateBinding DiagramControl.SolventADataContext}" />
+							<SolventControl
+								Canvas.Left="318"
+								Canvas.Top="468"
+								DataContext="{TemplateBinding DiagramControl.SolventBDataContext}" />
+
+							<!-- ============================================ -->
+							<!-- BLIND PLUGS -->
+							<!-- ============================================ -->
+							<BlindPlugControl
+								Canvas.Left="382"
+								Canvas.Top="468"
+								DataContext="{TemplateBinding DiagramControl.ValveBPlugDataContextDataContext}" />
+							<BlindPlugControl
+								Canvas.Left="195"
+								Canvas.Top="350"
+								DataContext="{TemplateBinding DiagramControl.ValveAPlugDataContextDataContext}" />
+
+							<!-- ============================================ -->
+							<!-- LINE BREAKS -->
+							<!-- ============================================ -->
+							<LineBreakControl
+								Canvas.Left="183"
+								Canvas.Top="325"
+								DataContext="{TemplateBinding DiagramControl.LineBreakOnPumpALink1DataContext}" />
+							<LineBreakControl
+								Canvas.Left="190"
+								Canvas.Top="325"
+								DataContext="{TemplateBinding DiagramControl.LineBreakOnPumpALink2DataContext}" />
+
+							<!-- ============================================ -->
+							<!-- LINK PATHS (tubing connections) -->
+							<!-- Proportional to real capillary lengths: -->
+							<!-- FS A/B cap: 250mm/25um -->
+							<!-- Restriction A/B: 180mm/10um (to mix-tee) -->
+							<!-- Loading cap: 350mm/25um -->
+							<!-- Injection cap: 150mm/25um -->
+							<!-- Mix-Tee cap: 100mm/25um -->
+							<!-- Trap cap: 200mm/30um -->
+							<!-- Transfer cap: 550mm/25um -->
+							<!-- ============================================ -->
+
+							<!-- Pump A top to Valve D -->
+							<LinkControlBasic
+								x:Name="PumpAtoValveDTop"
+								Canvas.Left="55"
+								Canvas.Top="388"
+								DataContext="{TemplateBinding DiagramControl.PumpAToValveDTopLinkDataContext}"
+								EndPointLeft="87"
+								EndPointTop="32"
+								PathData="F1 M 2,80 C 5,80 10,80 15,80 C 20,80 22,80 24,79 C 26,78 27,76 28,74 C 29,72 29,70 29,55 C 29,40 29,25 29,15 C 29,10 30,7 32,5 C 34,3 37,3 50,3 C 63,3 70,3 80,3 C 85,3 87,3 89,5 C 90,7 90,10 90,15 C 90,20 90,28 90,35" />
+
+							<!-- Pump A bottom to Valve D -->
+							<LinkControlBasic
+								x:Name="PumpAtoValveDBottom"
+								Canvas.Left="55"
+								Canvas.Top="465"
+								DataContext="{TemplateBinding DiagramControl.PumpAToValveDBottomLinkDataContext}"
+								EndPointLeft="87"
+								EndPointTop="0"
+								PathData="F1 M 3,60 C 30,60 55,60 60,60 C 70,60 75,60 78,59 C 80,58 82,56 83,54 C 84,52 84,49 84,38 C 84,27 84,15 84,3" />
+
+							<!-- Solvent A to Valve D -->
+							<LinkControlBasic
+								x:Name="SolventAtoValveD"
+								Canvas.Left="108"
+								Canvas.Top="452"
+								DataContext="{TemplateBinding DiagramControl.SolventAtoValveDLinkDataContext}"
+								EndPointLeft="12"
+								EndPointTop="0"
+								PathData="F1 M 15,3 C 14,3 12,3 10,3 C 8,3 6,3 5,4 C 4,5 3,7 3,9 C 3,11 3,13 3,16" />
+
+							<!-- Waste D to Valve D -->
+							<LinkControlBasic
+								x:Name="WasteDtoValveD"
+								Canvas.Left="108"
+								Canvas.Top="418"
+								DataContext="{TemplateBinding DiagramControl.WasteDtoValveDLinkDataContext}"
+								EndPointLeft="12"
+								EndPointTop="10"
+								PathData="F1 M 15,14 C 14,14 12,14 10,14 C 8,14 6,14 5,13 C 4,12 3,10 3,8 C 3,6 3,4 3,3" />
+
+							<!-- Sensor A to Valve D (250mm capillary) -->
+							<LinkControl
+								x:Name="SensorAtoValveD"
+								Canvas.Left="156"
+								Canvas.Top="310"
+								DataContext="{TemplateBinding DiagramControl.SensorAtoValveDLinkDataContext}"
+								EndPointLeft="0"
+								EndPointTop="120"
+								PathData="F1 M 3,123 C 5,123 8,123 10,123 C 13,123 15,123 17,122 C 19,121 20,119 20,117 C 20,90 20,60 20,30 C 20,15 20,10 21,7 C 22,5 24,3 27,3 C 30,3 40,3 50,3" />
+
+							<!-- Pump B bottom to Valve C -->
+							<LinkControlBasic
+								x:Name="PumpBToValveCBottom"
+								Canvas.Left="360"
+								Canvas.Top="465"
+								DataContext="{TemplateBinding DiagramControl.PumpBToValveCBottomLinkDataContext}"
+								EndPointLeft="0"
+								EndPointTop="0"
+								PathData="F1 M 72,60 C 50,60 30,60 20,60 C 10,60 8,60 6,59 C 4,58 3,56 3,54 C 3,52 3,49 3,38 C 3,27 3,15 3,3" />
+
+							<!-- Pump B top to Valve C -->
+							<LinkControlBasic
+								x:Name="PumpBtoValveCTop"
+								Canvas.Left="360"
+								Canvas.Top="388"
+								DataContext="{TemplateBinding DiagramControl.PumpBtoValveCTopLinkDataContext}"
+								EndPointLeft="0"
+								EndPointTop="32"
+								PathData="F1 M 72,80 C 69,80 66,80 63,80 C 60,80 58,80 56,79 C 54,78 53,76 52,74 C 51,72 51,70 51,55 C 51,40 51,25 51,15 C 51,10 50,7 48,5 C 46,3 43,3 30,3 C 17,3 10,3 5,3 C 4,3 3,5 3,7 C 3,10 3,15 3,20 C 3,25 3,28 3,35" />
+
+							<!-- Waste C to Valve C -->
+							<LinkControlBasic
+								x:Name="WasteCtoValveC"
+								Canvas.Left="328"
+								Canvas.Top="418"
+								DataContext="{TemplateBinding DiagramControl.WasteCtoValveCLinkDataContext}"
+								EndPointLeft="12"
+								EndPointTop="10"
+								PathData="F1 M 15,14 C 14,14 12,14 10,14 C 8,14 6,14 5,13 C 4,12 3,10 3,8 C 3,6 3,4 3,3" />
+
+							<!-- Solvent B to Valve C -->
+							<LinkControlBasic
+								x:Name="SolventBtoValveC"
+								Canvas.Left="328"
+								Canvas.Top="452"
+								DataContext="{TemplateBinding DiagramControl.SolventBtoValveCTopLinkDataContext}"
+								EndPointLeft="12"
+								EndPointTop="0"
+								PathData="F1 M 15,3 C 14,3 12,3 10,3 C 8,3 6,3 5,4 C 4,5 3,7 3,9 C 3,11 3,13 3,16" />
+
+							<!-- Sensor B to Valve C (250mm capillary) -->
+							<LinkControl
+								x:Name="SensorBtoValveC"
+								Canvas.Left="340"
+								Canvas.Top="310"
+								DataContext="{TemplateBinding DiagramControl.SensorBtoValveCLinkDataContext}"
+								EndPointLeft="10"
+								EndPointTop="120"
+								PathData="F1 M 13,123 C 25,123 27,123 29,123 C 31,123 33,123 35,122 C 37,121 38,119 38,117 C 38,90 38,60 38,30 C 38,15 38,10 37,7 C 36,5 34,3 30,3 C 26,3 22,3 20,3" />
+
+							<!-- Sensor A to Mix-Tee (180mm restriction capillary) -->
+							<LinkControl
+								x:Name="SensorAToMid"
+								Canvas.Left="230"
+								Canvas.Top="297"
+								DataContext="{TemplateBinding DiagramControl.SensorAToMidLinkDataContext}"
+								EndPointLeft="10"
+								EndPointTop="-3"
+								PathData="F1 M 0.5,16 C 3,16 6,16 8,16 C 11,16 13,16 15,15 C 17,14 18,12 19,10 C 20,8 20,6 20,3" />
+
+							<!-- Sensor B to Mix-Tee (180mm restriction capillary) -->
+							<LinkControl
+								x:Name="SensorBToMid"
+								Canvas.Left="248"
+								Canvas.Top="297"
+								DataContext="{TemplateBinding DiagramControl.SensorBToMidLinkDataContext}"
+								EndPointLeft="-2"
+								EndPointTop="-2"
+								PathData="F1 M 21,16 C 20,16 14,16 12,16 C 8,16 6,16 5,15 C 3,14 2,12 1,10 C 0.5,8 0.5,6 0.5,3" />
+
+							<!-- Valve D to Valve A (Loading capillary 350mm) -->
+							<LinkControl
+								x:Name="ValveDToValveA"
+								Canvas.Left="156"
+								Canvas.Top="95"
+								DataContext="{TemplateBinding DiagramControl.ValveDToValveALinkDataContext}"
+								EndPointLeft="175"
+								EndPointTop="-2"
+								PathData="F1 M 3,335 C 10,335 18,335 20,335 C 25,335 28,335 30,334 C 32,333 33,331 33,329 C 33,280 33,200 33,120 C 33,60 33,30 34,24 C 35,20 37,18 40,17 C 43,17 50,17 80,17 C 110,17 140,17 160,17 C 170,17 174,16 176,14 C 177,12 177,9 177,3"
+								StartPointLeft="-0.1"
+								StartPointTop="332.0"
+								StartPoint="True" />
+
+							<!-- Mix-Tee to Valve B (100mm capillary) -->
+							<LinkControl
+								x:Name="MidToValveB"
+								Canvas.Left="244"
+								Canvas.Top="220"
+								DataContext="{TemplateBinding DiagramControl.MidToValveBLinkDataContext}"
+								EndPointLeft="70"
+								EndPointTop="0"
+								PathData="F1 M 73,3 C 72,3 60,3 40,3 C 20,3 10,3 7,4 C 5,5 4,7 3,10 C 3,13 3,18 3,30 C 3,40 3,55 3,70"
+								StartPointLeft="-0.1"
+								StartPointTop="68"
+								StartPoint="True" />
+
+							<!-- Waste B to Valve B -->
+							<LinkControlBasic
+								x:Name="WasteBtoValveB"
+								Canvas.Left="300"
+								Canvas.Top="203"
+								DataContext="{TemplateBinding DiagramControl.WasteBtoValveBLinkDataContext}"
+								EndPointLeft="9"
+								EndPointTop="-2"
+								PathData="F1 M 0.5,0.5 L 15,0.5" />
+
+							<!-- Waste A to Valve A -->
+							<LinkControlBasic
+								x:Name="WasteAtoValveA"
+								Canvas.Left="300"
+								Canvas.Top="98"
+								DataContext="{TemplateBinding DiagramControl.WasteAtoValveALinkDataContext}"
+								EndPointLeft="9"
+								EndPointTop="-2"
+								PathData="F1 M 0.5,0.5 L 15,0.5" />
+
+							<!-- Valve A to Valve B (Injection cap 150mm) -->
+							<LinkControl
+								x:Name="ValveAToValeB"
+								Canvas.Left="355"
+								Canvas.Top="120"
+								DataContext="{TemplateBinding DiagramControl.ValveAToValveBLinkDataContext}"
+								EndPointLeft="-2"
+								EndPointTop="-2"
+								PathData="F1 M 0.5,85 C 10,85 12,85 14,84 C 16,83 17,81 17,79 C 17,70 17,50 17,30 C 17,15 17,8 16,5 C 15,3 13,2 11,2 C 9,2 6,2 3,2 C -1,2 -3,2 -4,2"
+								StartPointLeft="-3"
+								StartPointTop="82"
+								StartPoint="True" />
+
+							<!-- Valve B to Output/Separator (Transfer line 550mm) -->
+							<LinkControl
+								x:Name="ValveBToOutput"
+								Canvas.Left="358"
+								Canvas.Top="225"
+								DataContext="{TemplateBinding DiagramControl.ValveBToOutputLinkDataContext}"
+								EndPointLeft="-2"
+								EndPointTop="-2"
+								PathData="F1 M 0.5,0.5 L 70,0.5" />
+
+							<!-- Blind Plug to Valve C -->
+							<LinkControlBasic
+								x:Name="BlingPlugToValveC"
+								Canvas.Left="380"
+								Canvas.Top="452"
+								DataContext="{TemplateBinding DiagramControl.BlingPlugToValveCLinkDataContext}"
+								EndPointLeft="0.5"
+								EndPointTop="-0.4"
+								PathData="F1 M 3,3 C 5,3 7,3 9,3 C 11,3 13,3 14,4 C 15,5 16,7 16,9 C 16,11 16,13 16,16" />
+
+							<!-- Valve D to Blind Plug -->
+							<LinkControlBasic
+								x:Name="ValveDToBlingPlug"
+								Canvas.Left="180"
+								Canvas.Top="414"
+								DataContext="{TemplateBinding DiagramControl.ValveAToPlugLinkDataContext}"
+								EndPointLeft="-2"
+								EndPointTop="-2"
+								PathData="F1 M 0.5,0.5 L 22,0.5" />
+
+							<!-- Mix-Tee to Injection Valve (hidden by default) -->
+							<LinkControlBasic
+								x:Name="MidToValveA"
+								Canvas.Left="220"
+								Canvas.Top="40"
+								DataContext="{TemplateBinding DiagramControl.MixTeeToInjectionValveLinkDataContext}"
+								EndPointLeft="120"
+								EndPointTop="185"
+								PathData="F1 M 10,100 10,115 10,130 C 10,134 12,135 25,135 50,135 100,135 125,135 C 128,135 129,138 129,145 129,160 129,175 129,190"
+								StartPointLeft="7"
+								StartPointTop="98"
+								StartPoint="True" />
+
+							<!-- Valve A to Output (hidden by default) -->
+							<LinkControlBasic
+								x:Name="ValveAToOutput"
+								Canvas.Left="250"
+								Canvas.Top="55"
+								DataContext="{TemplateBinding DiagramControl.InjectionValveToSeparatorLinkDataContext}"
+								EndPointLeft="240"
+								EndPointTop="60"
+								PathData="F1 M 0.5,63 16,63 32,63 215,63 226,63 245,63"
+								StartPointLeft="0"
+								StartPointTop="60"
+								StartPoint="True" />
+
+							<!-- ============================================ -->
+							<!-- DECORATIVE RECTANGLES (link intersections) -->
+							<!-- ============================================ -->
+							<Rectangle
+								x:Name="RectangleOnPumpBLink1"
+								Canvas.Left="400"
+								Canvas.Top="388"
+								Width="1"
+								Height="7"
+								Fill="{TemplateBinding Control.Background}" />
+							<Rectangle
+								x:Name="RectangleOnPumpBLink2"
+								Canvas.Left="407"
+								Canvas.Top="388"
+								Width="1"
+								Height="7"
+								Fill="{TemplateBinding Control.Background}" />
+
+							<!-- ============================================ -->
+							<!-- PRESSURE INDICATORS (new addition) -->
+							<!-- Displays pressure values near each pump -->
+							<!-- ============================================ -->
+							<Border
+								Canvas.Left="5"
+								Canvas.Top="370"
+								Background="#FFEEEEEE"
+								CornerRadius="3"
+								Padding="4,1,4,1"
+								BorderBrush="#FFCCCCCC"
+								BorderThickness="0.5">
+								<TextBlock
+									FontSize="8"
+									Foreground="#FF3070B0"
+									Text="{Binding PumpADataContext.Pressure, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0:F0} bar}" />
+							</Border>
+							<Border
+								Canvas.Left="450"
+								Canvas.Top="370"
+								Background="#FFEEEEEE"
+								CornerRadius="3"
+								Padding="4,1,4,1"
+								BorderBrush="#FFCCCCCC"
+								BorderThickness="0.5">
+								<TextBlock
+									FontSize="8"
+									Foreground="#FFB03030"
+									Text="{Binding PumpBDataContext.Pressure, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0:F0} bar}" />
+							</Border>
+
+						</Canvas>
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

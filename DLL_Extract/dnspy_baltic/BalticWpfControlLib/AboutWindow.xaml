@@ -1,0 +1,163 @@
+<Window
+	x:Class="BalticWpfControlLib.AboutWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="About Bruker HyStar plugin"
+	Height="220"
+	Width="550"
+	ResizeMode="NoResize"
+	WindowStartupLocation="CenterOwner"
+	ShowInTaskbar="False"
+	xmlns:balticwpfcontrollib="clr-namespace:BalticWpfControlLib"
+	KeyDown="AboutWindow_KeyDown">
+	<Control.Background>
+		<SolidColorBrush
+			Color="White" />
+	</Control.Background>
+	<Grid>
+		<FrameworkElement.Resources>
+			<ResourceDictionary>
+				<Style
+					x:Key="versionText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="Margin"
+						Value="5,5,5,0" />
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Setter
+						Property="FontSize"
+						Value="12" />
+				</Style>
+				<Style
+					x:Key="copyrightText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="Margin"
+						Value="10,5,10,0" />
+					<Setter
+						Property="FontWeight"
+						Value="Bold" />
+					<Setter
+						Property="FontSize"
+						Value="12" />
+				</Style>
+				<Style
+					x:Key="licensesText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="Margin"
+						Value="10,5,10,0" />
+					<Setter
+						Property="FontSize"
+						Value="12" />
+				</Style>
+				<Style
+					x:Key="titleText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="DockPanel.Dock"
+						Value="Top" />
+					<Setter
+						Property="FontWeight"
+						Value="Bold" />
+					<Setter
+						Property="FontSize"
+						Value="16" />
+					<Setter
+						Property="Margin"
+						Value="10,5,10,0" />
+				</Style>
+				<Style
+					x:Key="productImage"
+					TargetType="{x:Type Image}">
+					<Setter
+						Property="Margin"
+						Value="10,5,5,0" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="Left" />
+				</Style>
+			</ResourceDictionary>
+		</FrameworkElement.Resources>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="125" />
+			<ColumnDefinition
+				Width="70" />
+			<ColumnDefinition
+				Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock
+			Name="textSubTitle"
+			Grid.Column="1"
+			Grid.Row="0"
+			Grid.ColumnSpan="2"
+			HorizontalAlignment="Left"
+			Style="{StaticResource titleText}">Bruker™ HyStar plugin</TextBlock>
+		<Image
+			Width="108"
+			Grid.Column="0"
+			Grid.Row="1"
+			Grid.RowSpan="4"
+			Style="{StaticResource productImage}"
+			VerticalAlignment="Top">
+			<Image.Source>
+				<BitmapImage
+					UriSource="Images/IconHyStarNT.ico" />
+			</Image.Source>
+		</Image>
+		<TextBlock
+			Name="versionLabel"
+			Grid.Column="1"
+			Grid.Row="2"
+			Style="{StaticResource versionText}"
+			HorizontalAlignment="Right">Version:</TextBlock>
+		<TextBlock
+			Name="versionDataLabel"
+			Grid.Column="2"
+			Grid.Row="2"
+			Style="{StaticResource versionText}">1.0.0.0</TextBlock>
+		<TextBlock
+			Name="createLabel"
+			Grid.Column="1"
+			Grid.Row="3"
+			Style="{StaticResource versionText}"
+			HorizontalAlignment="Right">Created:</TextBlock>
+		<TextBlock
+			Name="createDateLabel"
+			Grid.Column="2"
+			Grid.Row="3"
+			Style="{StaticResource versionText}">March 31, 2025</TextBlock>
+		<TextBlock
+			Name="copyrightLabel"
+			Grid.Column="1"
+			Grid.Row="4"
+			Grid.ColumnSpan="2"
+			Style="{StaticResource copyrightText}">Copyright © 2025 Bruker Daltonics GmbH &amp; Co. KG</TextBlock>
+		<TextBlock
+			Grid.Column="1"
+			Grid.Row="5"
+			Grid.ColumnSpan="2"
+			Style="{StaticResource licensesText}">Third party licenses can be found <Hyperlink
+				Foreground="#FF0000FF"
+				TextDecorations="Underline"
+				Cursor="Hand"
+				Click="Hyperlink_OnClick">here</Hyperlink></TextBlock>
+	</Grid>
+</Window>

@@ -1,0 +1,308 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:attached="clr-namespace:BrukerLC.Utils.Attached;assembly=BrukerLC.Utils">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/FrameworkElement.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Converters/Converters.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/VectorGraphics/Shapes.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="DefaultValveControlItemStyle"
+		TargetType="{x:Type ValveControlItem}">
+		<Setter
+			Property="Width"
+			Value="{Binding Width, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ValveControl}}" />
+		<Setter
+			Property="Height"
+			Value="{Binding Height, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ValveControl}}" />
+		<Setter
+			Property="attached:APActivatable.IsActive"
+			Value="{Binding IsActive, FallbackValue=True}" />
+		<Setter
+			Property="attached:APActivatable.ActiveBrush"
+			Value="{Binding ActiveBrush, FallbackValue=Green}" />
+		<Setter
+			Property="attached:APSignalizable.IsSignalize"
+			Value="{Binding IsSignalize, FallbackValue=False}" />
+		<Setter
+			Property="attached:APSignalizable.SignalizeBrush"
+			Value="{Binding SignalizeBrush, FallbackValue=Transparent}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsVisible"
+			Value="True" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsNearTransparent"
+			Value="{Binding IsNearTransparent, FallbackValue=False}" />
+		<Setter
+			Property="Foreground"
+			Value="{StaticResource LightGrayBrush}" />
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type ValveControlItem}">
+					<Path
+						x:Name="PART_Path"
+						Stroke="{TemplateBinding Control.Foreground}"
+						StrokeStartLineCap="Round"
+						StrokeEndLineCap="Round"
+						StrokeThickness="6"
+						Opacity="{Binding Path=(attached:APVisibleEnableable.IsNearTransparent), Converter={StaticResource OpacityConverter}, RelativeSource={RelativeSource Self}}" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger
+				Property="attached:APActivatable.IsActive"
+				Value="True">
+				<Setter
+					Property="Foreground"
+					Value="{Binding (APActivatable.ActiveBrush), RelativeSource={RelativeSource Self}}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APSignalizable.IsSignalize"
+				Value="True">
+				<Setter
+					Property="Foreground"
+					Value="{Binding (APSignalizable.SignalizeBrush), RelativeSource={RelativeSource Self}}" />
+			</Trigger>
+			<DataTrigger
+				Value="True"
+				Binding="{Binding (APValidation.HasError), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ValveControl}}">
+				<Setter
+					Property="Foreground"
+					Value="{StaticResource ErrorBrush}" />
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+	<Style
+		x:Key="DefaultValveControlStyle"
+		TargetType="{x:Type ValveControl}"
+		BasedOn="{StaticResource FrameworkElementStyle}">
+		<Setter
+			Property="Height"
+			Value="50" />
+		<Setter
+			Property="Width"
+			Value="50" />
+		<Setter
+			Property="Background"
+			Value="{StaticResource GrayBrush}" />
+		<Setter
+			Property="Foreground"
+			Value="{StaticResource LightGrayBrush}" />
+		<Setter
+			Property="BorderBrush"
+			Value="{StaticResource GrayBrush}" />
+		<Setter
+			Property="attached:APValidation.HasError"
+			Value="{Binding HasError, FallbackValue=False}" />
+		<Setter
+			Property="attached:APValidation.ErrorMessage"
+			Value="{Binding ErrorMessage}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsVisible"
+			Value="{Binding IsVisible, FallbackValue=True}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsNearTransparent"
+			Value="{Binding IsNearTransparent, FallbackValue=False}" />
+		<Setter
+			Property="attached:APSignalizable.IsSignalize"
+			Value="{Binding IsSignalize, FallbackValue=False}" />
+		<Setter
+			Property="attached:APSignalizable.SignalizeBrush"
+			Value="{Binding SignalizeBrush, FallbackValue=Transparent}" />
+		<Setter
+			Property="ValveControl.Angle"
+			Value="{Binding Angle, FallbackValue=0.0}" />
+		<Setter
+			Property="ValveControl.ActualAngle"
+			Value="{Binding ActualAngle, FallbackValue=0.0}" />
+		<Setter
+			Property="ValveControl.AngleMargin"
+			Value="{Binding AngleMargin, FallbackValue='0,0,0,0'}" />
+		<Setter
+			Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<Grid />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type ValveControl}">
+					<Grid
+						Visibility="{Binding Path=(attached:APVisibleEnableable.IsVisible), Converter={StaticResource VisibilityConverter}, RelativeSource={RelativeSource Self}}"
+						Opacity="{Binding Path=(attached:APVisibleEnableable.IsNearTransparent), Converter={StaticResource OpacityConverter}, RelativeSource={RelativeSource Self}}">
+						<Ellipse
+							Fill="{TemplateBinding Control.Background}"
+							Stroke="{TemplateBinding Control.BorderBrush}"
+							StrokeThickness="{TemplateBinding Control.BorderThickness}" />
+						<Canvas>
+							<StackPanel
+								Orientation="Horizontal"
+								Height="15"
+								Margin="{Binding AngleMargin, RelativeSource={RelativeSource TemplatedParent}}"
+								Visibility="{Binding IsService, Converter={StaticResource VisibilityConverter}}">
+								<TextBlock
+									Foreground="#FFFF0000"
+									Text="{Binding ActualAngle, StringFormat={}{0:0}, RelativeSource={RelativeSource TemplatedParent}}" />
+								<TextBlock
+									Text="º"
+									Foreground="#FFFF0000" />
+							</StackPanel>
+						</Canvas>
+						<Canvas
+							x:Name="PART_PortCanvas">
+							<Ellipse
+								x:Name="PART_Port1"
+								Canvas.Left="22"
+								Canvas.Top="22"
+								Width="6"
+								Height="6"
+								Fill="{TemplateBinding Control.Foreground}"
+								RenderTransformOrigin="0.5,0.5">
+								<UIElement.RenderTransform>
+									<TranslateTransform
+										Y="-22" />
+								</UIElement.RenderTransform>
+							</Ellipse>
+							<Ellipse
+								x:Name="PART_Port6"
+								Canvas.Left="22"
+								Canvas.Top="22"
+								Width="6"
+								Height="6"
+								Fill="{TemplateBinding Control.Foreground}"
+								RenderTransformOrigin="0.5,0.5">
+								<UIElement.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform
+											Y="-22" />
+										<RotateTransform
+											Angle="60" />
+									</TransformGroup>
+								</UIElement.RenderTransform>
+							</Ellipse>
+							<Ellipse
+								x:Name="PART_Port5"
+								Canvas.Left="22"
+								Canvas.Top="22"
+								Width="6"
+								Height="6"
+								Fill="{TemplateBinding Control.Foreground}"
+								RenderTransformOrigin="0.5,0.5">
+								<UIElement.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform
+											Y="-22" />
+										<RotateTransform
+											Angle="120" />
+									</TransformGroup>
+								</UIElement.RenderTransform>
+							</Ellipse>
+							<Ellipse
+								x:Name="PART_Port4"
+								Canvas.Left="22"
+								Canvas.Top="22"
+								Width="6"
+								Height="6"
+								Fill="{TemplateBinding Control.Foreground}"
+								RenderTransformOrigin="0.5,0.5">
+								<UIElement.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform
+											Y="-22" />
+										<RotateTransform
+											Angle="180" />
+									</TransformGroup>
+								</UIElement.RenderTransform>
+							</Ellipse>
+							<Ellipse
+								x:Name="PART_Port3"
+								Canvas.Left="22"
+								Canvas.Top="22"
+								Width="6"
+								Height="6"
+								Fill="{TemplateBinding Control.Foreground}"
+								RenderTransformOrigin="0.5,0.5">
+								<UIElement.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform
+											Y="-22" />
+										<RotateTransform
+											Angle="240" />
+									</TransformGroup>
+								</UIElement.RenderTransform>
+							</Ellipse>
+							<Ellipse
+								x:Name="PART_Port2"
+								Canvas.Left="22"
+								Canvas.Top="22"
+								Width="6"
+								Height="6"
+								Fill="{TemplateBinding Control.Foreground}"
+								RenderTransformOrigin="0.5,0.5">
+								<UIElement.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform
+											Y="-22" />
+										<RotateTransform
+											Angle="300" />
+									</TransformGroup>
+								</UIElement.RenderTransform>
+							</Ellipse>
+						</Canvas>
+						<Grid
+							RenderTransformOrigin="0.5,0.5">
+							<ItemsPresenter />
+							<UIElement.RenderTransform>
+								<RotateTransform
+									Angle="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+							</UIElement.RenderTransform>
+						</Grid>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger
+				Property="attached:APValidation.HasError"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{StaticResource ErrorBrush}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APVisibleEnableable.IsNearTransparent"
+				Value="True">
+				<Setter
+					Property="UIElement.Opacity"
+					Value="0.3" />
+			</Trigger>
+			<Trigger
+				Property="attached:APVisibleEnableable.IsVisible"
+				Value="False">
+				<Setter
+					Property="Visibility"
+					Value="Hidden" />
+			</Trigger>
+			<Trigger
+				Property="attached:APSignalizable.IsSignalize"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{Binding (APSignalizable.SignalizeBrush), RelativeSource={RelativeSource Self}}" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

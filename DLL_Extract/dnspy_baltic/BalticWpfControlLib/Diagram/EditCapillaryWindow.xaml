@@ -1,0 +1,124 @@
+<Window
+	x:Class="BalticWpfControlLib.Diagram.EditCapillaryWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:local="clr-namespace:BalticWpfControlLib.Diagram"
+	xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	Title="Edit Capillary"
+	ResizeMode="NoResize"
+	SizeToContent="WidthAndHeight"
+	WindowStartupLocation="CenterScreen"
+	ShowInTaskbar="False">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="../Resources/MyResourceDictionary.xaml" />
+				<ResourceDictionary
+					Source="../Resources/SyncfusionStyle.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<Grid
+		Name="gridSettings">
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid
+			Margin="4">
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="*" />
+			</Grid.ColumnDefinitions>
+			<TextBlock
+				HorizontalAlignment="Right"
+				Margin="2"
+				VerticalAlignment="Center"
+				Text="{Binding LengthTitle}" />
+			<StackPanel
+				Grid.Column="1"
+				Orientation="Horizontal"
+				Margin="2">
+				<syncfusion:DoubleTextBox
+					x:Name="txtLength"
+					NumberDecimalDigits="0"
+					Width="40"
+					HorizontalContentAlignment="Right"
+					Value="{Binding Length, UpdateSourceTrigger=PropertyChanged}"
+					ToolTip="{Binding LengthRangeToolTip}"
+					ValueChanged="DoubleTextBox_ValueChanged"
+					MouseWheel="DoubleTextBox_MouseWheel" />
+				<TextBlock
+					VerticalAlignment="Center"
+					Margin="4,0,0,0"
+					Text="{Binding LengthUnit}" />
+			</StackPanel>
+			<TextBlock
+				Grid.Row="1"
+				HorizontalAlignment="Right"
+				Margin="2"
+				VerticalAlignment="Center"
+				Text="{Binding InnerDiameterTitle}" />
+			<StackPanel
+				Grid.Row="1"
+				Grid.Column="1"
+				Orientation="Horizontal"
+				Margin="2">
+				<syncfusion:DoubleTextBox
+					x:Name="txtInnerDiameter"
+					NumberDecimalDigits="0"
+					Width="40"
+					HorizontalContentAlignment="Right"
+					Value="{Binding ID, UpdateSourceTrigger=PropertyChanged}"
+					ToolTip="{Binding IDRangeToolTip}"
+					ValueChanged="DoubleTextBox_ValueChanged"
+					MouseWheel="DoubleTextBox_MouseWheel" />
+				<TextBlock
+					VerticalAlignment="Center"
+					Margin="4,0,0,0"
+					Text="{Binding IDUnit}" />
+			</StackPanel>
+		</Grid>
+		<StackPanel
+			Orientation="Horizontal"
+			Grid.Row="1"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Bottom">
+			<Button
+				Name="btnRevert"
+				Content="Revert"
+				Width="75"
+				Height="22"
+				Margin="4,8,18,4"
+				Click="btnRevert_Click" />
+			<Button
+				Name="btnOK"
+				Content="OK"
+				Width="75"
+				Height="22"
+				IsDefault="True"
+				Margin="0,8,8,4"
+				Click="btnOK_Click" />
+			<Button
+				Content="Cancel"
+				Width="75"
+				Height="22"
+				Margin="0,8,4,4"
+				IsCancel="True" />
+		</StackPanel>
+	</Grid>
+</Window>

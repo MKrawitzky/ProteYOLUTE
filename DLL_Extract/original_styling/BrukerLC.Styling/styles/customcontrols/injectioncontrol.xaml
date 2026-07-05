@@ -1,0 +1,132 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Converters/Converters.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/VectorGraphics/Icons.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/FrameworkElement.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="DefaultInjectionControlStyle"
+		TargetType="{x:Type InjectionControl}"
+		BasedOn="{StaticResource FrameworkElementStyle}">
+		<Setter
+			Property="InjectionControl.Label"
+			Value="{Binding Label}" />
+		<Setter
+			Property="APValidation.HasError"
+			Value="{Binding HasError}" />
+		<Setter
+			Property="APValidation.ErrorMessage"
+			Value="{Binding ErrorMessage}" />
+		<Setter
+			Property="APIcon.IconSize"
+			Value="15" />
+		<Setter
+			Property="Width"
+			Value="69" />
+		<Setter
+			Property="Height"
+			Value="55" />
+		<Setter
+			Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter
+			Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter
+			Property="Background"
+			Value="{StaticResource DarkGrayBrush}" />
+		<Setter
+			Property="Foreground"
+			Value="{StaticResource WhiteBrush}" />
+		<Setter
+			Property="FontSize"
+			Value="10" />
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type InjectionControl}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition
+								Height="29" />
+							<RowDefinition
+								Height="Auto" />
+						</Grid.RowDefinitions>
+						<Grid>
+							<Border
+								x:Name="InjectionBackground"
+								Background="{TemplateBinding Control.Background}"
+								CornerRadius="20 17 17 20" />
+							<Border
+								Width="29"
+								HorizontalAlignment="Left"
+								Background="{TemplateBinding Control.Background}"
+								CornerRadius="20">
+								<ContentPresenter
+									HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+									VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+									APIcon.IconSize="{TemplateBinding APIcon.IconSize}"
+									Content="{StaticResource SyringeFontIcon}" />
+							</Border>
+							<TextBlock
+								x:Name="InjectionLabel"
+								VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+								Padding="25 0 0 0"
+								Text="{TemplateBinding InjectionControl.Label}" />
+						</Grid>
+						<Grid
+							Row="1"
+							Margin="7 -2 0 0"
+							HorizontalAlignment="Left">
+							<Grid.RowDefinitions>
+								<RowDefinition
+									Height="auto" />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<Rectangle
+								Width="6"
+								Height="12"
+								Fill="{TemplateBinding Control.Background}"
+								Margin="0 0 0 -1" />
+							<Polyline
+								Grid.Row="1"
+								Fill="{TemplateBinding Control.Background}"
+								Points="0,0 16,0 8,10" />
+						</Grid>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<DataTrigger
+							Binding="{Binding Label}"
+							Value="{x:Null}">
+							<Setter
+								TargetName="InjectionBackground"
+								Property="Visibility"
+								Value="Collapsed" />
+							<Setter
+								TargetName="InjectionLabel"
+								Property="Visibility"
+								Value="Collapsed" />
+						</DataTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger
+				Property="APValidation.HasError"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{StaticResource ErrorBrush}" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

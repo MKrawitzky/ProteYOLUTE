@@ -1,0 +1,1096 @@
+<Canvas
+	x:Class="BalticWpfControlLib.MainUserControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:BalticWpfControlLib"
+	xmlns:controls="clr-namespace:BalticWpfControlLib.Controls"
+	x:Name="canvasMain"
+	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	Width="740"
+	Height="190"
+	Loaded="Init"
+	Unloaded="OnUnloaded">
+	<UIElement.CommandBindings>
+		<CommandBinding
+			Command="local:MainUserControl.AbortCommand"
+			CanExecute="cb_AbortCommand_CanExecute"
+			Executed="MenuItemAbortInjection_Click" />
+		<CommandBinding
+			Command="local:MainUserControl.EndTempWaitCommand"
+			CanExecute="cb_EndTempWaitCommand"
+			Executed="MenuItemEndTempWaitCommand_Click" />
+		<CommandBinding
+			Command="local:MainUserControl.ResetSystemCommand"
+			CanExecute="cb_ResetSystemCommand"
+			Executed="MenuItemResetSystemCommand_Click" />
+		<CommandBinding
+			Command="local:MainUserControl.ClearErrorCommand"
+			CanExecute="cb_ClearErrorCommand"
+			Executed="MenuItemClearErrorCommand_Click" />
+		<CommandBinding
+			Command="local:MainUserControl.PreferencesCommand"
+			CanExecute="cb_PreferencesCommand_CanExecute"
+			Executed="MenuItemPreferences_Click" />
+	</UIElement.CommandBindings>
+	<FrameworkElement.ContextMenu>
+		<ContextMenu
+			Background="#FFFFFFFF">
+			<MenuItem
+				Header="Abort Injection"
+				Command="local:MainUserControl.AbortCommand"
+				CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}">
+				<MenuItem.Icon>
+					<Image
+						Width="16"
+						Height="16"
+						Source="Images/cancel_24.png" />
+				</MenuItem.Icon>
+			</MenuItem>
+			<Separator />
+			<MenuItem
+				Name="menuitemEndTempWait"
+				Header="End Temperature Wait and Continue "
+				Command="local:MainUserControl.EndTempWaitCommand"
+				CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}">
+				<MenuItem.Icon>
+					<Image
+						Width="16"
+						Height="16"
+						Source="Images/NoTemperature_30.png" />
+				</MenuItem.Icon>
+			</MenuItem>
+			<Separator />
+			<MenuItem
+				Name="menuitemClearError"
+				Header="Clear Error"
+				Command="local:MainUserControl.ClearErrorCommand"
+				CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}" />
+			<MenuItem
+				Name="menuitemResetSystem"
+				Command="local:MainUserControl.ResetSystemCommand"
+				CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}">
+				<MenuItem.Icon>
+					<Image
+						Width="20"
+						Height="20"
+						Source="Images/reset_20.png" />
+				</MenuItem.Icon>
+			</MenuItem>
+			<Separator />
+			<MenuItem
+				Header="Preferences..."
+				Command="local:MainUserControl.PreferencesCommand"
+				CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}">
+				<MenuItem.Icon>
+					<Image
+						Width="16"
+						Height="16"
+						Source="Images/settings_24.png" />
+				</MenuItem.Icon>
+			</MenuItem>
+			<MenuItem
+				Header="Show Logbook..."
+				Click="MenuItemShowLogbook_Click">
+				<MenuItem.Icon>
+					<Image
+						Width="20"
+						Height="20"
+						Source="Images/book_20.png" />
+				</MenuItem.Icon>
+			</MenuItem>
+			<Separator />
+			<MenuItem
+				Header="About..."
+				Click="MenuItemAbout_Click" />
+		</ContextMenu>
+	</FrameworkElement.ContextMenu>
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="/BrukerLC.Styling;component/LookAndFeel.xaml" />
+				<ResourceDictionary
+					Source="Resources/MyResourceDictionary.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<Grid
+		Name="gridMain"
+		Width="740"
+		Height="186">
+		<FrameworkElement.Resources>
+			<ResourceDictionary>
+				<local:ImageConverter
+					x:Key="ImageConverter" />
+				<Style
+					x:Key="statusTextBlock"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="Margin"
+						Value="0,0,0,0" />
+					<Setter
+						Property="DockPanel.Dock"
+						Value="Top" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="Center" />
+					<Setter
+						Property="VerticalAlignment"
+						Value="Center" />
+					<Setter
+						Property="FontSize"
+						Value="12" />
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+				</Style>
+				<Style
+					x:Key="buttonTextBlock"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="Margin"
+						Value="0,0,0,0" />
+					<Setter
+						Property="DockPanel.Dock"
+						Value="Top" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="Center" />
+					<Setter
+						Property="FontSize"
+						Value="11" />
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Style.Triggers>
+						<Trigger
+							Property="IsEnabled"
+							Value="False">
+							<Setter
+								Property="Foreground"
+								Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+				<Style
+					x:Key="deviceTextBlock"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="Margin"
+						Value="1,1,1,1" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="Left" />
+				</Style>
+				<Style
+					x:Key="deviceLCButton"
+					TargetType="{x:Type Button}">
+					<Setter
+						Property="Margin"
+						Value="20,2,2,2" />
+					<Setter
+						Property="UIElement.Opacity"
+						Value="75" />
+				</Style>
+				<Style
+					x:Key="devicePumpButton"
+					TargetType="{x:Type Button}">
+					<Setter
+						Property="Height"
+						Value="30" />
+					<Setter
+						Property="Width"
+						Value="70" />
+				</Style>
+				<Style
+					x:Key="popupText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="FontFamily"
+						Value="SegoeUI" />
+					<Setter
+						Property="FontSize"
+						Value="11" />
+				</Style>
+				<Style
+					x:Key="titleText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Setter
+						Property="FontSize"
+						Value="12" />
+					<Setter
+						Property="FontStyle"
+						Value="Normal" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="left" />
+					<Setter
+						Property="Foreground"
+						Value="#0071BC" />
+					<Setter
+						Property="Margin"
+						Value="4,0,4,8" />
+				</Style>
+			</ResourceDictionary>
+		</FrameworkElement.Resources>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="110" />
+			<ColumnDefinition
+				Width="120" />
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="17" />
+			<RowDefinition
+				Height="24" />
+			<RowDefinition
+				Height="18" />
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="*" />
+		</Grid.RowDefinitions>
+		<Border
+			Name="bdrDeviceStatus"
+			Grid.Column="0"
+			Grid.Row="0"
+			Grid.ColumnSpan="4"
+			Background="#00FFFFFF"
+			BorderThickness="0,1,0,0">
+			<TextBlock
+				Name="txtHyStarStatus"
+				Style="{StaticResource statusTextBlock}"
+				TextTrimming="CharacterEllipsis" />
+		</Border>
+		<TextBlock
+			Name="txtPumpStatus"
+			Grid.Column="0"
+			Grid.Row="2"
+			Grid.ColumnSpan="3" />
+		<TextBlock
+			Name="txtDeviceStatus"
+			Grid.Column="0"
+			Grid.Row="1"
+			Grid.ColumnSpan="4"
+			Padding="0">
+			<DockPanel
+				Name="dpDeviceStatus"
+				Height="Auto"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Center"
+				LastChildFill="True"
+				Width="498">
+				<Image
+					Name="imgAlert"
+					Height="18"
+					VerticalAlignment="Center"
+					Margin="2,4,0,0"
+					Source="{Binding Path=ImageSource, Converter='{StaticResource ImageConverter}'}" />
+				<TextBlock
+					Name="tbAlert"
+					DockPanel.Dock="Right"
+					TextTrimming="CharacterEllipsis"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Stretch"
+					Margin="2,4,0,0"
+					Padding="4,0,0,0" />
+			</DockPanel>
+		</TextBlock>
+		<Grid
+			Column="0"
+			Row="2"
+			RowSpan="3">
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="*" />
+				<RowDefinition
+					Height="*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*" />
+			</Grid.ColumnDefinitions>
+			<PumpControl
+				Name="pumpAControl"
+				Grid.Column="0"
+				Grid.Row="0"
+				VerticalAlignment="Center"
+				Title="Pump A Details:"
+				Style="{StaticResource DefaultMainPumpControlStyle}" />
+			<PumpControl
+				Name="pumpBControl"
+				Grid.Column="0"
+				Grid.Row="1"
+				VerticalAlignment="Center"
+				Title="Pump B Details:"
+				Style="{StaticResource DefaultMainPumpControlStyle}" />
+		</Grid>
+		<Grid
+			Column="1"
+			Row="2"
+			RowSpan="3"
+			HorizontalAlignment="left"
+			Width="85"
+			Margin="16,0,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="15" />
+				<ColumnDefinition
+					Width="20" />
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="19" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="*" />
+			</Grid.RowDefinitions>
+			<Ellipse
+				Name="ellipseMixLeft"
+				Grid.Column="0"
+				Grid.ColumnSpan="2"
+				Height="32"
+				Stretch="Fill"
+				Stroke="#0071BC"
+				Fill="#0071BC"
+				Panel.ZIndex="16">
+				<UIElement.Clip>
+					<RectangleGeometry
+						Rect="0,0,15,32" />
+				</UIElement.Clip>
+			</Ellipse>
+			<Border
+				Grid.Column="1"
+				Grid.ColumnSpan="2"
+				Background="#0071BC"
+				Height="32"
+				Panel.ZIndex="6"
+				Padding="0,1,0,1">
+				<Grid
+					ZIndex="1">
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="*" />
+						<RowDefinition
+							Height="*" />
+					</Grid.RowDefinitions>
+					<TextBlock
+						Name="tbFlow"
+						Grid.Row="0"
+						Text=""
+						FontSize="9"
+						Foreground="#FFFFFFFF"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center" />
+					<TextBlock
+						Name="tbPercentB"
+						Grid.Row="1"
+						Text=""
+						FontSize="9"
+						Foreground="#FFFFFFFF"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center" />
+				</Grid>
+			</Border>
+			<Polygon
+				Name="plyMixTriangle"
+				Grid.Column="3"
+				VerticalAlignment="Center"
+				Points="0,1 18,16 0,31 0,1"
+				Stroke="#0071BC"
+				Fill="#0071BC"
+				Panel.ZIndex="18" />
+		</Grid>
+		<Grid
+			Column="1"
+			Row="2"
+			ColumnSpan="2"
+			RowSpan="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="92" />
+				<ColumnDefinition
+					Width="11" />
+				<ColumnDefinition
+					Width="58" />
+				<ColumnDefinition
+					Width="11" />
+				<ColumnDefinition
+					Width="11" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="12" />
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="*" />
+			</Grid.RowDefinitions>
+			<Ellipse
+				Grid.Column="1"
+				Grid.Row="1"
+				HorizontalAlignment="Left"
+				Grid.ColumnSpan="2"
+				Width="26"
+				Height="26"
+				Stretch="Fill"
+				Stroke="#FF808080"
+				Fill="#FF808080">
+				<UIElement.Clip>
+					<RectangleGeometry
+						Rect="0,0,12,26" />
+				</UIElement.Clip>
+			</Ellipse>
+			<Border
+				Grid.Column="2"
+				Grid.Row="1"
+				Background="#FF808080"
+				Height="26"
+				Panel.ZIndex="6"
+				Padding="0,1,0,1">
+				<Grid
+					ZIndex="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="Auto" />
+						<ColumnDefinition
+							Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<Image
+						Name="imgSyringe"
+						Grid.Row="0"
+						Grid.Column="0"
+						Height="15"
+						Source="Images/Syringe_16.png" />
+					<TextBlock
+						Name="tbSamplePos"
+						Grid.Row="0"
+						Grid.Column="1"
+						Text="-"
+						Margin="2,0,0,0"
+						FontSize="10"
+						FontWeight="SemiBold"
+						Foreground="#FFFFFFFF"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center" />
+				</Grid>
+			</Border>
+			<Ellipse
+				Grid.Column="2"
+				Grid.Row="1"
+				Width="26"
+				HorizontalAlignment="Right"
+				Grid.ColumnSpan="2"
+				Height="26"
+				Stretch="Fill"
+				Stroke="#FF808080"
+				Fill="#FF808080">
+				<UIElement.Clip>
+					<RectangleGeometry
+						Rect="12,0,15,26" />
+				</UIElement.Clip>
+			</Ellipse>
+		</Grid>
+		<DockPanel
+			Name="trapColPanel"
+			Grid.Column="2"
+			Grid.Row="3">
+			<ComboBox
+				Name="comboPreColumn"
+				DockPanel.Dock="Bottom"
+				Margin="4,0,4,0"
+				IsReadOnly="True"
+				DisplayMemberPath="Name"
+				Style="{StaticResource ColumnComboBox}"
+				SelectionChanged="comboPreColumn_SelectionChanged">
+				<ItemsControl.ItemContainerStyle>
+					<Style
+						TargetType="{x:Type ComboBoxItem}">
+						<EventSetter
+							Event="Loaded"
+							Handler="TrapColumnItemLoaded" />
+						<EventSetter
+							Event="Unloaded"
+							Handler="TrapColumnItemUnloaded" />
+					</Style>
+				</ItemsControl.ItemContainerStyle>
+			</ComboBox>
+			<TextBlock
+				Name="tbPreColumn"
+				HorizontalAlignment="Left"
+				FontSize="11"
+				Margin="8,0,0,2"
+				VerticalAlignment="Bottom">
+				<Run
+					Text="Trap Column:" />
+			</TextBlock>
+			<Popup
+				Placement="Right"
+				PopupAnimation="Fade"
+				PlacementTarget="{Binding ElementName=trapColPanel}">
+				<FrameworkElement.Style>
+					<Style
+						TargetType="{x:Type Popup}">
+						<Style.Triggers>
+							<DataTrigger
+								Value="True"
+								Binding="{Binding IsMouseOver, ElementName=trapColPanel}">
+								<TriggerBase.EnterActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<BooleanAnimationUsingKeyFrames
+												Storyboard.TargetProperty="IsOpen"
+												FillBehavior="HoldEnd">
+												<DiscreteBooleanKeyFrame
+													KeyTime="0:0:1"
+													Value="True" />
+											</BooleanAnimationUsingKeyFrames>
+										</Storyboard>
+									</BeginStoryboard>
+								</TriggerBase.EnterActions>
+								<TriggerBase.ExitActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<BooleanAnimationUsingKeyFrames
+												Storyboard.TargetProperty="IsOpen"
+												FillBehavior="HoldEnd">
+												<DiscreteBooleanKeyFrame
+													KeyTime="0:0:0"
+													Value="False" />
+											</BooleanAnimationUsingKeyFrames>
+										</Storyboard>
+									</BeginStoryboard>
+								</TriggerBase.ExitActions>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</FrameworkElement.Style>
+				<Border
+					BorderThickness="1"
+					SnapsToDevicePixels="True">
+					<UIElement.Effect>
+						<DropShadowEffect
+							ShadowDepth="4" />
+					</UIElement.Effect>
+					<Border.Background>
+						<LinearGradientBrush
+							StartPoint="0,0"
+							EndPoint="0,1">
+							<GradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop
+										Color="White"
+										Offset="0.0" />
+									<GradientStop
+										Color="LightGray"
+										Offset="1.0" />
+								</GradientStopCollection>
+							</GradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Border.Background>
+					<Border.BorderBrush>
+						<SolidColorBrush
+							Color="#FF888888" />
+					</Border.BorderBrush>
+					<controls:ColumnInfoUserControl
+						x:Name="TrapColumnInfoControl"
+						Margin="2" />
+				</Border>
+			</Popup>
+		</DockPanel>
+		<StackPanel
+			Name="stkTrapWarn"
+			Grid.Column="2"
+			Grid.Row="4"
+			Orientation="Horizontal"
+			Margin="4,2,2,0"
+			Visibility="Hidden">
+			<Image
+				Source="Images/Warning.png"
+				Height="13"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Margin="0,1,0,0" />
+			<TextBlock
+				HorizontalAlignment="Left"
+				FontSize="11"
+				Margin="2,0,0,0"
+				VerticalAlignment="Top"
+				Text="invalid trap column" />
+		</StackPanel>
+		<DockPanel
+			Name="sepColPanel"
+			Grid.Column="3"
+			Grid.Row="3">
+			<ComboBox
+				Name="comboAnalColumn"
+				DockPanel.Dock="Bottom"
+				Margin="4,0,4,0"
+				IsReadOnly="True"
+				DisplayMemberPath="Name"
+				Style="{StaticResource ColumnComboBox}"
+				SelectionChanged="comboAnalColumn_SelectionChanged">
+				<ItemsControl.ItemContainerStyle>
+					<Style
+						TargetType="{x:Type ComboBoxItem}">
+						<EventSetter
+							Event="Loaded"
+							Handler="SepColumnItemLoaded" />
+						<EventSetter
+							Event="Unloaded"
+							Handler="SepColumnItemUnloaded" />
+					</Style>
+				</ItemsControl.ItemContainerStyle>
+			</ComboBox>
+			<TextBlock
+				HorizontalAlignment="Left"
+				FontSize="11"
+				Margin="8,0,0,2"
+				VerticalAlignment="Bottom">Separation Column:</TextBlock>
+			<Popup
+				Placement="Right"
+				PopupAnimation="Fade"
+				PlacementTarget="{Binding ElementName=sepColPanel}">
+				<FrameworkElement.Style>
+					<Style
+						TargetType="{x:Type Popup}">
+						<Style.Triggers>
+							<DataTrigger
+								Value="True"
+								Binding="{Binding IsMouseOver, ElementName=sepColPanel}">
+								<TriggerBase.EnterActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<BooleanAnimationUsingKeyFrames
+												Storyboard.TargetProperty="IsOpen"
+												FillBehavior="HoldEnd">
+												<DiscreteBooleanKeyFrame
+													KeyTime="0:0:1"
+													Value="True" />
+											</BooleanAnimationUsingKeyFrames>
+										</Storyboard>
+									</BeginStoryboard>
+								</TriggerBase.EnterActions>
+								<TriggerBase.ExitActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<BooleanAnimationUsingKeyFrames
+												Storyboard.TargetProperty="IsOpen"
+												FillBehavior="HoldEnd">
+												<DiscreteBooleanKeyFrame
+													KeyTime="0:0:0"
+													Value="False" />
+											</BooleanAnimationUsingKeyFrames>
+										</Storyboard>
+									</BeginStoryboard>
+								</TriggerBase.ExitActions>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</FrameworkElement.Style>
+				<Border
+					BorderThickness="1"
+					SnapsToDevicePixels="True">
+					<UIElement.Effect>
+						<DropShadowEffect
+							ShadowDepth="4" />
+					</UIElement.Effect>
+					<Border.Background>
+						<LinearGradientBrush
+							StartPoint="0,0"
+							EndPoint="0,1">
+							<GradientBrush.GradientStops>
+								<GradientStopCollection>
+									<GradientStop
+										Color="White"
+										Offset="0.0" />
+									<GradientStop
+										Color="LightGray"
+										Offset="1.0" />
+								</GradientStopCollection>
+							</GradientBrush.GradientStops>
+						</LinearGradientBrush>
+					</Border.Background>
+					<Border.BorderBrush>
+						<SolidColorBrush
+							Color="#FF888888" />
+					</Border.BorderBrush>
+					<controls:ColumnInfoUserControl
+						x:Name="SepColumnInfoControl"
+						Margin="2" />
+				</Border>
+			</Popup>
+		</DockPanel>
+		<StackPanel
+			Name="stkSepWarn"
+			Grid.Column="3"
+			Grid.Row="4"
+			Orientation="Horizontal"
+			Margin="4,2,2,0"
+			Visibility="Hidden">
+			<Image
+				Source="Images/Warning.png"
+				Height="13"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Margin="0,1,0,0" />
+			<TextBlock
+				HorizontalAlignment="Left"
+				FontSize="11"
+				Margin="2,0,0,0"
+				VerticalAlignment="Top"
+				Text="invalid separation column" />
+		</StackPanel>
+		<controls:Led
+			x:Name="idleLED"
+			Grid.Column="3"
+			Grid.Row="4"
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Right"
+			Height="14"
+			Flashing="False"
+			FlashingPeriod="500"
+			ColorNull="Gray"
+			ColorOn="LimeGreen"
+			ColorOff="Gray"
+			IsActive="{x:Null}" />
+		<Popup
+			Grid.Row="0"
+			Grid.Column="0"
+			Placement="Right"
+			PopupAnimation="Fade"
+			PlacementTarget="{Binding ElementName=idleLED}">
+			<FrameworkElement.Style>
+				<Style
+					TargetType="{x:Type Popup}">
+					<Style.Triggers>
+						<DataTrigger
+							Value="True"
+							Binding="{Binding IsMouseOver, ElementName=idleLED}">
+							<TriggerBase.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<BooleanAnimationUsingKeyFrames
+											Storyboard.TargetProperty="IsOpen"
+											FillBehavior="HoldEnd">
+											<DiscreteBooleanKeyFrame
+												KeyTime="0:0:1"
+												Value="True" />
+										</BooleanAnimationUsingKeyFrames>
+									</Storyboard>
+								</BeginStoryboard>
+							</TriggerBase.EnterActions>
+							<TriggerBase.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<BooleanAnimationUsingKeyFrames
+											Storyboard.TargetProperty="IsOpen"
+											FillBehavior="HoldEnd">
+											<DiscreteBooleanKeyFrame
+												KeyTime="0:0:0"
+												Value="False" />
+										</BooleanAnimationUsingKeyFrames>
+									</Storyboard>
+								</BeginStoryboard>
+							</TriggerBase.ExitActions>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</FrameworkElement.Style>
+			<Border
+				BorderThickness="1"
+				SnapsToDevicePixels="True">
+				<UIElement.Effect>
+					<DropShadowEffect
+						ShadowDepth="4" />
+				</UIElement.Effect>
+				<Border.Background>
+					<LinearGradientBrush
+						StartPoint="0,0"
+						EndPoint="0,1">
+						<GradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop
+									Color="White"
+									Offset="0.0" />
+								<GradientStop
+									Color="LightGray"
+									Offset="1.0" />
+							</GradientStopCollection>
+						</GradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Border.Background>
+				<Border.BorderBrush>
+					<SolidColorBrush
+						Color="#FF888888" />
+				</Border.BorderBrush>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="*" />
+						<RowDefinition
+							Height="*" />
+						<RowDefinition
+							Height="*" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<TextBlock
+						Name="idleFlowPopupText"
+						Grid.ColumnSpan="2"
+						Text="Idle Flow: Disabled   "
+						Style="{StaticResource titleText}" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						Text="Flow:"
+						Margin="8,2,2,2"
+						Style="{StaticResource popupText}" />
+					<StackPanel
+						Grid.Row="1"
+						Grid.Column="1"
+						Orientation="Horizontal"
+						Margin="4,2,2,2">
+						<TextBlock
+							Name="idleFlowText"
+							Text="-"
+							Style="{StaticResource popupText}" />
+					</StackPanel>
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						Text="Composition B:"
+						Margin="8,2,2,2"
+						Style="{StaticResource popupText}" />
+					<StackPanel
+						Grid.Row="2"
+						Grid.Column="1"
+						Orientation="Horizontal"
+						Margin="4,2,2,2">
+						<TextBlock
+							Name="idleFlowCompText"
+							Text="-"
+							Style="{StaticResource popupText}" />
+					</StackPanel>
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						Text="Via Trap:"
+						Margin="8,2,2,2"
+						Style="{StaticResource popupText}" />
+					<StackPanel
+						Grid.Row="3"
+						Grid.Column="1"
+						Orientation="Horizontal"
+						Margin="4,2,2,2">
+						<TextBlock
+							Name="idleFlowViaTrapText"
+							Text="-"
+							Style="{StaticResource popupText}" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Popup>
+		<Button
+			Name="btnLCControl"
+			Grid.Column="3"
+			Grid.Row="1"
+			Grid.RowSpan="2"
+			Style="{StaticResource BalticButtonStyle}"
+			Margin="164,2,4,0"
+			Panel.ZIndex="5"
+			IsEnabled="False"
+			Click="ButtonClicked">
+			<StackPanel>
+				<Image
+					Name="imgLCControlBtn"
+					Source="Images/Settings_32.png"
+					Height="18">
+					<FrameworkElement.Style>
+						<Style
+							TargetType="{x:Type Image}">
+							<Style.Triggers>
+								<Trigger
+									Property="IsEnabled"
+									Value="False">
+									<Setter
+										Property="UIElement.Opacity"
+										Value="0.6" />
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</FrameworkElement.Style>
+				</Image>
+				<TextBlock
+					Name="txtLCControlBtn"
+					Text="LC Control"
+					IsEnabled="{Binding IsConnected}" />
+			</StackPanel>
+		</Button>
+		<StackPanel
+			Grid.Column="3"
+			Grid.Row="4">
+			<Grid
+				Name="gridOven"
+				Margin="10,17,30,10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="6*" />
+					<ColumnDefinition
+						Width="3*" />
+				</Grid.ColumnDefinitions>
+				<TextBlock
+					Name="tbOvenTemp"
+					Grid.Column="0"
+					FontSize="11"
+					Text="-"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Top"
+					Margin="4,7,1,4" />
+				<Image
+					Name="imgHeatWaves"
+					Grid.Column="1"
+					Source="Images/temperature_30.png"
+					Height="22"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					Margin="1,2,2,2" />
+			</Grid>
+		</StackPanel>
+		<Popup
+			Grid.Row="0"
+			Grid.Column="0"
+			Placement="Right"
+			PopupAnimation="Fade"
+			PlacementTarget="{Binding ElementName=gridOven}">
+			<FrameworkElement.Style>
+				<Style
+					TargetType="{x:Type Popup}">
+					<Style.Triggers>
+						<DataTrigger
+							Value="True"
+							Binding="{Binding IsMouseOver, ElementName=gridOven}">
+							<TriggerBase.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<BooleanAnimationUsingKeyFrames
+											Storyboard.TargetProperty="IsOpen"
+											FillBehavior="HoldEnd">
+											<DiscreteBooleanKeyFrame
+												KeyTime="0:0:1"
+												Value="True" />
+										</BooleanAnimationUsingKeyFrames>
+									</Storyboard>
+								</BeginStoryboard>
+							</TriggerBase.EnterActions>
+							<TriggerBase.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<BooleanAnimationUsingKeyFrames
+											Storyboard.TargetProperty="IsOpen"
+											FillBehavior="HoldEnd">
+											<DiscreteBooleanKeyFrame
+												KeyTime="0:0:0"
+												Value="False" />
+										</BooleanAnimationUsingKeyFrames>
+									</Storyboard>
+								</BeginStoryboard>
+							</TriggerBase.ExitActions>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</FrameworkElement.Style>
+			<Border
+				BorderThickness="1"
+				SnapsToDevicePixels="True">
+				<UIElement.Effect>
+					<DropShadowEffect
+						ShadowDepth="4" />
+				</UIElement.Effect>
+				<Border.Background>
+					<LinearGradientBrush
+						StartPoint="0,0"
+						EndPoint="0,1">
+						<GradientBrush.GradientStops>
+							<GradientStopCollection>
+								<GradientStop
+									Color="White"
+									Offset="0.0" />
+								<GradientStop
+									Color="LightGray"
+									Offset="1.0" />
+							</GradientStopCollection>
+						</GradientBrush.GradientStops>
+					</LinearGradientBrush>
+				</Border.Background>
+				<Border.BorderBrush>
+					<SolidColorBrush
+						Color="#FF888888" />
+				</Border.BorderBrush>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="*" />
+						<RowDefinition
+							Height="*" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="80" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<TextBlock
+						Grid.ColumnSpan="2"
+						Text="Column Oven Temperature"
+						Style="{StaticResource titleText}" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						Text="Set:"
+						Margin="8,2,2,2"
+						Style="{StaticResource popupText}" />
+					<StackPanel
+						Grid.Row="1"
+						Grid.Column="1"
+						Orientation="Horizontal"
+						Margin="4,2,2,2">
+						<TextBlock
+							Name="tbTempSetPt"
+							Style="{StaticResource popupText}" />
+					</StackPanel>
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						Text="Measured:"
+						Margin="8,2,2,2"
+						Style="{StaticResource popupText}" />
+					<StackPanel
+						Grid.Row="2"
+						Grid.Column="1"
+						Orientation="Horizontal"
+						Margin="4,2,2,2">
+						<TextBlock
+							Name="tbTempMeasured"
+							Style="{StaticResource popupText}" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Popup>
+	</Grid>
+</Canvas>

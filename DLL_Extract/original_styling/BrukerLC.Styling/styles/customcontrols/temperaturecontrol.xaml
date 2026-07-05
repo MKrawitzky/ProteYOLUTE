@@ -1,0 +1,148 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:attached="clr-namespace:BrukerLC.Utils.Attached;assembly=BrukerLC.Utils">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/FrameworkElement.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/VectorGraphics/Shapes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Converters/Converters.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/BitmapGraphics/Icons.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="DefaultTemperatureControlStyle"
+		TargetType="{x:Type TemperatureControl}"
+		BasedOn="{StaticResource FrameworkElementStyle}">
+		<Setter
+			Property="Width"
+			Value="160" />
+		<Setter
+			Property="Height"
+			Value="16" />
+		<Setter
+			Property="BorderThickness"
+			Value="1" />
+		<Setter
+			Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter
+			Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter
+			Property="TemperatureControl.Temperature"
+			Value="{Binding Temperature, FallbackValue=20.0}" />
+		<Setter
+			Property="TemperatureControl.TemperatureUnit"
+			Value="{Binding TemperatureUnit}" />
+		<Setter
+			Property="attached:APActivatable.IsActive"
+			Value="{Binding IsActive, FallbackValue=False}" />
+		<Setter
+			Property="attached:APActivatable.ActiveBrush"
+			Value="{Binding ActiveBrush, FallbackValue=Blue}" />
+		<Setter
+			Property="attached:APValidation.HasError"
+			Value="{Binding HasError}" />
+		<Setter
+			Property="attached:APValidation.ErrorMessage"
+			Value="{Binding ErrorMessage}" />
+		<Setter
+			Property="attached:APSignalizable.IsSignalize"
+			Value="{Binding IsSignalize, FallbackValue=False}" />
+		<Setter
+			Property="attached:APSignalizable.SignalizeBrush"
+			Value="{Binding SignalizeBrush, FallbackValue=Transparent}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsVisible"
+			Value="{Binding IsVisible, FallbackValue=True}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsNearTransparent"
+			Value="{Binding IsNearTransparent, FallbackValue=False}" />
+		<Setter
+			Property="Background"
+			Value="{StaticResource LightGrayBrush}" />
+		<Setter
+			Property="BorderBrush"
+			Value="{StaticResource DarkGrayBrush}" />
+		<Setter
+			Property="Foreground"
+			Value="{StaticResource DarkGrayBrush}" />
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type TemperatureControl}">
+					<Grid
+						Visibility="{Binding Path=(attached:APVisibleEnableable.IsVisible), Converter={StaticResource VisibilityConverter}, RelativeSource={RelativeSource Self}}"
+						Opacity="{Binding Path=(attached:APVisibleEnableable.IsNearTransparent), Converter={StaticResource OpacityConverter}, RelativeSource={RelativeSource Self}}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+						<Grid
+							x:Name="TemperatureLabels"
+							VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="Auto" />
+								<ColumnDefinition
+									Width="Auto" />
+								<ColumnDefinition
+									Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<ContentPresenter
+								HorizontalAlignment="Right"
+								TextElement.Foreground="#FF000000"
+								Content="{TemplateBinding Temperature, ConverterParameter=' 0;-0', Converter={StaticResource OvenDecimalPlacesConverter}}" />
+							<TextBlock
+								Grid.Column="1"
+								HorizontalAlignment="Left"
+								Margin="2,0,0,0"
+								Foreground="#FF000000"
+								Text="{TemplateBinding TemperatureControl.TemperatureUnit}" />
+							<Image
+								Grid.Column="2"
+								Margin="3,0,0,0"
+								Source="{StaticResource TemperatureIcon}" />
+						</Grid>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger
+				Property="attached:APActivatable.IsActive"
+				Value="True">
+				<Setter
+					Property="Foreground"
+					Value="{Binding (APActivatable.ActiveBrush), RelativeSource={RelativeSource Self}}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APValidation.HasError"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{StaticResource ErrorBrush}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APSignalizable.IsSignalize"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{Binding (APSignalizable.SignalizeBrush), RelativeSource={RelativeSource Self}}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APVisibleEnableable.IsVisible"
+				Value="False">
+				<Setter
+					Property="Visibility"
+					Value="Hidden" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

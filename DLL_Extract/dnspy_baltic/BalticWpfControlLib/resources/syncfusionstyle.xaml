@@ -1,0 +1,33 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Style
+		x:Key="DefaultIntegerTextboxStyle"
+		TargetType="{x:Type syncfusion:IntegerTextBox}">
+		<Setter
+			Property="syncfusion:IntegerTextBox.GroupSeperatorEnabled"
+			Value="False" />
+		<Setter
+			Property="syncfusion:EditorBase.Culture"
+			Value="en-US" />
+	</Style>
+	<Style
+		x:Key="DefaultDoubleTextboxStyle"
+		TargetType="{x:Type syncfusion:DoubleTextBox}">
+		<Setter
+			Property="syncfusion:DoubleTextBox.GroupSeperatorEnabled"
+			Value="False" />
+		<Setter
+			Property="syncfusion:EditorBase.Culture"
+			Value="en-US" />
+	</Style>
+	<Style
+		x:Key="{x:Type syncfusion:IntegerTextBox}"
+		TargetType="{x:Type syncfusion:IntegerTextBox}"
+		BasedOn="{StaticResource DefaultIntegerTextboxStyle}" />
+	<Style
+		x:Key="{x:Type syncfusion:DoubleTextBox}"
+		TargetType="{x:Type syncfusion:DoubleTextBox}"
+		BasedOn="{StaticResource DefaultDoubleTextboxStyle}" />
+</ResourceDictionary>

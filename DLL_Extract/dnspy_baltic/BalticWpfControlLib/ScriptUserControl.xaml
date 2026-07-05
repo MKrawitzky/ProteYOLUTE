@@ -1,0 +1,52 @@
+<UserControl
+	x:Class="BalticWpfControlLib.ScriptUserControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:BalticWpfControlLib">
+	<Grid>
+		<FrameworkElement.Resources>
+			<ResourceDictionary
+				Source="Resources/MyResourceDictionary.xaml" />
+		</FrameworkElement.Resources>
+		<StackPanel
+			Orientation="Horizontal"
+			HorizontalAlignment="center"
+			Height="26">
+			<FrameworkElement.Resources>
+				<ResourceDictionary>
+					<local:ImageConverter
+						x:Key="MyImageConverter" />
+				</ResourceDictionary>
+			</FrameworkElement.Resources>
+			<Button
+				Width="140"
+				HorizontalContentAlignment="Left"
+				Style="{StaticResource BalticButtonStyle}"
+				Click="ScriptButton_Click">
+				<DockPanel>
+					<Image
+						Name="imgScriptImage"
+						DockPanel.Dock="Left"
+						HorizontalAlignment="Left" />
+					<TextBlock
+						Name="tbScriptName"
+						DockPanel.Dock="Left"
+						Width="100"
+						Margin="4,0,0,0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center" />
+				</DockPanel>
+			</Button>
+			<Button
+				Name="btnSettings"
+				Style="{StaticResource BalticButtonStyle}"
+				Click="ScriptSettingsButton_Click">
+				<Image
+					Name="imgScriptSettings"
+					HorizontalAlignment="Center" />
+			</Button>
+		</StackPanel>
+	</Grid>
+</UserControl>

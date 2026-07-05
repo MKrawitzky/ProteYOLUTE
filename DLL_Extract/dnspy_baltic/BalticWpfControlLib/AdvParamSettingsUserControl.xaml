@@ -1,0 +1,114 @@
+<UserControl
+	x:Class="BalticWpfControlLib.AdvParamSettingsUserControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:BalticWpfControlLib"
+	BorderThickness="0,1,1,1"
+	BorderBrush="#FF708090"
+	Background="#FFD3D3D3">
+	<FrameworkElement.Resources>
+		<ResourceDictionary
+			Source="Resources/MyResourceDictionary.xaml" />
+	</FrameworkElement.Resources>
+	<Grid
+		VerticalAlignment="Stretch"
+		HorizontalAlignment="Stretch"
+		Margin="5,0,0,0">
+		<FrameworkElement.Resources>
+			<ResourceDictionary>
+				<local:StringToCapsConverter
+					x:Key="stringToCaps" />
+				<Style
+					x:Key="{x:Type TextBox}"
+					TargetType="{x:Type TextBox}">
+					<Setter
+						Property="Validation.ErrorTemplate">
+						<Setter.Value>
+							<ControlTemplate>
+								<DockPanel
+									LastChildFill="True">
+									<Border
+										BorderBrush="#FFFF0000"
+										BorderThickness="1">
+										<AdornedElementPlaceholder />
+									</Border>
+								</DockPanel>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+					<Style.Triggers>
+						<Trigger
+							Property="Validation.HasError"
+							Value="true">
+							<Setter
+								Property="FrameworkElement.ToolTip"
+								Value="{Binding Path=(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+				<Style
+					x:Key="titleText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="Margin"
+						Value="2,2,2,2" />
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Setter
+						Property="FontSize"
+						Value="9" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="Left" />
+					<Setter
+						Property="Foreground"
+						Value="#FF4682B4" />
+					<Setter
+						Property="FontStyle"
+						Value="Italic" />
+				</Style>
+			</ResourceDictionary>
+		</FrameworkElement.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock
+			Name="tbHeader"
+			Style="{StaticResource titleText}"
+			Text="{Binding Header, Converter='{StaticResource stringToCaps}'}" />
+		<ScrollViewer
+			x:Name="advScroll"
+			Grid.Row="1"
+			VerticalScrollBarVisibility="Auto"
+			Margin="2" />
+		<Button
+			Name="btnRevert"
+			Grid.Row="2"
+			Style="{StaticResource BalticButtonStyle}"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Bottom"
+			Height="22"
+			Margin="0,0,0,6"
+			Click="BlueDotTileButton_Click">
+			<StackPanel
+				Orientation="Horizontal">
+				<Image
+					Source="Images/undo_24.png"
+					Height="18" />
+				<TextBlock
+					Text="Revert to Default"
+					FontSize="11"
+					Margin="2,0,2,0"
+					VerticalAlignment="Center" />
+			</StackPanel>
+		</Button>
+	</Grid>
+</UserControl>

@@ -1,0 +1,506 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BCB08B90-10AE-49F0-ADCB-15514EFAFA73}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BalticWpfControlLib</RootNamespace>
+    <AssemblyName>BalticWpfControlLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <UseWPF>true</UseWPF>
+    <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BalticClassLib">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BalticClassLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Bruker.Lc">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Bruker.Lc.dll</HintPath>
+    </Reference>
+    <Reference Include="BrukerLC.Interfaces">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="BrukerLC.Utils">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Syncfusion.SfChart.WPF">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfChart.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfTextInputLayout.WPF">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfTextInputLayout.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Wpf">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.Shared.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Syncfusion.SfGrid.WPF" />
+    <Reference Include="Syncfusion.SfInput.Wpf" />
+    <Reference Include="Syncfusion.Shared.MVVM.WPF" />
+    <Reference Include="Syncfusion.Shared.Wpf.Classic" />
+    <Reference Include="Syncfusion.Tools.MVVM.WPF" />
+    <Reference Include="Syncfusion.Tools.Wpf" />
+    <Reference Include="mscorlib" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdvancedChildParameterControl.xaml.cs">
+      <DependentUpon>AdvancedChildParameterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdvancedChildParameterWindow.xaml.cs">
+      <DependentUpon>AdvancedChildParameterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdvancedParameterControl.xaml.cs">
+      <DependentUpon>AdvancedParameterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdvChildObjectToVisConverter.cs" />
+    <Compile Include="AdvChildParameterTypeTemplateSelector.cs" />
+    <Compile Include="AdvChildParameterValueConverter.cs" />
+    <Compile Include="AdvChildParamSettingsUserControl.xaml.cs">
+      <DependentUpon>AdvChildParamSettingsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdvChildProcParam.cs" />
+    <Compile Include="AdvChildValidationRequestEventArgs.cs" />
+    <Compile Include="AdvObjectToVisConverter.cs" />
+    <Compile Include="AdvParameterTypeTemplateSelector.cs" />
+    <Compile Include="AdvParameterValueConverter.cs" />
+    <Compile Include="AdvParamSettingsUserControl.xaml.cs">
+      <DependentUpon>AdvParamSettingsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdvProcParam.cs" />
+    <Compile Include="AdvValidationRequestEventArgs.cs" />
+    <Compile Include="AnalyticalColEquilUserControl.xaml.cs">
+      <DependentUpon>AnalyticalColEquilUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ArrowEnds.cs" />
+    <Compile Include="BalticWpfColumnEventArgs.cs" />
+    <Compile Include="BaseProcParam.cs" />
+    <Compile Include="BoolToVisCollapseConverter.cs" />
+    <Compile Include="BoolToVisInvCollapseConverter.cs" />
+    <Compile Include="CapillariesDiagramWindow.xaml.cs">
+      <DependentUpon>CapillariesDiagramWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChildProcParam.cs" />
+    <Compile Include="ConfirmWindow.xaml.cs">
+      <DependentUpon>ConfirmWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContainerTemplatableItemsControl.cs" />
+    <Compile Include="Controls\ArrowLine.cs" />
+    <Compile Include="Controls\ArrowLineBase.cs" />
+    <Compile Include="Controls\ArrowPolyline.cs" />
+    <Compile Include="Controls\CircularProgressBar.xaml.cs">
+      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColumnInfoUserControl.xaml.cs">
+      <DependentUpon>ColumnInfoUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageButton.cs" />
+    <Compile Include="Controls\IPControl.cs" />
+    <Compile Include="Controls\Led.xaml.cs">
+      <DependentUpon>Led.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MoveablePopup.cs" />
+    <Compile Include="Diagram\ActivatableAndErrorAwareDataContext.cs" />
+    <Compile Include="Diagram\ActivatableDataContext.cs" />
+    <Compile Include="Diagram\ConnectionViewModel.cs" />
+    <Compile Include="Diagram\DiagramStateController.cs" />
+    <Compile Include="Diagram\EditCapillaryViewModel.cs" />
+    <Compile Include="Diagram\EditCapillaryWindow.xaml.cs">
+      <DependentUpon>EditCapillaryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Diagram\InjectionViewModel.cs" />
+    <Compile Include="Diagram\LinkBasicViewModel.cs" />
+    <Compile Include="Diagram\LinkViewModel.cs" />
+    <Compile Include="Diagram\LoopViewModel.cs" />
+    <Compile Include="Diagram\OutputViewModel.cs" />
+    <Compile Include="Diagram\PumpViewModel.cs" />
+    <Compile Include="Diagram\SensorViewModel.cs" />
+    <Compile Include="Diagram\TableViewModel.cs" />
+    <Compile Include="Diagram\TemperatureViewModel.cs" />
+    <Compile Include="Diagram\TrapViewModel.cs" />
+    <Compile Include="Diagram\ValveDataContext.cs" />
+    <Compile Include="GradientMainUserControl.xaml.cs">
+      <DependentUpon>GradientMainUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GradientTableUserControl.xaml.cs">
+      <DependentUpon>GradientTableUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HardwareSettingsWindow.xaml.cs">
+      <DependentUpon>HardwareSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageConverter.cs" />
+    <Compile Include="IndentToMarginConverter.cs" />
+    <Compile Include="LCChartUserControl.xaml.cs">
+      <DependentUpon>LCChartUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LCControlWindow.xaml.cs">
+      <DependentUpon>LCControlWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LCUserControl.xaml.cs">
+      <DependentUpon>LCUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LCUserControlSettings.cs" />
+    <Compile Include="MaintenanceInfoUserControl.xaml.cs">
+      <DependentUpon>MaintenanceInfoUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainUserControl.xaml.cs">
+      <DependentUpon>MainUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MethodEditorWindow.xaml.cs">
+      <DependentUpon>MethodEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MethodUserControl.xaml.cs">
+      <DependentUpon>MethodUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyImageConverter.cs" />
+    <Compile Include="ParameterTypeTemplateSelector.cs" />
+    <Compile Include="ParameterValueConverter.cs" />
+    <Compile Include="ParamToVisCollapseConverter.cs" />
+    <Compile Include="PasswordWindow.xaml.cs">
+      <DependentUpon>PasswordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesUserControl.xaml.cs">
+      <DependentUpon>PreferencesUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesWindow.xaml.cs">
+      <DependentUpon>PreferencesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProcedureParameterControl.xaml.cs">
+      <DependentUpon>ProcedureParameterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProcParam.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Settings.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SampleLoadingUserControl.xaml.cs">
+      <DependentUpon>SampleLoadingUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptControlEventArgs.cs" />
+    <Compile Include="ScriptSettingsWindow.xaml.cs">
+      <DependentUpon>ScriptSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptUserControl.xaml.cs">
+      <DependentUpon>ScriptUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptValidationRequestEventArgs.cs" />
+    <Compile Include="SettingsUserControl.xaml.cs">
+      <DependentUpon>SettingsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StringToCapsConverter.cs" />
+    <Compile Include="StringToSymbolsConverter.cs" />
+    <Compile Include="SubjectListConverter.cs" />
+    <Compile Include="SystemConditionUserControl.xaml.cs">
+      <DependentUpon>SystemConditionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SystemInfoWindow.xaml.cs">
+      <DependentUpon>SystemInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolTipTextToVisibilityConverter.cs" />
+    <Compile Include="TrapColEquilUserControl.xaml.cs">
+      <DependentUpon>TrapColEquilUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\ActualWidthConverter.cs" />
+    <Compile Include="Utilities\BalticGradientItem.cs" />
+    <Compile Include="Utilities\BalticGradientList.cs" />
+    <Compile Include="Utilities\BindableBalticHardware.cs" />
+    <Compile Include="Utilities\BindableBalticMethod.cs" />
+    <Compile Include="Utilities\BindableBase.cs" />
+    <Compile Include="Utilities\BoolInverterConverter.cs" />
+    <Compile Include="Utilities\BoolToBorderColorConverter.cs" />
+    <Compile Include="Utilities\BoolToBorderThicknessConverter.cs" />
+    <Compile Include="Utilities\BoolToColumnValueOneConverter.cs" />
+    <Compile Include="Utilities\BoolToColumnValueSixConverter.cs" />
+    <Compile Include="Utilities\BoolToColumnValueThreeConverter.cs" />
+    <Compile Include="Utilities\BoolToErrorConverter.cs" />
+    <Compile Include="Utilities\BoolToForegroundConverter.cs" />
+    <Compile Include="Utilities\BoolToGroupEndMarginConverter.cs" />
+    <Compile Include="Utilities\BoolToHeightErrorConverter.cs" />
+    <Compile Include="Utilities\BoolToMarginConverter.cs" />
+    <Compile Include="Utilities\BoolToVisibilityCollapseConverter.cs" />
+    <Compile Include="Utilities\BoolToVisibilityCollapseInvConverter.cs" />
+    <Compile Include="Utilities\BoolToVisibilityConverter.cs" />
+    <Compile Include="Utilities\CircularDisplayBuffer.cs" />
+    <Compile Include="Utilities\ColumnEquilTimeToStringConverter.cs" />
+    <Compile Include="Utilities\DataGridHelper.cs" />
+    <Compile Include="Utilities\HelperExtensions.cs" />
+    <Compile Include="Utilities\IWin32OwnerWindow.cs" />
+    <Compile Include="Utilities\LegacyMethodTempLimitConverter.cs" />
+    <Compile Include="Utilities\MaintenanceCounterToVisibilityConverter.cs" />
+    <Compile Include="Utilities\MaintenanceInfoValueConverter.cs" />
+    <Compile Include="Utilities\MaintenanceItemToVisibilityConverter.cs" />
+    <Compile Include="Utilities\ObjectToIntConverter.cs" />
+    <Compile Include="Utilities\ObjectToStringConverter.cs" />
+    <Compile Include="Utilities\PanelDimensionsConverter.cs" />
+    <Compile Include="Utilities\PanelMarginConverter.cs" />
+    <Compile Include="Utilities\PanelWidthConverter.cs" />
+    <Compile Include="Utilities\PopupWidthConverter.cs" />
+    <Compile Include="Utilities\PressureValueToVisConverter.cs" />
+    <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\RoundPolyline.cs" />
+    <Compile Include="Utilities\UIHelper.cs" />
+    <Compile Include="Utilities\WidthToBorderThickConverter.cs" />
+    <Compile Include="Utilities\WPFConstants.cs" />
+    <Compile Include="Utilities\WPFHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdvancedChildParameterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdvancedChildParameterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdvancedParameterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdvChildParamSettingsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdvParamSettingsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AnalyticalColEquilUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CapillariesDiagramWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConfirmWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ColumnInfoUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Led.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Diagram\EditCapillaryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GradientMainUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GradientTableUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HardwareSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LCChartUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LCControlWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LCUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceInfoUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MethodEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MethodUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreferencesUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreferencesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProcedureParameterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="resources\brukericons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="resources\myresourcedictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="resources\syncfusionstyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SampleLoadingUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScriptSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScriptUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SystemConditionUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SystemInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="themes\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="themes\imagebutton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TrapColEquilUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\activity_24.png" />
+    <Resource Include="images\blue-dot.png" />
+    <Resource Include="images\book_20.png" />
+    <Resource Include="images\brukerlogo.png" />
+    <Resource Include="images\bug_20.png" />
+    <Resource Include="images\cancel_24.png" />
+    <Resource Include="images\cd_24.png" />
+    <Resource Include="images\closebox.png" />
+    <Resource Include="images\closeboxhover.png" />
+    <Resource Include="images\color_label_circle_blue_t.png" />
+    <Resource Include="images\dashboard_20.png" />
+    <Resource Include="images\delete_16.png" />
+    <Resource Include="images\delete_16_hover.png" />
+    <Resource Include="images\edit_30.png" />
+    <Resource Include="images\error.png" />
+    <Resource Include="images\error_24.png" />
+    <Resource Include="images\flash_20@2x.png" />
+    <Resource Include="images\flash_24.png" />
+    <Resource Include="images\icon1.ico" />
+    <Resource Include="images\iconhystarnt.ico" />
+    <Resource Include="images\info.png" />
+    <Resource Include="images\lightbulb.png" />
+    <Resource Include="images\logout_24.png" />
+    <Resource Include="images\minusgray.png" />
+    <Resource Include="images\minusgrayhover.png" />
+    <Resource Include="images\notemperature_30.png" />
+    <Resource Include="images\page_20.png" />
+    <Resource Include="images\play_24_mba.png" />
+    <Resource Include="images\plusgray.png" />
+    <Resource Include="images\plusgrayhover.png" />
+    <Resource Include="images\reload_20@2x.png" />
+    <Resource Include="images\reset_20.png" />
+    <Resource Include="images\ruler_24.png" />
+    <Resource Include="images\settingsdisabled_24.png" />
+    <Resource Include="images\settings_24.png" />
+    <Resource Include="images\settings_30.png" />
+    <Resource Include="images\settings_32.png" />
+    <Resource Include="images\syringe_16.png" />
+    <Resource Include="images\temperature_30.png" />
+    <Resource Include="images\undo_24.png" />
+    <Resource Include="images\warning.png" />
+    <Resource Include="images\wrench_20.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  
+</Project>

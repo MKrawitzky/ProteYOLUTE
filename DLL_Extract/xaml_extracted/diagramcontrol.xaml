@@ -1,0 +1,17 @@
+xmlns:="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+<ResourceDictionary>
+    .MergedDictionaries =
+    ._Items =
+  <ResourceDictionary>
+      .Source =
+        "System.Windows.Baml2006.TypeConverterMarkupExtension"
+  </EndObject>
+  <ResourceDictionary>
+      .Source =
+        "System.Windows.Baml2006.TypeConverterMarkupExtension"
+  </EndObject>
+</EndObject>
+  .DeferrableContent =
+    "System.IO.MemoryStream"
+</EndObject>

@@ -1,0 +1,205 @@
+<UserControl
+	x:Class="BalticWpfControlLib.AdvancedChildParameterControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:utils="clr-namespace:BalticWpfControlLib.Utilities"
+	xmlns:local="clr-namespace:BalticWpfControlLib"
+	xmlns:syncfusion="http://schemas.syncfusion.com/wpf">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="Resources/SyncfusionStyle.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<local:AdvChildParameterTypeTemplateSelector
+				x:Key="dataTemplateSelector" />
+			<local:AdvChildParameterValueConverter
+				x:Key="paramValueConverter" />
+			<local:BoolToVisCollapseConverter
+				x:Key="boolToVisCollapseConverter" />
+			<local:StringToSymbolsConverter
+				x:Key="stringToSymbolsConverter" />
+			<utils:ObjectToIntConverter
+				x:Key="ObjectToIntConverter" />
+			<Style
+				x:Key="{x:Type TextBox}"
+				TargetType="{x:Type TextBox}">
+				<Style.Triggers>
+					<DataTrigger
+						Value="True"
+						Binding="{Binding HasError}">
+						<Setter
+							Property="FrameworkElement.ToolTip"
+							Value="{Binding ErrorMessage}" />
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+			<Style
+				x:Key="MeToo"
+				TargetType="{x:Type Border}">
+				<Setter
+					Property="BorderBrush"
+					Value="#00FFFFFF" />
+				<Style.Triggers>
+					<DataTrigger
+						Value="True"
+						Binding="{Binding HasError}">
+						<Setter
+							Property="BorderBrush"
+							Value="#FFFF0000" />
+						<Setter
+							Property="BorderThickness"
+							Value="2" />
+						<Setter
+							Property="FrameworkElement.ToolTip"
+							Value="{Binding ErrorMessage}" />
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+			<Style
+				x:Key="{x:Type syncfusion:DoubleTextBox}"
+				TargetType="{x:Type syncfusion:DoubleTextBox}"
+				BasedOn="{StaticResource DefaultDoubleTextboxStyle}">
+				<Style.Triggers>
+					<DataTrigger
+						Value="True"
+						Binding="{Binding HasError}">
+						<Setter
+							Property="BorderBrush"
+							Value="#FFFF0000" />
+						<Setter
+							Property="BorderThickness"
+							Value="2" />
+						<Setter
+							Property="FrameworkElement.ToolTip"
+							Value="{Binding ErrorMessage}" />
+						<Setter
+							Property="syncfusion:EditorBase.FocusedBorderBrush"
+							Value="#FFFF0000" />
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+			<Style
+				x:Key="{x:Type syncfusion:IntegerTextBox}"
+				TargetType="{x:Type syncfusion:IntegerTextBox}"
+				BasedOn="{StaticResource DefaultIntegerTextboxStyle}">
+				<Style.Triggers>
+					<DataTrigger
+						Value="True"
+						Binding="{Binding HasError}">
+						<Setter
+							Property="BorderBrush"
+							Value="#FFFF0000" />
+						<Setter
+							Property="BorderThickness"
+							Value="2" />
+						<Setter
+							Property="FrameworkElement.ToolTip"
+							Value="{Binding ErrorMessage}" />
+						<Setter
+							Property="syncfusion:EditorBase.FocusedBorderBrush"
+							Value="#FFFF0000" />
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<local:ContainerTemplatableItemsControl
+		x:Name="ParameterItems"
+		SourceUpdated="ParameterItems_SourceUpdated"
+		Grid.IsSharedSizeScope="True"
+		KeyboardNavigation.IsTabStop="False"
+		ItemTemplateSelector="{StaticResource dataTemplateSelector}">
+		<FrameworkElement.Resources>
+			<ResourceDictionary>
+				<DataTemplate
+					x:Key="defaultParamTemplate">
+					<TextBlock
+						TextWrapping="Wrap"
+						TextTrimming="CharacterEllipsis"
+						VerticalAlignment="Center"
+						Text="{Binding Path=Value, NotifyOnSourceUpdated=True, Converter={StaticResource paramValueConverter}}" />
+				</DataTemplate>
+				<DataTemplate
+					x:Key="intParamTemplate">
+					<syncfusion:IntegerTextBox
+						HorizontalContentAlignment="Right"
+						Value="{Binding Value, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ObjectToIntConverter}}" />
+				</DataTemplate>
+				<DataTemplate
+					x:Key="doubleParamTemplate">
+					<syncfusion:DoubleTextBox
+						HorizontalContentAlignment="Right"
+						NumberDecimalDigits="1"
+						Value="{Binding Path=Value, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+				</DataTemplate>
+				<DataTemplate
+					x:Key="stringParamTemplate">
+					<TextBox
+						Text="{Binding Path=Value, NotifyOnSourceUpdated=True}" />
+				</DataTemplate>
+				<DataTemplate
+					x:Key="boolParamTemplate">
+					<CheckBox
+						IsChecked="{Binding Path=Value, NotifyOnSourceUpdated=True}" />
+				</DataTemplate>
+			</ResourceDictionary>
+		</FrameworkElement.Resources>
+		<ItemsControl.ItemContainerStyle>
+			<Style
+				TargetType="{x:Type ContentControl}">
+				<Setter
+					Property="KeyboardNavigation.IsTabStop"
+					Value="False" />
+				<Setter
+					Property="Template">
+					<Setter.Value>
+						<ControlTemplate
+							TargetType="{x:Type ContentControl}">
+							<Border
+								Name="ItemBorder"
+								BorderThickness="1"
+								BorderBrush="{TemplateBinding Control.Background}"
+								Margin="0,1,0,1"
+								Visibility="{Binding Path=IsVisible, Converter='{StaticResource boolToVisCollapseConverter}'}">
+								<Grid
+									VerticalAlignment="Center"
+									Margin="1">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition
+											SharedSizeGroup="A" />
+										<ColumnDefinition
+											SharedSizeGroup="B" />
+										<ColumnDefinition
+											Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition
+											Height="Auto" />
+									</Grid.RowDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Text="{Binding Path=Name, StringFormat={}{0}:}" />
+									<ContentPresenter
+										Grid.Column="1"
+										HorizontalAlignment="Stretch"
+										VerticalAlignment="Center"
+										Margin="2,0,2,0" />
+									<TextBlock
+										Grid.Column="2"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Center"
+										Text="{Binding Unit, Converter='{StaticResource stringToSymbolsConverter}'}" />
+								</Grid>
+							</Border>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</ItemsControl.ItemContainerStyle>
+	</local:ContainerTemplatableItemsControl>
+</UserControl>

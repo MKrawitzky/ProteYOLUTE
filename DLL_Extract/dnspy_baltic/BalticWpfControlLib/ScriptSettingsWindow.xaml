@@ -1,0 +1,83 @@
+<Window
+	x:Class="BalticWpfControlLib.ScriptSettingsWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:BalticWpfControlLib"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Title="Customize procedure"
+	ResizeMode="NoResize"
+	WindowStartupLocation="CenterScreen"
+	HorizontalAlignment="Left"
+	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	SizeToContent="WidthAndHeight"
+	ShowInTaskbar="False"
+	MaxHeight="750">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="Resources/MyResourceDictionary.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<local:BoolToVisCollapseConverter
+				x:Key="BoolToVisibilityConverter" />
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock
+			Grid.Row="0"
+			Margin="10"
+			TextWrapping="Wrap"
+			FontSize="14"
+			FontWeight="SemiBold"
+			MaxWidth="350"
+			HorizontalAlignment="Center"
+			Text="{Binding Description}" />
+		<ScrollViewer
+			Grid.Row="1"
+			HorizontalScrollBarVisibility="Hidden"
+			VerticalScrollBarVisibility="Auto"
+			Margin="10"
+			Content="{Binding ParameterControl}" />
+		<WrapPanel
+			Grid.Row="2"
+			HorizontalAlignment="Right"
+			Margin="10,0,10,0">
+			<Button
+				Name="btnApply"
+				Content="Apply"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Bottom"
+				Width="70"
+				Margin="6,6,6,10"
+				Visibility="{Binding IsApplyActive, Converter='{StaticResource BoolToVisibilityConverter}'}"
+				IsEnabled="{Binding ParameterControl.IsValid}"
+				Click="btnApply_Click" />
+			<Button
+				Content="Run"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Bottom"
+				Width="70"
+				Margin="6,6,6,10"
+				IsDefault="True"
+				IsEnabled="{Binding ParameterControl.IsValid}"
+				Click="btnOK_Click" />
+			<Button
+				Content="Cancel"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Bottom"
+				Width="70"
+				Margin="6,6,6,10"
+				IsCancel="True"
+				Click="btnCancel_Click" />
+		</WrapPanel>
+	</Grid>
+</Window>

@@ -1,0 +1,132 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/BitmapGraphics/Icons.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/BitmapGraphics/Assets.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/VectorGraphics/Icons.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/VectorGraphics/Shapes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Colors.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Settings/Settings.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Settings/Typography.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/DataTemplates/DataTemplates.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/BlindPlugControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/LineBreakControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/InjectionControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/LinkControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/LinkControlBasic.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/LoopControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/OutputControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/PumpControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/SensorControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/SolventControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/TrapControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/ValveControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/WasteControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/DiagramControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/MainPumpControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/TemperatureControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/CapillaryControl.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/CustomControls/TableControl.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="{x:Type BlindPlugControl}"
+		TargetType="{x:Type BlindPlugControl}"
+		BasedOn="{StaticResource DefaultBlindPlugControlStyle}" />
+	<Style
+		x:Key="{x:Type LineBreakControl}"
+		TargetType="{x:Type LineBreakControl}"
+		BasedOn="{StaticResource DefaultLineBreakControlStyle}" />
+	<Style
+		x:Key="{x:Type InjectionControl}"
+		TargetType="{x:Type InjectionControl}"
+		BasedOn="{StaticResource DefaultInjectionControlStyle}" />
+	<Style
+		x:Key="{x:Type LinkControl}"
+		TargetType="{x:Type LinkControl}"
+		BasedOn="{StaticResource DefaultLinkControlStyle}" />
+	<Style
+		x:Key="{x:Type LinkControlBasic}"
+		TargetType="{x:Type LinkControlBasic}"
+		BasedOn="{StaticResource DefaultLinkControlBasicStyle}" />
+	<Style
+		x:Key="{x:Type LoopControl}"
+		TargetType="{x:Type LoopControl}"
+		BasedOn="{StaticResource DefaultLoopControlStyle}" />
+	<Style
+		x:Key="{x:Type OutputControl}"
+		TargetType="{x:Type OutputControl}"
+		BasedOn="{StaticResource DefaultOutputControlStyle}" />
+	<Style
+		x:Key="{x:Type PumpControl}"
+		TargetType="{x:Type PumpControl}"
+		BasedOn="{StaticResource DefaultPumpControlStyle}" />
+	<Style
+		x:Key="{x:Type SensorControl}"
+		TargetType="{x:Type SensorControl}"
+		BasedOn="{StaticResource DefaultSensorControlStyle}" />
+	<Style
+		x:Key="{x:Type SolventControl}"
+		TargetType="{x:Type SolventControl}"
+		BasedOn="{StaticResource DefaultSolventControlStyle}" />
+	<Style
+		x:Key="{x:Type TrapControl}"
+		TargetType="{x:Type TrapControl}"
+		BasedOn="{StaticResource DefaultTrapControlStyle}" />
+	<Style
+		x:Key="{x:Type ValveControlItem}"
+		TargetType="{x:Type ValveControlItem}"
+		BasedOn="{StaticResource DefaultValveControlItemStyle}" />
+	<Style
+		x:Key="{x:Type ValveControl}"
+		TargetType="{x:Type ValveControl}"
+		BasedOn="{StaticResource DefaultValveControlStyle}" />
+	<Style
+		x:Key="{x:Type WasteControl}"
+		TargetType="{x:Type WasteControl}"
+		BasedOn="{StaticResource DefaultWasteControlStyle}" />
+	<Style
+		x:Key="{x:Type TemperatureControl}"
+		TargetType="{x:Type TemperatureControl}"
+		BasedOn="{StaticResource DefaultTemperatureControlStyle}" />
+	<Style
+		x:Key="{x:Type CapillaryControl}"
+		TargetType="{x:Type CapillaryControl}"
+		BasedOn="{StaticResource DefaultCapillaryControlStyle}" />
+	<Style
+		x:Key="{x:Type TableControl}"
+		TargetType="{x:Type TableControl}"
+		BasedOn="{StaticResource DefaultTableControlStyle}" />
+	<Style
+		x:Key="{x:Type DiagramControl}"
+		TargetType="{x:Type DiagramControl}"
+		BasedOn="{StaticResource DefaultDiagramControlStyle}" />
+</ResourceDictionary>

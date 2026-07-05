@@ -1,0 +1,206 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>BalticWpfControlLib</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWPF>True</UseWPF>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>11.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="images\page_20.png" />
+    <None Remove="images\plusgrayhover.png" />
+    <None Remove="confirmwindow.baml" />
+    <None Remove="advancedparametercontrol.baml" />
+    <None Remove="images\syringe_16.png" />
+    <None Remove="advparamsettingsusercontrol.baml" />
+    <None Remove="images\closeboxhover.png" />
+    <None Remove="methodusercontrol.baml" />
+    <None Remove="images\blue-dot.png" />
+    <None Remove="advchildparamsettingsusercontrol.baml" />
+    <None Remove="images\lightbulb.png" />
+    <None Remove="images\iconhystarnt.ico" />
+    <None Remove="images\ruler_24.png" />
+    <None Remove="images\icon1.ico" />
+    <None Remove="analyticalcolequilusercontrol.baml" />
+    <None Remove="resources\myresourcedictionary.baml" />
+    <None Remove="images\edit_30.png" />
+    <None Remove="images\minusgray.png" />
+    <None Remove="images\notemperature_30.png" />
+    <None Remove="images\logout_24.png" />
+    <None Remove="images\play_24_mba.png" />
+    <None Remove="images\bug_20.png" />
+    <None Remove="images\reset_20.png" />
+    <None Remove="images\temperature_30.png" />
+    <None Remove="mainusercontrol.baml" />
+    <None Remove="scriptsettingswindow.baml" />
+    <None Remove="preferenceswindow.baml" />
+    <None Remove="images\color_label_circle_blue_t.png" />
+    <None Remove="capillariesdiagramwindow.baml" />
+    <None Remove="themes\imagebutton.baml" />
+    <None Remove="aboutwindow.baml" />
+    <None Remove="systemconditionusercontrol.baml" />
+    <None Remove="images\settingsdisabled_24.png" />
+    <None Remove="images\flash_24.png" />
+    <None Remove="images\cd_24.png" />
+    <None Remove="images\warning.png" />
+    <None Remove="images\book_20.png" />
+    <None Remove="images\dashboard_20.png" />
+    <None Remove="gradientmainusercontrol.baml" />
+    <None Remove="passwordwindow.baml" />
+    <None Remove="images\error_24.png" />
+    <None Remove="themes\generic.baml" />
+    <None Remove="preferencesusercontrol.baml" />
+    <None Remove="images\settings_32.png" />
+    <None Remove="images\settings_30.png" />
+    <None Remove="settingsusercontrol.baml" />
+    <None Remove="images\settings_24.png" />
+    <None Remove="images\reload_20-2x.png" />
+    <None Remove="systeminfowindow.baml" />
+    <None Remove="controls\columninfousercontrol.baml" />
+    <None Remove="images\plusgray.png" />
+    <None Remove="lcchartusercontrol.baml" />
+    <None Remove="images\info.png" />
+    <None Remove="resources\syncfusionstyle.baml" />
+    <None Remove="scriptusercontrol.baml" />
+    <None Remove="images\minusgrayhover.png" />
+    <None Remove="lcusercontrol.baml" />
+    <None Remove="sampleloadingusercontrol.baml" />
+    <None Remove="images\closebox.png" />
+    <None Remove="images\brukerlogo.png" />
+    <None Remove="diagram\editcapillarywindow.baml" />
+    <None Remove="lccontrolwindow.baml" />
+    <None Remove="controls\led.baml" />
+    <None Remove="advancedchildparametercontrol.baml" />
+    <None Remove="images\delete_16.png" />
+    <None Remove="images\wrench_20.png" />
+    <None Remove="images\activity_24.png" />
+    <None Remove="maintenanceinfousercontrol.baml" />
+    <None Remove="gradienttableusercontrol.baml" />
+    <None Remove="images\flash_20-2x.png" />
+    <None Remove="images\cancel_24.png" />
+    <None Remove="methodeditorwindow.baml" />
+    <None Remove="images\error.png" />
+    <None Remove="procedureparametercontrol.baml" />
+    <None Remove="resources\brukericons.baml" />
+    <None Remove="advancedchildparameterwindow.baml" />
+    <None Remove="trapcolequilusercontrol.baml" />
+    <None Remove="images\undo_24.png" />
+    <None Remove="images\delete_16_hover.png" />
+    <None Remove="hardwaresettingswindow.baml" />
+    <None Remove="controls\circularprogressbar.baml" />
+    <EmbeddedResource Include="images\page_20.png" LogicalName="images/page_20.png" />
+    <EmbeddedResource Include="images\plusgrayhover.png" LogicalName="images/plusgrayhover.png" />
+    <EmbeddedResource Include="confirmwindow.baml" LogicalName="confirmwindow.baml" />
+    <EmbeddedResource Include="advancedparametercontrol.baml" LogicalName="advancedparametercontrol.baml" />
+    <EmbeddedResource Include="images\syringe_16.png" LogicalName="images/syringe_16.png" />
+    <EmbeddedResource Include="advparamsettingsusercontrol.baml" LogicalName="advparamsettingsusercontrol.baml" />
+    <EmbeddedResource Include="images\closeboxhover.png" LogicalName="images/closeboxhover.png" />
+    <EmbeddedResource Include="methodusercontrol.baml" LogicalName="methodusercontrol.baml" />
+    <EmbeddedResource Include="images\blue-dot.png" LogicalName="images/blue-dot.png" />
+    <EmbeddedResource Include="advchildparamsettingsusercontrol.baml" LogicalName="advchildparamsettingsusercontrol.baml" />
+    <EmbeddedResource Include="images\lightbulb.png" LogicalName="images/lightbulb.png" />
+    <EmbeddedResource Include="images\iconhystarnt.ico" LogicalName="images/iconhystarnt.ico" />
+    <EmbeddedResource Include="images\ruler_24.png" LogicalName="images/ruler_24.png" />
+    <EmbeddedResource Include="images\icon1.ico" LogicalName="images/icon1.ico" />
+    <EmbeddedResource Include="analyticalcolequilusercontrol.baml" LogicalName="analyticalcolequilusercontrol.baml" />
+    <EmbeddedResource Include="resources\myresourcedictionary.baml" LogicalName="resources/myresourcedictionary.baml" />
+    <EmbeddedResource Include="images\edit_30.png" LogicalName="images/edit_30.png" />
+    <EmbeddedResource Include="images\minusgray.png" LogicalName="images/minusgray.png" />
+    <EmbeddedResource Include="images\notemperature_30.png" LogicalName="images/notemperature_30.png" />
+    <EmbeddedResource Include="images\logout_24.png" LogicalName="images/logout_24.png" />
+    <EmbeddedResource Include="images\play_24_mba.png" LogicalName="images/play_24_mba.png" />
+    <EmbeddedResource Include="images\bug_20.png" LogicalName="images/bug_20.png" />
+    <EmbeddedResource Include="images\reset_20.png" LogicalName="images/reset_20.png" />
+    <EmbeddedResource Include="images\temperature_30.png" LogicalName="images/temperature_30.png" />
+    <EmbeddedResource Include="mainusercontrol.baml" LogicalName="mainusercontrol.baml" />
+    <EmbeddedResource Include="scriptsettingswindow.baml" LogicalName="scriptsettingswindow.baml" />
+    <EmbeddedResource Include="preferenceswindow.baml" LogicalName="preferenceswindow.baml" />
+    <EmbeddedResource Include="images\color_label_circle_blue_t.png" LogicalName="images/color_label_circle_blue_t.png" />
+    <EmbeddedResource Include="capillariesdiagramwindow.baml" LogicalName="capillariesdiagramwindow.baml" />
+    <EmbeddedResource Include="themes\imagebutton.baml" LogicalName="themes/imagebutton.baml" />
+    <EmbeddedResource Include="aboutwindow.baml" LogicalName="aboutwindow.baml" />
+    <EmbeddedResource Include="systemconditionusercontrol.baml" LogicalName="systemconditionusercontrol.baml" />
+    <EmbeddedResource Include="images\settingsdisabled_24.png" LogicalName="images/settingsdisabled_24.png" />
+    <EmbeddedResource Include="images\flash_24.png" LogicalName="images/flash_24.png" />
+    <EmbeddedResource Include="images\cd_24.png" LogicalName="images/cd_24.png" />
+    <EmbeddedResource Include="images\warning.png" LogicalName="images/warning.png" />
+    <EmbeddedResource Include="images\book_20.png" LogicalName="images/book_20.png" />
+    <EmbeddedResource Include="images\dashboard_20.png" LogicalName="images/dashboard_20.png" />
+    <EmbeddedResource Include="gradientmainusercontrol.baml" LogicalName="gradientmainusercontrol.baml" />
+    <EmbeddedResource Include="passwordwindow.baml" LogicalName="passwordwindow.baml" />
+    <EmbeddedResource Include="images\error_24.png" LogicalName="images/error_24.png" />
+    <EmbeddedResource Include="themes\generic.baml" LogicalName="themes/generic.baml" />
+    <EmbeddedResource Include="preferencesusercontrol.baml" LogicalName="preferencesusercontrol.baml" />
+    <EmbeddedResource Include="images\settings_32.png" LogicalName="images/settings_32.png" />
+    <EmbeddedResource Include="images\settings_30.png" LogicalName="images/settings_30.png" />
+    <EmbeddedResource Include="settingsusercontrol.baml" LogicalName="settingsusercontrol.baml" />
+    <EmbeddedResource Include="images\settings_24.png" LogicalName="images/settings_24.png" />
+    <EmbeddedResource Include="images\reload_20-2x.png" LogicalName="images/reload_20@2x.png" />
+    <EmbeddedResource Include="systeminfowindow.baml" LogicalName="systeminfowindow.baml" />
+    <EmbeddedResource Include="controls\columninfousercontrol.baml" LogicalName="controls/columninfousercontrol.baml" />
+    <EmbeddedResource Include="images\plusgray.png" LogicalName="images/plusgray.png" />
+    <EmbeddedResource Include="lcchartusercontrol.baml" LogicalName="lcchartusercontrol.baml" />
+    <EmbeddedResource Include="images\info.png" LogicalName="images/info.png" />
+    <EmbeddedResource Include="resources\syncfusionstyle.baml" LogicalName="resources/syncfusionstyle.baml" />
+    <EmbeddedResource Include="scriptusercontrol.baml" LogicalName="scriptusercontrol.baml" />
+    <EmbeddedResource Include="images\minusgrayhover.png" LogicalName="images/minusgrayhover.png" />
+    <EmbeddedResource Include="lcusercontrol.baml" LogicalName="lcusercontrol.baml" />
+    <EmbeddedResource Include="sampleloadingusercontrol.baml" LogicalName="sampleloadingusercontrol.baml" />
+    <EmbeddedResource Include="images\closebox.png" LogicalName="images/closebox.png" />
+    <EmbeddedResource Include="images\brukerlogo.png" LogicalName="images/brukerlogo.png" />
+    <EmbeddedResource Include="diagram\editcapillarywindow.baml" LogicalName="diagram/editcapillarywindow.baml" />
+    <EmbeddedResource Include="lccontrolwindow.baml" LogicalName="lccontrolwindow.baml" />
+    <EmbeddedResource Include="controls\led.baml" LogicalName="controls/led.baml" />
+    <EmbeddedResource Include="advancedchildparametercontrol.baml" LogicalName="advancedchildparametercontrol.baml" />
+    <EmbeddedResource Include="images\delete_16.png" LogicalName="images/delete_16.png" />
+    <EmbeddedResource Include="images\wrench_20.png" LogicalName="images/wrench_20.png" />
+    <EmbeddedResource Include="images\activity_24.png" LogicalName="images/activity_24.png" />
+    <EmbeddedResource Include="maintenanceinfousercontrol.baml" LogicalName="maintenanceinfousercontrol.baml" />
+    <EmbeddedResource Include="gradienttableusercontrol.baml" LogicalName="gradienttableusercontrol.baml" />
+    <EmbeddedResource Include="images\flash_20-2x.png" LogicalName="images/flash_20@2x.png" />
+    <EmbeddedResource Include="images\cancel_24.png" LogicalName="images/cancel_24.png" />
+    <EmbeddedResource Include="methodeditorwindow.baml" LogicalName="methodeditorwindow.baml" />
+    <EmbeddedResource Include="images\error.png" LogicalName="images/error.png" />
+    <EmbeddedResource Include="procedureparametercontrol.baml" LogicalName="procedureparametercontrol.baml" />
+    <EmbeddedResource Include="resources\brukericons.baml" LogicalName="resources/brukericons.baml" />
+    <EmbeddedResource Include="advancedchildparameterwindow.baml" LogicalName="advancedchildparameterwindow.baml" />
+    <EmbeddedResource Include="trapcolequilusercontrol.baml" LogicalName="trapcolequilusercontrol.baml" />
+    <EmbeddedResource Include="images\undo_24.png" LogicalName="images/undo_24.png" />
+    <EmbeddedResource Include="images\delete_16_hover.png" LogicalName="images/delete_16_hover.png" />
+    <EmbeddedResource Include="hardwaresettingswindow.baml" LogicalName="hardwaresettingswindow.baml" />
+    <EmbeddedResource Include="controls\circularprogressbar.baml" LogicalName="controls/circularprogressbar.baml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="Bruker.Lc">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Bruker.Lc.dll</HintPath>
+    </Reference>
+    <Reference Include="BalticClassLib">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BalticClassLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Wpf">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.Shared.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="BrukerLC.Utils">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfChart.WPF">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfChart.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="BrukerLC.Interfaces">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfTextInputLayout.WPF">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfTextInputLayout.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+</Project>

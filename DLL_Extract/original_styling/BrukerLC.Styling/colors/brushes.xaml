@@ -1,0 +1,55 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Colors.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<SolidColorBrush
+		x:Key="WhiteBrush"
+		po:Freeze="True"
+		Color="{StaticResource WhiteColor}" />
+	<SolidColorBrush
+		x:Key="BlackBrush"
+		po:Freeze="True"
+		Color="{StaticResource BlackColor}" />
+	<SolidColorBrush
+		x:Key="LightGrayBrush"
+		po:Freeze="True"
+		Color="{StaticResource LightGrayColor}" />
+	<SolidColorBrush
+		x:Key="GrayBrush"
+		po:Freeze="True"
+		Color="{StaticResource GrayColor}" />
+	<SolidColorBrush
+		x:Key="DarkGrayBrush"
+		po:Freeze="True"
+		Color="{StaticResource DarkGrayColor}" />
+	<SolidColorBrush
+		x:Key="BlueBrush"
+		po:Freeze="True"
+		Color="{StaticResource BlueColor}" />
+	<SolidColorBrush
+		x:Key="BlueBrush_30"
+		po:Freeze="True"
+		Opacity=".3"
+		Color="{StaticResource BlueColor}" />
+	<SolidColorBrush
+		x:Key="RedBrush"
+		po:Freeze="True"
+		Color="{StaticResource RedColor}" />
+	<SolidColorBrush
+		x:Key="RedBrush_30"
+		po:Freeze="True"
+		Opacity=".3"
+		Color="{StaticResource RedColor}" />
+	<SolidColorBrush
+		x:Key="PurpleBrush"
+		po:Freeze="True"
+		Color="{StaticResource PurpleColor}" />
+	<SolidColorBrush
+		x:Key="ErrorBrush"
+		po:Freeze="True"
+		Color="Gold" />
+</ResourceDictionary>

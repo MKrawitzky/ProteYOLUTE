@@ -1,0 +1,719 @@
+<UserControl
+	x:Class="BalticWpfControlLib.SettingsUserControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:controls="clr-namespace:BalticWpfControlLib.Controls"
+	xmlns:utilities="clr-namespace:BalticWpfControlLib.Utilities"
+	xmlns:locals="clr-namespace:BalticWpfControlLib"
+	xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+	Validation.Error="Validation_Error">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="Resources/MyResourceDictionary.xaml" />
+				<ResourceDictionary
+					Source="Resources/SyncfusionStyle.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<utilities:BoolToVisibilityCollapseConverter
+				x:Key="boolToVisConverter" />
+			<utilities:PressureValueToVisConverter
+				x:Key="pressureValueToVisConverter" />
+			<Style
+				x:Key="titleText"
+				TargetType="{x:Type TextBlock}">
+				<Setter
+					Property="Margin"
+					Value="2,2,2,2" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="9" />
+				<Setter
+					Property="HorizontalAlignment"
+					Value="Left" />
+				<Setter
+					Property="Foreground"
+					Value="#FF4682B4" />
+			</Style>
+			<Style
+				x:Key="inlineText"
+				TargetType="{x:Type TextBlock}">
+				<Setter
+					Property="Margin"
+					Value="5,5,5,0" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="12" />
+				<Setter
+					Property="HorizontalAlignment"
+					Value="Right" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Center" />
+			</Style>
+			<Style
+				x:Key="errorText"
+				TargetType="{x:Type TextBlock}">
+				<Setter
+					Property="Margin"
+					Value="5,5,5,0" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="11" />
+				<Setter
+					Property="Foreground"
+					Value="#FFFF0000" />
+				<Setter
+					Property="HorizontalAlignment"
+					Value="Center" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Center" />
+			</Style>
+			<Style
+				x:Key="checkText"
+				TargetType="{x:Type CheckBox}">
+				<Setter
+					Property="Margin"
+					Value="10,5,10,2" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="12" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Center" />
+			</Style>
+			<Style
+				x:Key="simText"
+				TargetType="{x:Type CheckBox}">
+				<Setter
+					Property="Margin"
+					Value="10,5,0,10" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="12" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Center" />
+			</Style>
+			<Style
+				x:Key="{x:Type ComboBox}"
+				TargetType="{x:Type ComboBox}">
+				<Setter
+					Property="Margin"
+					Value="5,6,10,1" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="12" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Center" />
+			</Style>
+			<Style
+				x:Key="editText"
+				TargetType="{x:Type TextBox}">
+				<Setter
+					Property="Margin"
+					Value="5,5,10,0" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="12" />
+				<Setter
+					Property="HorizontalAlignment"
+					Value="Left" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Center" />
+				<Setter
+					Property="Validation.ErrorTemplate">
+					<Setter.Value>
+						<ControlTemplate>
+							<DockPanel
+								LastChildFill="True">
+								<Border
+									BorderBrush="#FFFF0000"
+									BorderThickness="1">
+									<AdornedElementPlaceholder />
+								</Border>
+							</DockPanel>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Style.Triggers>
+					<Trigger
+						Property="Validation.HasError"
+						Value="true">
+						<Setter
+							Property="FrameworkElement.ToolTip"
+							Value="{Binding Path=(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<Style
+				x:Key="readOnlyText"
+				TargetType="{x:Type TextBox}">
+				<Setter
+					Property="Margin"
+					Value="2" />
+				<Setter
+					Property="FontWeight"
+					Value="Normal" />
+				<Setter
+					Property="FontSize"
+					Value="11" />
+				<Setter
+					Property="HorizontalAlignment"
+					Value="Stretch" />
+				<Setter
+					Property="VerticalAlignment"
+					Value="Stretch" />
+				<Setter
+					Property="TextBoxBase.IsReadOnly"
+					Value="True" />
+				<Setter
+					Property="Background"
+					Value="#FFD3D3D3" />
+				<Setter
+					Property="BorderThickness"
+					Value="1" />
+			</Style>
+			<Style
+				x:Key="entryText"
+				TargetType="{x:Type syncfusion:IntegerTextBox}"
+				BasedOn="{StaticResource DefaultIntegerTextboxStyle}">
+				<Setter
+					Property="HorizontalAlignment"
+					Value="Left" />
+				<Setter
+					Property="Margin"
+					Value="4,6,4,1" />
+				<Setter
+					Property="Width"
+					Value="50" />
+				<Setter
+					Property="Height"
+					Value="25" />
+				<Setter
+					Property="BorderBrush"
+					Value="#FF000000" />
+				<Setter
+					Property="BorderThickness"
+					Value="1,1,1,1" />
+				<Setter
+					Property="TextBox.TextAlignment"
+					Value="Right" />
+				<Setter
+					Property="Validation.ErrorTemplate">
+					<Setter.Value>
+						<ControlTemplate>
+							<DockPanel
+								LastChildFill="True">
+								<Border
+									BorderBrush="#FFFF0000"
+									BorderThickness="1">
+									<AdornedElementPlaceholder />
+								</Border>
+							</DockPanel>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Style.Triggers>
+					<Trigger
+						Property="Validation.HasError"
+						Value="true">
+						<Setter
+							Property="FrameworkElement.ToolTip"
+							Value="{Binding Path=(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="Auto" />
+			<ColumnDefinition
+				Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="0" />
+			<RowDefinition
+				Height="0" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock
+			x:Name="txtService"
+			Text="*** SERVICE ***"
+			Grid.ColumnSpan="2"
+			Foreground="#FFFF0000"
+			VerticalAlignment="Top"
+			HorizontalAlignment="Right"
+			Margin="4"
+			FontSize="14"
+			Visibility="{Binding IsService, Converter='{StaticResource boolToVisConverter}'}" />
+		<CheckBox
+			Style="{StaticResource simText}"
+			Grid.Column="0"
+			Grid.Row="1"
+			Grid.ColumnSpan="2"
+			Content="Simulate"
+			IsChecked="{Binding Settings.IsSimulate}" />
+		<CheckBox
+			Grid.Column="1"
+			Grid.Row="1"
+			Content="CTC Simulate"
+			VerticalAlignment="Center"
+			HorizontalAlignment="Right"
+			Margin=" 0,5,16,10"
+			IsChecked="{Binding Settings.IsCTCSimulate}"
+			Visibility="{Binding IsCTCSimulateVisible, Converter='{StaticResource boolToVisConverter}'}" />
+		<TextBlock
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="2"
+			Text="Application Key: 0x"
+			Visibility="Collapsed" />
+		<TextBox
+			x:Name="txtAppKey"
+			Grid.Column="1"
+			Grid.Row="2"
+			HorizontalAlignment="Left"
+			VerticalContentAlignment="Center"
+			Margin="5,6,10,1"
+			Width="40"
+			Height="25"
+			BorderBrush="#FF000000"
+			BorderThickness="1,1,1,1"
+			Visibility="Collapsed"
+			Text="{Binding Path=Settings.ApplicationKey, Mode=TwoWay, StringFormat={}{0:x4}, UpdateSourceTrigger=LostFocus}"
+			TextChanged="TxtAppKey_TextChanged" />
+		<TextBlock
+			Name="tbAppKeyError"
+			Style="{StaticResource errorText}"
+			Grid.Row="3"
+			Grid.Column="0"
+			Grid.ColumnSpan="2"
+			Text="*** Invalid Application Key ***"
+			Visibility="Collapsed" />
+		<TextBlock
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="4"
+			Text="Autosampler IPv4:" />
+		<controls:IPControl
+			x:Name="ipctrlASIP"
+			Style="{StaticResource editText}"
+			Grid.Column="1"
+			Grid.Row="4"
+			BorderBrush="#FF000000"
+			BorderThickness="1,1,1,1"
+			Height="25"
+			Width="100"
+			VerticalContentAlignment="Center"
+			Text="{Binding Settings.AutosamplerIP, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+		<TextBlock
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="5"
+			Text="Sample tray temperature:" />
+		<ComboBox
+			x:Name="comboTemperature"
+			Grid.Column="1"
+			Grid.Row="5"
+			Height="25"
+			Width="100"
+			Margin="5,6,10,1"
+			HorizontalAlignment="Left"
+			DisplayMemberPath="ValueString"
+			SelectedValuePath="TrayTemperatureEnum"
+			SelectedValue="{Binding Settings.TrayTemperature}" />
+		<TextBlock
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="6"
+			Text="Slot 1 tray type:" />
+		<ComboBox
+			x:Name="comboSlot1"
+			Grid.Column="1"
+			Grid.Row="6"
+			Height="25"
+			Width="100"
+			Margin="5,6,10,1"
+			HorizontalAlignment="Left"
+			SelectedValue="{Binding Settings.Slot1TrayTypeName, UpdateSourceTrigger=PropertyChanged}"
+			SelectionChanged="comboSlot1_selectionChanged" />
+		<TextBlock
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="7"
+			Text="Slot 2 tray type:" />
+		<ComboBox
+			x:Name="comboSlot2"
+			Grid.Column="1"
+			Grid.Row="7"
+			Height="25"
+			Width="100"
+			Margin="5,6,10,1"
+			HorizontalAlignment="Left"
+			SelectedValue="{Binding Settings.Slot2TrayTypeName, UpdateSourceTrigger=PropertyChanged}"
+			SelectionChanged="comboSlot2_selectionChanged" />
+		<StackPanel
+			Name="stkTrayWarn"
+			Grid.Row="8"
+			Grid.ColumnSpan="2"
+			Grid.Column="0"
+			Orientation="Horizontal"
+			Height="22"
+			Margin="4,2,6,0"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Center"
+			Visibility="{Binding IsShowTrayError, Converter='{StaticResource boolToVisConverter}'}">
+			<Image
+				Source="Images/Warning.png"
+				Height="18"
+				VerticalAlignment="Center"
+				Margin="0,1,0,0" />
+			<TextBlock
+				Style="{StaticResource errorText}"
+				Margin="2,0,0,0"
+				Text="Invalid Tray Configuration" />
+		</StackPanel>
+		<TextBlock
+			x:Name="txtTrapInjTitle"
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="9"
+			Text="PM reminder after Trap/Inj valve shifts:"
+			Visibility="{Binding IsShowTrapInjValve, Converter='{StaticResource boolToVisConverter}'}" />
+		<syncfusion:IntegerTextBox
+			x:Name="txtMaxTIShifts"
+			Grid.Column="1"
+			Grid.Row="9"
+			ScrollInterval="100"
+			Style="{StaticResource entryText}"
+			MinValue="200"
+			MaxValue="250000"
+			MinValidation="OnLostFocus"
+			MaxValidation="OnKeyPress"
+			Value="{Binding Path=MaxTIValveShifts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			Visibility="{Binding IsShowTrapInjValve, Converter='{StaticResource boolToVisConverter}'}" />
+		<Border
+			Grid.Row="10"
+			Grid.ColumnSpan="2"
+			Grid.Column="0"
+			BorderThickness="1"
+			Height="1"
+			VerticalAlignment="Center"
+			BorderBrush="#0071BC"
+			Margin="8,8,8,2" />
+		<TextBlock
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="11"
+			Text="Pump IPv4:" />
+		<controls:IPControl
+			Style="{StaticResource editText}"
+			Grid.Column="1"
+			Grid.Row="11"
+			BorderBrush="#FF000000"
+			BorderThickness="1,1,1,1"
+			Width="100"
+			Height="25"
+			VerticalContentAlignment="Center"
+			Margin="5,6,10,1"
+			Text="{Binding Settings.PumpHost, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+		<TextBlock
+			x:Name="txtPumpShiftTitle"
+			Style="{StaticResource inlineText}"
+			Grid.Column="0"
+			Grid.Row="12"
+			Text="PM reminder after Pump valve shifts:" />
+		<syncfusion:IntegerTextBox
+			x:Name="txtMaxPumpShifts"
+			Grid.Column="1"
+			Grid.Row="12"
+			ScrollInterval="100"
+			Style="{StaticResource entryText}"
+			MinValue="200"
+			MaxValue="250000"
+			MinValidation="OnLostFocus"
+			MaxValidation="OnKeyPress"
+			Value="{Binding Path=MaxPumpValveShifts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+		<StackPanel
+			Grid.Column="0"
+			Grid.Row="13"
+			Orientation="Horizontal"
+			HorizontalAlignment="Right"
+			Visibility="{Binding IsService, Converter='{StaticResource boolToVisConverter}'}">
+			<Image
+				x:Name="imgWarn"
+				Source="Images/Warning.png"
+				Height="18"
+				VerticalAlignment="Center"
+				Margin="0,1,0,0"
+				ToolTip="Please verify the pump is capable of 1600 bar, or damage may occur!">
+				<UIElement.Visibility>
+					<MultiBinding
+						Converter="{StaticResource pressureValueToVisConverter}">
+						<Binding
+							Path="IsService" />
+						<Binding
+							Path="MaxPumpPressure" />
+					</MultiBinding>
+				</UIElement.Visibility>
+			</Image>
+			<TextBlock
+				x:Name="tbMaxPressure"
+				Style="{StaticResource inlineText}"
+				Text="Maximum Pump Pressure:"
+				Visibility="{Binding IsService, Converter='{StaticResource boolToVisConverter}'}" />
+		</StackPanel>
+		<StackPanel
+			x:Name="spMaxPressure"
+			Grid.Column="1"
+			Grid.Row="13"
+			Orientation="Horizontal"
+			Visibility="{Binding IsService, Converter='{StaticResource boolToVisConverter}'}">
+			<ComboBox
+				x:Name="comboMaxPumpPressure"
+				Height="25"
+				Width="74"
+				Margin="5,6,2,1"
+				HorizontalContentAlignment="Right"
+				HorizontalAlignment="Left"
+				ItemsSource="{Binding MaxPumpPressures}"
+				SelectedValue="{Binding Settings.MaxPumpPressure, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBlock
+				x:Name="tbPressureUnit"
+				Text="bar"
+				Style="{StaticResource inlineText}" />
+		</StackPanel>
+		<Border
+			Grid.Row="14"
+			Grid.ColumnSpan="2"
+			Grid.Column="0"
+			BorderThickness="1"
+			Height="1"
+			VerticalAlignment="Center"
+			BorderBrush="#0071BC"
+			Margin="8,8,8,2" />
+		<GroupBox
+			Grid.Row="15"
+			Grid.ColumnSpan="2"
+			Grid.Column="0"
+			Header="INSTALLED CAPILLARIES:"
+			Margin="2,4,2,2">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="Auto" />
+					<RowDefinition
+						Height="Auto" />
+					<RowDefinition
+						Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="*" />
+					<ColumnDefinition
+						Width="Auto" />
+					<ColumnDefinition
+						Width="*" />
+				</Grid.ColumnDefinitions>
+				<Button
+					Grid.ColumnSpan="3"
+					Style="{StaticResource BalticButtonStyle}"
+					HorizontalAlignment="Center"
+					Margin="4,6,4,4"
+					Click="EditCapillaries_Click">
+					<StackPanel
+						Orientation="Horizontal">
+						<Image
+							Source="/Images/edit_30.png"
+							Height="18"
+							VerticalAlignment="Center"
+							Margin="2" />
+						<TextBlock
+							Text="Edit Capillaries..."
+							VerticalAlignment="Center"
+							Margin="2" />
+					</StackPanel>
+				</Button>
+			</Grid>
+		</GroupBox>
+		<CheckBox
+			x:Name="chkIsOvenConnected"
+			Grid.Row="16"
+			Grid.Column="0"
+			Content="Use Column Oven"
+			Style="{StaticResource checkText}"
+			IsChecked="{Binding IsColumnOvenConnected}" />
+		<StackPanel
+			Name="stkOvenInfo"
+			Grid.Row="17"
+			Grid.ColumnSpan="2"
+			Grid.Column="0"
+			Orientation="Horizontal"
+			Height="22"
+			Margin="4,2,2,0"
+			VerticalAlignment="Center"
+			Visibility="{Binding IsShowOvenInfo, Converter='{StaticResource boolToVisConverter}'}">
+			<Image
+				Source="Images/Info.png"
+				Height="18"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Margin="0,1,0,0" />
+			<TextBlock
+				Style="{StaticResource errorText}"
+				HorizontalAlignment="Left"
+				Margin="2,0,0,0"
+				Text="Column oven detected - Enable above setting for use" />
+		</StackPanel>
+		<CheckBox
+			Style="{StaticResource checkText}"
+			Grid.Column="0"
+			Grid.Row="18"
+			Content="Display pressure as psi"
+			IsChecked="{Binding Settings.IsPressurePSI}" />
+		<GroupBox
+			x:Name="grpConnect"
+			Grid.Row="19"
+			Grid.ColumnSpan="2"
+			Grid.Column="0"
+			Header="CHECK CONNECTION:"
+			Margin="2,6,2,2">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="Auto" />
+					<RowDefinition
+						Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="*" />
+					<ColumnDefinition
+						Width="*" />
+				</Grid.ColumnDefinitions>
+				<TextBox
+					x:Name="txtConnectStatus"
+					Style="{StaticResource readOnlyText}"
+					Text="not connected"
+					HorizontalContentAlignment="Center"
+					HorizontalAlignment="Center"
+					Width="120"
+					Margin="10,5,0,5" />
+				<Button
+					Name="btnConnect"
+					Grid.Row="0"
+					Grid.Column="1"
+					Style="{StaticResource BalticButtonStyle}"
+					HorizontalAlignment="Right"
+					Width="100"
+					Margin="5,5,10,5"
+					Click="btnConnect_Click">
+					<StackPanel
+						Orientation="Horizontal">
+						<Image
+							Source="Images/flash_20@2x.png"
+							Height="18" />
+						<TextBlock
+							Text=" Connect" />
+					</StackPanel>
+				</Button>
+				<Viewbox
+					x:Name="progControl"
+					Grid.Row="1"
+					Grid.ColumnSpan="2"
+					Grid.Column="0"
+					Width="50"
+					Height="50"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Panel.ZIndex="11"
+					Visibility="Hidden">
+					<controls:CircularProgressBar />
+				</Viewbox>
+				<GroupBox
+					Grid.Row="1"
+					Grid.ColumnSpan="2"
+					Grid.Column="0"
+					Header="Hardware Details:"
+					BorderThickness="0">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="*" />
+						</Grid.ColumnDefinitions>
+						<TextBox
+							x:Name="txtHardware"
+							Style="{StaticResource readOnlyText}"
+							TextWrapping="Wrap"
+							Width="300" />
+					</Grid>
+				</GroupBox>
+			</Grid>
+		</GroupBox>
+	</Grid>
+</UserControl>

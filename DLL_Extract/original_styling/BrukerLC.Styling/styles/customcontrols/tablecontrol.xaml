@@ -1,0 +1,85 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:utilities="clr-namespace:BrukerLC.Styling.Utilities">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Converters/Converters.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/FrameworkElement.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="DefaultTableControlStyle"
+		TargetType="{x:Type TableControl}"
+		BasedOn="{StaticResource FrameworkElementStyle}">
+		<Setter
+			Property="Background"
+			Value="#00FFFFFF" />
+		<Setter
+			Property="TableControl.Heading"
+			Value="{Binding Heading}" />
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type TableControl}">
+					<Grid
+						Margin="2"
+						Visibility="{Binding IsTableVisible, Converter={StaticResource VisibilityConverter}}">
+						<Grid.RowDefinitions>
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="Auto" />
+						</Grid.RowDefinitions>
+						<TextBlock
+							Text="{TemplateBinding TableControl.Heading}"
+							HorizontalAlignment="Center"
+							Foreground="#0071BC" />
+						<utilities:AutoScrollingListView
+							x:Name="pumpListView"
+							Grid.Row="1"
+							MaxHeight="130"
+							ScrollViewer.CanContentScroll="True"
+							ScrollViewer.VerticalScrollBarVisibility="Auto"
+							ItemsSource="{Binding TableItems}">
+							<ListView.View>
+								<GridView>
+									<GridViewColumn
+										Header="Time"
+										Width="59"
+										DisplayMemberBinding="{Binding Time}" />
+									<GridViewColumn
+										Header="A [µL]"
+										Width="70"
+										DisplayMemberBinding="{Binding VolumeA, ConverterParameter=' 0.000;-0.000', Converter={StaticResource VolumeDecimalPlacesConverter}}" />
+									<GridViewColumn
+										Header="B [µL]"
+										Width="70"
+										DisplayMemberBinding="{Binding VolumeB, ConverterParameter=' 0.000;-0.000', Converter={StaticResource VolumeDecimalPlacesConverter}}" />
+									<GridViewColumn
+										Header="Δ A [nL]"
+										Width="50"
+										DisplayMemberBinding="{Binding DeltaVolumeA, ConverterParameter=' 0;-0', Converter={StaticResource VolumeDecimalPlacesConverter}}" />
+									<GridViewColumn
+										Header="Δ B [nL]"
+										Width="50"
+										DisplayMemberBinding="{Binding DeltaVolumeB, ConverterParameter=' 0;-0', Converter={StaticResource VolumeDecimalPlacesConverter}}" />
+								</GridView>
+							</ListView.View>
+						</utilities:AutoScrollingListView>
+						<UIElement.RenderTransform>
+							<ScaleTransform
+								CenterX="25"
+								CenterY="25"
+								ScaleX="0.6"
+								ScaleY="0.6" />
+						</UIElement.RenderTransform>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

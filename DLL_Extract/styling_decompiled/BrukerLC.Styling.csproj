@@ -1,0 +1,87 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>BrukerLC.Styling</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWPF>True</UseWPF>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>11.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="styles\customcontrols\trapcontrol.baml" />
+    <None Remove="styles\customcontrols\linkcontrolbasic.baml" />
+    <None Remove="settings\typography.baml" />
+    <None Remove="datatemplates\datatemplates.baml" />
+    <None Remove="settings\fonticons\ergosignglyphicons-standard.otf" />
+    <None Remove="styles\customcontrols\solventcontrol.baml" />
+    <None Remove="styles\frameworkelement.baml" />
+    <None Remove="styles\customcontrols\injectioncontrol.baml" />
+    <None Remove="styles\customcontrols\capillarycontrol.baml" />
+    <None Remove="styles\customcontrols\temperaturecontrol.baml" />
+    <None Remove="styles\customcontrols\linkcontrol.baml" />
+    <None Remove="styles\customcontrols\wastecontrol.baml" />
+    <None Remove="styles\customcontrols\outputcontrol.baml" />
+    <None Remove="styles\customcontrols\blindplugcontrol.baml" />
+    <None Remove="colors\brushes.baml" />
+    <None Remove="styles\customcontrols\pumpcontrol.baml" />
+    <None Remove="converters\converters.baml" />
+    <None Remove="styles\customcontrols\sensorcontrol.baml" />
+    <None Remove="styles\customcontrols\tablecontrol.baml" />
+    <None Remove="bitmapgraphics\icons.baml" />
+    <None Remove="styles\customcontrols\linebreakcontrol.baml" />
+    <None Remove="vectorgraphics\shapes.baml" />
+    <None Remove="styles\customcontrols\loopcontrol.baml" />
+    <None Remove="settings\fonticons\ergosignglyphicons-wired.otf" />
+    <None Remove="styles\customcontrols\mainpumpcontrol.baml" />
+    <None Remove="styles\customcontrols\valvecontrol.baml" />
+    <None Remove="colors\colors.baml" />
+    <None Remove="styles\customcontrols\diagramcontrol.baml" />
+    <None Remove="settings\settings.baml" />
+    <None Remove="bitmapgraphics\icons\temperature_30.png" />
+    <None Remove="bitmapgraphics\assets.baml" />
+    <None Remove="vectorgraphics\icons.baml" />
+    <None Remove="lookandfeel.baml" />
+    <EmbeddedResource Include="styles\customcontrols\trapcontrol.baml" LogicalName="styles/customcontrols/trapcontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\linkcontrolbasic.baml" LogicalName="styles/customcontrols/linkcontrolbasic.baml" />
+    <EmbeddedResource Include="settings\typography.baml" LogicalName="settings/typography.baml" />
+    <EmbeddedResource Include="datatemplates\datatemplates.baml" LogicalName="datatemplates/datatemplates.baml" />
+    <EmbeddedResource Include="settings\fonticons\ergosignglyphicons-standard.otf" LogicalName="settings/fonticons/ergosignglyphicons-standard.otf" />
+    <EmbeddedResource Include="styles\customcontrols\solventcontrol.baml" LogicalName="styles/customcontrols/solventcontrol.baml" />
+    <EmbeddedResource Include="styles\frameworkelement.baml" LogicalName="styles/frameworkelement.baml" />
+    <EmbeddedResource Include="styles\customcontrols\injectioncontrol.baml" LogicalName="styles/customcontrols/injectioncontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\capillarycontrol.baml" LogicalName="styles/customcontrols/capillarycontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\temperaturecontrol.baml" LogicalName="styles/customcontrols/temperaturecontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\linkcontrol.baml" LogicalName="styles/customcontrols/linkcontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\wastecontrol.baml" LogicalName="styles/customcontrols/wastecontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\outputcontrol.baml" LogicalName="styles/customcontrols/outputcontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\blindplugcontrol.baml" LogicalName="styles/customcontrols/blindplugcontrol.baml" />
+    <EmbeddedResource Include="colors\brushes.baml" LogicalName="colors/brushes.baml" />
+    <EmbeddedResource Include="styles\customcontrols\pumpcontrol.baml" LogicalName="styles/customcontrols/pumpcontrol.baml" />
+    <EmbeddedResource Include="converters\converters.baml" LogicalName="converters/converters.baml" />
+    <EmbeddedResource Include="styles\customcontrols\sensorcontrol.baml" LogicalName="styles/customcontrols/sensorcontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\tablecontrol.baml" LogicalName="styles/customcontrols/tablecontrol.baml" />
+    <EmbeddedResource Include="bitmapgraphics\icons.baml" LogicalName="bitmapgraphics/icons.baml" />
+    <EmbeddedResource Include="styles\customcontrols\linebreakcontrol.baml" LogicalName="styles/customcontrols/linebreakcontrol.baml" />
+    <EmbeddedResource Include="vectorgraphics\shapes.baml" LogicalName="vectorgraphics/shapes.baml" />
+    <EmbeddedResource Include="styles\customcontrols\loopcontrol.baml" LogicalName="styles/customcontrols/loopcontrol.baml" />
+    <EmbeddedResource Include="settings\fonticons\ergosignglyphicons-wired.otf" LogicalName="settings/fonticons/ergosignglyphicons-wired.otf" />
+    <EmbeddedResource Include="styles\customcontrols\mainpumpcontrol.baml" LogicalName="styles/customcontrols/mainpumpcontrol.baml" />
+    <EmbeddedResource Include="styles\customcontrols\valvecontrol.baml" LogicalName="styles/customcontrols/valvecontrol.baml" />
+    <EmbeddedResource Include="colors\colors.baml" LogicalName="colors/colors.baml" />
+    <EmbeddedResource Include="styles\customcontrols\diagramcontrol.baml" LogicalName="styles/customcontrols/diagramcontrol.baml" />
+    <EmbeddedResource Include="settings\settings.baml" LogicalName="settings/settings.baml" />
+    <EmbeddedResource Include="bitmapgraphics\icons\temperature_30.png" LogicalName="bitmapgraphics/icons/temperature_30.png" />
+    <EmbeddedResource Include="bitmapgraphics\assets.baml" LogicalName="bitmapgraphics/assets.baml" />
+    <EmbeddedResource Include="vectorgraphics\icons.baml" LogicalName="vectorgraphics/icons.baml" />
+    <EmbeddedResource Include="lookandfeel.baml" LogicalName="lookandfeel.baml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+  </ItemGroup>
+</Project>

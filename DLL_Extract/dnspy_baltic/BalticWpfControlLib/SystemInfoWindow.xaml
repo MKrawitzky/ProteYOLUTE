@@ -1,0 +1,34 @@
+<Window
+	x:Class="BalticWpfControlLib.SystemInfoWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:BalticWpfControlLib"
+	Title="System Information"
+	SizeToContent="WidthAndHeight"
+	MinHeight="400"
+	MinWidth="300"
+	WindowStartupLocation="CenterOwner"
+	ShowInTaskbar="False"
+	ResizeMode="CanResize"
+	KeyDown="Window_KeyDown"
+	Loaded="Window_Loaded"
+	Closed="SystemInfoWindow_OnClosed">
+	<ScrollViewer
+		VerticalScrollBarVisibility="Auto">
+		<ItemsControl
+			Name="MaintenanceInfos"
+			KeyboardNavigation.IsTabStop="False">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Border
+						BorderThickness="0,0,0,1"
+						Margin="4,4,4,0"
+						BorderBrush="#FF808080">
+						<local:MaintenanceInfoUserControl
+							Margin="0,0,0,4" />
+					</Border>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</ScrollViewer>
+</Window>

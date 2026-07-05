@@ -1,0 +1,193 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:attached="clr-namespace:BrukerLC.Utils.Attached;assembly=BrukerLC.Utils">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Colors/Brushes.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Converters/Converters.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Settings/Typography.xaml" />
+		<ResourceDictionary
+			Source="/BrukerLC.Styling;component/Styles/FrameworkElement.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	<Style
+		x:Key="DefaultSensorControlStyle"
+		TargetType="{x:Type SensorControl}"
+		BasedOn="{StaticResource FrameworkElementStyle}">
+		<Setter
+			Property="Foreground"
+			Value="#FF000000" />
+		<Setter
+			Property="Background"
+			Value="#FFD3D3D3" />
+		<Setter
+			Property="SensorControl.Throughput"
+			Value="{Binding Throughput}" />
+		<Setter
+			Property="SensorControl.ThroughputUnit"
+			Value="{Binding ThroughputUnit}" />
+		<Setter
+			Property="attached:APActivatable.IsActive"
+			Value="{Binding IsActive, FallbackValue=False}" />
+		<Setter
+			Property="attached:APActivatable.ActiveBrush"
+			Value="{Binding ActiveBrush, FallbackValue=Blue}" />
+		<Setter
+			Property="attached:APValidation.HasError"
+			Value="{Binding HasError, FallbackValue=False}" />
+		<Setter
+			Property="attached:APValidation.ErrorMessage"
+			Value="{Binding ErrorMessage}" />
+		<Setter
+			Property="attached:APSignalizable.IsSignalize"
+			Value="{Binding IsSignalize, FallbackValue=False}" />
+		<Setter
+			Property="attached:APSignalizable.SignalizeBrush"
+			Value="{Binding SignalizeBrush, FallbackValue=Transparent}" />
+		<Setter
+			Property="attached:APSignalizeTextable.IsSignalizeText"
+			Value="{Binding IsSignalizeText, FallbackValue=False}" />
+		<Setter
+			Property="attached:APSignalizeTextable.SignalizeTextBrush"
+			Value="{Binding SignalizeTextBrush, FallbackValue=Transparent}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsVisible"
+			Value="{Binding IsVisible, FallbackValue=True}" />
+		<Setter
+			Property="attached:APVisibleEnableable.IsNearTransparent"
+			Value="{Binding IsNearTransparent, FallbackValue=False}" />
+		<Setter
+			Property="Width"
+			Value="54" />
+		<Setter
+			Property="Height"
+			Value="32" />
+		<Setter
+			Property="FontSize"
+			Value="{StaticResource 10FontSize}" />
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="{x:Type SensorControl}">
+					<Grid
+						Visibility="{Binding Path=(attached:APVisibleEnableable.IsVisible), Converter={StaticResource VisibilityConverter}, RelativeSource={RelativeSource Self}}"
+						Opacity="{Binding Path=(attached:APVisibleEnableable.IsNearTransparent), Converter={StaticResource OpacityConverter}, RelativeSource={RelativeSource Self}}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="Auto" />
+							<ColumnDefinition
+								Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<Border
+							x:Name="Sensor"
+							Width="42"
+							Background="{TemplateBinding Control.Background}"
+							CornerRadius="10 1 1 10"
+							Padding="6 0 0 0">
+							<Grid
+								x:Name="SensorContent"
+								VerticalAlignment="Center">
+								<Grid.RowDefinitions>
+									<RowDefinition />
+									<RowDefinition
+										Height="Auto" />
+								</Grid.RowDefinitions>
+								<ContentPresenter
+									HorizontalAlignment="Center">
+									<ContentPresenter.Content>
+										<MultiBinding
+											Converter="{StaticResource FlowSensorDecimalPlacesConverter}">
+											<Binding
+												Path="Throughput"
+												RelativeSource="{RelativeSource TemplatedParent}" />
+											<Binding
+												Path="ThroughputUnit"
+												RelativeSource="{RelativeSource TemplatedParent}" />
+										</MultiBinding>
+									</ContentPresenter.Content>
+								</ContentPresenter>
+								<TextBlock
+									HorizontalAlignment="Center"
+									Grid.Row="1"
+									Text="{TemplateBinding SensorControl.ThroughputUnit}"
+									Margin="2,0,0,0" />
+							</Grid>
+						</Border>
+						<Polygon
+							x:Name="Polygon"
+							Grid.Column="1"
+							Margin="-0.5 0 0 0"
+							Fill="{TemplateBinding Control.Background}"
+							Points="0,0 10,13 10,19 0,32" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger
+							Property="SensorControl.SensorOrientation"
+							Value="Right">
+							<Setter
+								TargetName="Sensor"
+								Property="Grid.Column"
+								Value="1" />
+							<Setter
+								TargetName="Sensor"
+								Property="Border.CornerRadius"
+								Value="1 10 10 1" />
+							<Setter
+								TargetName="Sensor"
+								Property="Border.Padding"
+								Value="0 0 6 0" />
+							<Setter
+								TargetName="Polygon"
+								Property="Grid.Column"
+								Value="0" />
+							<Setter
+								TargetName="Polygon"
+								Property="Polygon.Points"
+								Value="0,13 10,0 10,32 0,19" />
+							<Setter
+								TargetName="Polygon"
+								Property="Margin"
+								Value="0 0 -0.5 0" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger
+				Property="attached:APActivatable.IsActive"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{Binding (APActivatable.ActiveBrush), RelativeSource={RelativeSource Self}}" />
+				<Setter
+					Property="Foreground"
+					Value="{StaticResource WhiteBrush}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APValidation.HasError"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{StaticResource ErrorBrush}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APSignalizable.IsSignalize"
+				Value="True">
+				<Setter
+					Property="Background"
+					Value="{Binding (APSignalizable.SignalizeBrush), RelativeSource={RelativeSource Self}}" />
+			</Trigger>
+			<Trigger
+				Property="attached:APSignalizeTextable.IsSignalizeText"
+				Value="True">
+				<Setter
+					Property="Foreground"
+					Value="{Binding (APSignalizeTextable.SignalizeTextBrush), RelativeSource={RelativeSource Self}}" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

@@ -1,0 +1,180 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:Controls="clr-namespace:BalticWpfControlLib.Controls">
+	<Color
+		x:Key="WindowsBackgroundColor1">#FF000000</Color>
+	<Color
+		x:Key="WindowsBackgroundColor2">#FF1A1A1A</Color>
+	<LinearGradientBrush
+		x:Key="WindowBackground"
+		EndPoint="0,1"
+		StartPoint="0,0">
+		<GradientStop
+			Offset=".5"
+			Color="{StaticResource WindowsBackgroundColor1}" />
+		<GradientStop
+			Offset="1"
+			Color="{StaticResource WindowsBackgroundColor2}" />
+	</LinearGradientBrush>
+	<SolidColorBrush
+		x:Key="TextBrush"
+		Color="#FFFFFFFF" />
+	<SolidColorBrush
+		x:Key="ButtonBackgroundBrush"
+		Color="#FF999999" />
+	<SolidColorBrush
+		x:Key="ButtonBorderBrush"
+		Color="#FF333333" />
+	<ControlTemplate
+		x:Key="ImageButtonTemplate"
+		TargetType="{x:Type Controls:ImageButton}">
+		<Grid
+			x:Name="Grid">
+			<Border
+				x:Name="Background"
+				Background="{TemplateBinding Control.Background}"
+				BorderBrush="{TemplateBinding Control.BorderBrush}"
+				BorderThickness="{TemplateBinding Control.BorderThickness}"
+				CornerRadius="3"
+				Visibility="{Binding BorderVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
+			<StackPanel
+				Orientation="Horizontal"
+				VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+				HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}">
+				<Image
+					x:Name="ButtonImage"
+					ToolTip="{TemplateBinding FrameworkElement.ToolTip}"
+					Source="{Binding NormalImage, RelativeSource={RelativeSource TemplatedParent}}"
+					Height="{Binding ImageSize, RelativeSource={RelativeSource TemplatedParent}}"
+					Width="{Binding ImageSize, RelativeSource={RelativeSource TemplatedParent}}" />
+				<ContentPresenter
+					HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+					Margin="{TemplateBinding Control.Padding}"
+					VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+					RecognizesAccessKey="True" />
+			</StackPanel>
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger
+				Property="UIElement.IsMouseOver"
+				Value="true">
+				<Setter
+					TargetName="ButtonImage"
+					Property="Image.Source"
+					Value="{Binding HoverImage, RelativeSource={RelativeSource TemplatedParent}}" />
+			</Trigger>
+			<Trigger
+				Property="ButtonBase.IsPressed"
+				Value="true">
+				<Setter
+					TargetName="ButtonImage"
+					Property="Image.Source"
+					Value="{Binding PressedImage, RelativeSource={RelativeSource TemplatedParent}}" />
+			</Trigger>
+			<Trigger
+				Property="UIElement.IsEnabled"
+				Value="false">
+				<Setter
+					TargetName="ButtonImage"
+					Property="Image.Source"
+					Value="{Binding DisabledImage, RelativeSource={RelativeSource TemplatedParent}}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<Style
+		x:Key="{x:Type Controls:ImageButton}"
+		TargetType="{x:Type Controls:ImageButton}"
+		BasedOn="{x:Null}">
+		<Setter
+			Property="Padding"
+			Value="3" />
+		<Setter
+			Property="Margin"
+			Value="5" />
+		<Setter
+			Property="Controls:ImageButton.ImageSize"
+			Value="32" />
+		<Setter
+			Property="BorderThickness"
+			Value="3" />
+		<Setter
+			Property="Foreground"
+			Value="{DynamicResource TextBrush}" />
+		<Setter
+			Property="Background"
+			Value="{DynamicResource ButtonBackgroundBrush}" />
+		<Setter
+			Property="BorderBrush"
+			Value="{DynamicResource ButtonBorderBrush}" />
+		<Setter
+			Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter
+			Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter
+			Property="Template"
+			Value="{StaticResource ImageButtonTemplate}" />
+	</Style>
+	<Style
+		x:Key="ButtonStyleOne"
+		TargetType="{x:Type Controls:ImageButton}"
+		BasedOn="{StaticResource {x:Type Controls:ImageButton}}">
+		<Setter
+			Property="Controls:ImageButton.NormalImage"
+			Value="/BalticWpfControlLib;component/images/PlusGray.png" />
+		<Setter
+			Property="Controls:ImageButton.HoverImage"
+			Value="/BalticWpfControlLib;component/images/PlusGrayHover.png" />
+		<Setter
+			Property="Controls:ImageButton.PressedImage"
+			Value="/BalticWpfControlLib;component/images/PlusGrayHover.png" />
+		<Setter
+			Property="Controls:ImageButton.DisabledImage"
+			Value="/BalticWpfControlLib;component/images/PlusGray.png" />
+		<Setter
+			Property="FrameworkElement.ToolTip"
+			Value="Insert" />
+	</Style>
+	<Style
+		x:Key="ButtonStyleTwo"
+		TargetType="{x:Type Controls:ImageButton}"
+		BasedOn="{StaticResource {x:Type Controls:ImageButton}}">
+		<Setter
+			Property="Controls:ImageButton.NormalImage"
+			Value="/BalticWpfControlLib;component/images/MinusGray.png" />
+		<Setter
+			Property="Controls:ImageButton.HoverImage"
+			Value="/BalticWpfControlLib;component/images/MinusGrayHover.png" />
+		<Setter
+			Property="Controls:ImageButton.PressedImage"
+			Value="/BalticWpfControlLib;component/images/MinusGrayHover.png" />
+		<Setter
+			Property="Controls:ImageButton.DisabledImage"
+			Value="/BalticWpfControlLib;component/images/MinusGray.png" />
+		<Setter
+			Property="FrameworkElement.ToolTip"
+			Value="Remove" />
+	</Style>
+	<Style
+		x:Key="ButtonStyleClose"
+		TargetType="{x:Type Controls:ImageButton}"
+		BasedOn="{StaticResource {x:Type Controls:ImageButton}}">
+		<Setter
+			Property="Controls:ImageButton.NormalImage"
+			Value="/BalticWpfControlLib;component/images/delete_16.png" />
+		<Setter
+			Property="Controls:ImageButton.HoverImage"
+			Value="/BalticWpfControlLib;component/images/delete_16_Hover.png" />
+		<Setter
+			Property="Controls:ImageButton.PressedImage"
+			Value="/BalticWpfControlLib;component/images/delete_16_Hover.png" />
+		<Setter
+			Property="Controls:ImageButton.DisabledImage"
+			Value="/BalticWpfControlLib;component/images/delete_16.png" />
+		<Setter
+			Property="FrameworkElement.ToolTip"
+			Value="Close" />
+	</Style>
+</ResourceDictionary>

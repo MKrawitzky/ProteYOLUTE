@@ -1,0 +1,334 @@
+<UserControl
+	x:Class="BalticWpfControlLib.Controls.ColumnInfoUserControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:utilities="clr-namespace:BalticWpfControlLib.Utilities"
+	xmlns:baltic="clr-namespace:BalticClassLib;assembly=BalticClassLib"
+	xmlns:controls="clr-namespace:BalticWpfControlLib.Controls">
+	<Grid>
+		<FrameworkElement.Resources>
+			<ResourceDictionary>
+				<utilities:BoolToColumnValueOneConverter
+					x:Key="boolToValueOne" />
+				<utilities:BoolToColumnValueThreeConverter
+					x:Key="boolToValueThree" />
+				<utilities:BoolToColumnValueSixConverter
+					x:Key="boolToValueSix" />
+				<Style
+					x:Key="titleText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Setter
+						Property="FontStyle"
+						Value="Normal" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="left" />
+					<Setter
+						Property="Foreground"
+						Value="#0071BC" />
+					<Setter
+						Property="Margin"
+						Value="4,0,4,8" />
+				</Style>
+				<Style
+					x:Key="nameText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Setter
+						Property="Margin"
+						Value="4" />
+					<Style.Triggers>
+						<Trigger
+							Property="IsEnabled"
+							Value="False">
+							<Setter
+								Property="UIElement.Opacity"
+								Value="0.5" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+				<Style
+					x:Key="dataText"
+					TargetType="{x:Type TextBlock}">
+					<Setter
+						Property="FontWeight"
+						Value="Normal" />
+					<Setter
+						Property="Background"
+						Value="#FFFFFFFF" />
+					<Setter
+						Property="Margin"
+						Value="4" />
+					<Setter
+						Property="HorizontalAlignment"
+						Value="Stretch" />
+					<Setter
+						Property="TextBlock.Padding"
+						Value="1" />
+					<Setter
+						Property="MinWidth"
+						Value="40" />
+					<Style.Triggers>
+						<Trigger
+							Property="IsEnabled"
+							Value="False">
+							<Setter
+								Property="UIElement.Opacity"
+								Value="0.5" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+				<Style
+					x:Key="dataCheck"
+					TargetType="{x:Type CheckBox}">
+					<Style.Triggers>
+						<Trigger
+							Property="IsEnabled"
+							Value="False">
+							<Setter
+								Property="Foreground"
+								Value="#FF000000" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ResourceDictionary>
+		</FrameworkElement.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="Auto" />
+			<ColumnDefinition
+				Width="Auto" />
+			<ColumnDefinition
+				Width="Auto" />
+			<ColumnDefinition
+				Width="*" />
+		</Grid.ColumnDefinitions>
+		<TextBlock
+			Grid.ColumnSpan="4"
+			Style="{StaticResource titleText}"
+			Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="1"
+			Grid.Column="0"
+			Text="Manufacturer"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="1"
+			Grid.Column="1"
+			Grid.ColumnSpan="3"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=Manufacturer, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="2"
+			Grid.Column="0"
+			Text="Type/Material"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="2"
+			Grid.Column="1"
+			Grid.ColumnSpan="3"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=TypeMaterial, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="3"
+			Grid.Column="0"
+			Text="Part No."
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="3"
+			Grid.Column="1"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=PartNo, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="3"
+			Grid.Column="2"
+			Text="Serial No."
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="3"
+			Grid.Column="3"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=SerialNo, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="4"
+			Grid.Column="0"
+			Text="Length (mm)"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="4"
+			Grid.Column="1"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=Length, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.0}}" />
+		<TextBlock
+			Grid.Row="4"
+			Grid.Column="2"
+			Text="Inner Diameter (mm)"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="4"
+			Grid.Column="3"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=InnerDiamater, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000}}" />
+		<TextBlock
+			Grid.Row="5"
+			Grid.Column="0"
+			Text="Max. Pressure (bar)"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="5"
+			Grid.Column="1"
+			Style="{StaticResource dataText}">
+			<TextBlock.Text>
+				<MultiBinding
+					Converter="{StaticResource boolToValueOne}">
+					<Binding
+						Path="IsMaxPress" />
+					<Binding
+						Path="MaxPress" />
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+		<TextBlock
+			Grid.Row="5"
+			Grid.Column="2"
+			Text="Max. Flow (µL/min)"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="5"
+			Grid.Column="3"
+			Style="{StaticResource dataText}">
+			<TextBlock.Text>
+				<MultiBinding
+					Converter="{StaticResource boolToValueOne}">
+					<Binding
+						Path="IsMaxFlow" />
+					<Binding
+						Path="MaxFlow" />
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+		<TextBlock
+			Grid.Row="6"
+			Grid.Column="0"
+			Text="Particle Size (µm)"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="6"
+			Grid.Column="1"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=ParticleDiameter, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.0}}" />
+		<TextBlock
+			Grid.Row="6"
+			Grid.Column="2"
+			Text="Pore Size (Å)"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="6"
+			Grid.Column="3"
+			Style="{StaticResource dataText}">
+			<TextBlock.Text>
+				<MultiBinding
+					Converter="{StaticResource boolToValueOne}">
+					<Binding
+						Path="IsParticlePoreSize" />
+					<Binding
+						Path="ParticlePoreSize" />
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+		<CheckBox
+			Grid.Row="7"
+			Grid.ColumnSpan="4"
+			Grid.Column="0"
+			Content="Advanced Column Settings"
+			VerticalAlignment="Center"
+			VerticalContentAlignment="Center"
+			Margin="2"
+			IsEnabled="False"
+			Style="{StaticResource dataCheck}"
+			IsChecked="{Binding Path=IsAdvancedSettings, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="8"
+			Grid.Column="0"
+			Text="Column Volume (µL)"
+			Style="{StaticResource nameText}"
+			IsEnabled="{Binding Path=IsAdvancedSettings, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="8"
+			Grid.Column="1"
+			Style="{StaticResource dataText}"
+			IsEnabled="{Binding Path=IsAdvancedSettings, UpdateSourceTrigger=PropertyChanged}">
+			<TextBlock.Text>
+				<MultiBinding
+					Converter="{StaticResource boolToValueThree}">
+					<Binding
+						Path="IsColumnVolume" />
+					<Binding
+						Path="ColumnVolume" />
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+		<TextBlock
+			Grid.Row="8"
+			Grid.Column="2"
+			Text="Unity Flow (µL/bar)"
+			Style="{StaticResource nameText}"
+			IsEnabled="{Binding Path=IsAdvancedSettings, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBlock
+			Grid.Row="8"
+			Grid.Column="3"
+			Style="{StaticResource dataText}"
+			IsEnabled="{Binding Path=IsAdvancedSettings, UpdateSourceTrigger=PropertyChanged}">
+			<TextBlock.Text>
+				<MultiBinding
+					Converter="{StaticResource boolToValueSix}">
+					<Binding
+						Path="IsUnityFlow" />
+					<Binding
+						Path="UnityFlow" />
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+		<TextBlock
+			Grid.Row="9"
+			Grid.Column="0"
+			Text="Comment"
+			Style="{StaticResource nameText}" />
+		<TextBlock
+			Grid.Row="9"
+			Grid.Column="1"
+			Grid.ColumnSpan="3"
+			VerticalAlignment="Stretch"
+			Style="{StaticResource dataText}"
+			Text="{Binding Path=Comment, UpdateSourceTrigger=PropertyChanged}" />
+	</Grid>
+</UserControl>
