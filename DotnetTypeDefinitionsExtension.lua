@@ -1,0 +1,201 @@
+---This file contains manually created annotations for dotnet types which we do not build at Bruker
+
+---@meta
+
+--makes global variable known to language server
+luanet = {}
+
+--- The actual participant is a class that exposes the ZrPump as dynamic object and implements the participant interface.
+--- From this class we cannot generate the annotations as it does not implement the Pump methods directly
+--- Thus we mark Pump as the participant
+--- In the new driver DLL a lot of the methods have been moved from the pump class to public field of with name and type "DeviceDataAccess".
+--- As a workaround the C# currently tries to call DeviceDataAccess when no matching method is found on the Pump type, thus we extend here Pump with DeviceDataAccess.
+---@class Pump : IBusinessProcedureParticipant, DeviceDataAccess
+---@field TrunkMethodIndex number
+
+---@class IPalParticipant : ActivityExecutionHelper, IRobotHelper
+
+---@class PumpMethod
+---@field Validate fun(): boolean, string
+
+---annotation for zirconium.lua
+---@class Zirconium
+---@field A Channel
+---@field B Channel
+---@field PumpSideState PumpSideState
+---@field PumpsideSignal PumpSideSignal
+---@field MethodState MethodState
+---@field MethodSignal MethodSignal
+---@field DigitalOutput DigitalOutput
+---@field storePumpVolume fun(pump: Pump, start: boolean)
+---@field logPumpVolume fun(context: IProcedureExecutionContext, pump: Pump)
+---@field saveValveShiftPosition fun(channel: Channel, position: number, actualPos: number)
+---@field resetValveABShiftCounterPosition fun()
+---@field logValveABShiftCounterPosition fun(context: IProcedureExecutionContext, pump: Pump)
+---@field SetValvePosition fun(context: IProcedureExecutionContext, pump: Pump, channel: Channel, position: number, clockwise: boolean | nil): number, number
+---@field InitChannel fun(context: IProcedureExecutionContext, pump: Pump, channel: Channel)
+---@field IsEmpty fun(pump: Pump, channel: Channel): boolean
+---@field IsFull fun(pump: Pump, channel: Channel)
+---@field IsAtleastHalfFull fun(pump: Pump, channel: Channel)
+---@field CreateGradient fun(minPressure: number, maxPressure: number, flowControl: boolean, temperature: number) : PumpMethod
+---@field AddGradientSegment fun(gradient: table, time: number, flow: number, percentB: number)
+---@field IsGradientRunning fun(pump: Pump): boolean
+---@field IsGradientLoaded fun(pump: Pump): boolean
+---@field LoadGradient fun(context: IProcedureExecutionContext, pump: Pump, gradient: PumpMethod) : string|nil
+---@field UnLoadGradient fun(context: IProcedureExecutionContext, pump: Pump)
+---@field StartGradient fun(context: IProcedureExecutionContext, pump: Pump)
+---@field abortGradient fun(pump: Pump)
+---@field logPIDs fun(context: IProcedureExecutionContext, pressPID: table, flowPID: table, origin: string)
+---@field logInstrSettings fun(context: IProcedureExecutionContext, ps: table, origin: string)
+---@field setPumpSettings fun(context: IProcedureExecutionContext, pump: Pump, ps: table)
+---@field ChangePressurePID fun(context: IProcedureExecutionContext, pump: Pump, newPID: table)
+---@field ChangeExternalHeaterPID fun(context: IProcedureExecutionContext, pump: Pump, newPID: table)
+---@field GetFlowCalibrationOffset fun(pump: Pump, channel: Channel)
+---@field GetFlowCalibrationFactor fun(pump: Pump, channel: Channel)
+---@field SetFlowCalibrationOffset fun(pump: Pump, channel: Channel, value: number)
+---@field SetFlowCalibrationFactor fun(pump: Pump, channel: Channel, value: number)
+
+---annotation for palplus.lua
+---@class PalPlus
+---@field LcToolValveOpen number
+---@field LcToolValveClose number
+---@field VolumetricPumpVolume number
+---@field Aqueous number
+---@field Organic number
+---@field Waste number
+---@field Capabilities unknown
+---@field ToggleWashLastStepVolume number
+---@field ToggleWashLastStepSpeed number
+---@field ToggleWashContainer ToggleWashContainer
+---@field ConvertRadToDeg fun(valveObject: table) : table
+---@field isTrapValveBlocked fun(palplus_participant: IPalParticipant) : number | nil, boolean
+---@field GetTrapValvePosition fun(palplus_participant: IPalParticipant) : number | nil
+---@field GetInjectorValvePosition fun(palplus_participant: IPalParticipant) : number | nil
+---@field Quantity fun(value: number | string, unit : string | nil) : Quantity
+---@field QueryModules fun(palplus_participant: IPalParticipant, module_type: string) : table
+---@field QueryModule fun(palplus_participant: IPalParticipant, module_type: string) : IModule
+---@field QueryValveDrive fun(palplus_participant: IPalParticipant, child_type: string) : unknown
+---@field EmptySyringe_And_LeaveObject fun(palplus_left: IPalParticipant, palplus_aux: IPalParticipant, penetrationDepth: Quantity, syringeZeroPosition: number)
+---@field SetLCToolValve fun(palplus_left: IPalParticipant, state: number)
+---@field VolumeToBePumped fun(palplus_left: IPalParticipant, channel: number, volumeToBePumped: number, pumpSpeed: number)
+---@field PrintToggleWashParameter fun(context: IProcedureExecutionContext, ToggleWashContainer: ToggleWashContainer)
+---@field ToggleWashInitialization fun(context: IProcedureExecutionContext, totalTime: number) : ToggleWashContainer
+---@field RunToggleWashVolumePump fun(palplus_left: IPalParticipant, ToggleWashContainer: ToggleWashContainer) : ToggleWashContainer
+---@field PrimeVolumetricPump fun(palplus_left: IPalParticipant, volume: number, speed: number)
+---@field PrimeLCPToolLoop fun(palplus_left: IPalParticipant, moveToWashStation: boolean, moveToHome: boolean)
+---@field PrimeSyringeWithVolumePump fun(context: IProcedureExecutionContext, palplus_left: IPalParticipant, cycles: integer, yield_function: function)
+---@field PrimeInjectorWithVolumePump fun(context: IProcedureExecutionContext, palplus_left: IPalParticipant, yield_function: function)
+---@field CleanInjector fun(palplus_left: IPalParticipant, palplus_aux: IPalParticipant, channel: number, volume: number, moveToObject: boolean, leaveObject: boolean)
+---@field GetSyringeFilling fun(context: IProcedureExecutionContext, execLeft: IPalParticipant) : number
+---@field PreInjectionNeedleWash fun(context: IProcedureExecutionContext, palplus_left: IPalParticipant)
+---@field PostInjectionNeedleWash fun(palplus_left: IPalParticipant)
+---@field CleanNeedle fun(palplus_left: IPalParticipant, palplus_aux: IPalParticipant, airGap: number, drawSpeed: number)
+---@field cleanInjectionPath fun(execLeft: IPalParticipant, execAux: IPalParticipant, solventVolume: number, pr: any, sleeping_yield: function)
+---@field PrintFlushPortParameter fun(context: IProcedureExecutionContext, solvent: number|string, volume: number, speed: number, liftUpHight: number)
+---@field FlushPort fun(solvent: number, volume: number, speed: number, liftUpHight: number, palplus_left: IPalParticipant, palplus_aux: IPalParticipant)
+---@field FlushLCPTool fun(volume: integer, palplus_left: IPalParticipant, palplus_aux: IPalParticipant) : number
+
+---@class ToggleWashContainer
+---@field numOfSteps number
+---@field nextStepOrganic boolean
+---@field organicStepVolume number
+---@field aqueousStepVolume number
+---@field pumpSpeed number
+---@field timeToNextStepStart number
+---@field stepTime number
+---@field lastStepVolume number
+---@field lastStepSpeed number
+---@field totalTime number
+---@field onlyOneStepOrganic boolean
+---@field aqueousOnly boolean
+---@field toggleAqueousOrganic boolean
+---@field isToggleWashEnabled boolean
+---@field numOfLastAqueousSteps number
+
+---@class SelfTest
+---@field showMessage boolean
+---@field isSelfTest boolean
+---@field isService boolean
+---@field self_LT_HP boolean
+---@field self_LT_HP_AB boolean
+---@field self_LT_HP_IS_RT boolean
+---@field self_LT_P_RT boolean
+---@field self_LT_LP_AB boolean
+---@field self_FRT_B_MT boolean
+---@field self_FRT_IS boolean
+---@field self_FRT_A_MT boolean
+---@field self_Prepare_and_Flush boolean
+
+---@class PressureSensor
+---@field SensorLimitLow number
+---@field SensorLimitHigh number
+---@field SensorDefaultOffset number
+---@field SensorDefaultFactor number
+---@field GradientPumpMaxTargetPressure integer
+---@field GradientPumpCutoffPressure integer
+
+---@class FlowAB
+---@field A number
+---@field B number
+
+---@class ColorsRGB
+---@field red integer
+---@field green integer
+---@field blue integer
+
+---@class CalibrantInjectionParameter
+---@field sample_aspirate_speed Quantity
+---@field sample_postaspirate_delay Quantity
+---@field presample_air_volume Quantity
+---@field calibrant_volume number
+---@field postsample_air_volume Quantity
+---@field sample_inject_speed Quantity
+---@field flowPerBar number
+---@field systemVolume number
+
+---@class SeparatorLoadingParameter
+---@field unityFlow number [µL]
+---@field loadingPress number [bar]
+---@field loadingFlow number [µL/min]
+---@field loadingVolume number [µL]
+---@field loadingTime number [sec]
+---@field maxLoadingVolume number [µL]
+---@field timeOut number [sec]
+
+---@class SeparatorEquilibratingParameter
+---@field unityFlow number [µL]
+---@field equilibratingPress number [bar]
+---@field equilibratingFlow number [µL/min]
+---@field equilibratingVolume number [µL]
+---@field equilibratingTime number [sec]
+---@field maxEquilibratingVolume number [µL]
+---@field timeOut number [sec]
+
+---@class TrapColumnEquilibratingParameter
+---@field flowPerBar number [µL]
+---@field equilibratingPress number [bar]
+---@field trapFlow number [µL/min]
+---@field trapPressure number [bar]
+---@field equilibratingFlow number [µL/min]
+---@field equilibratingVolume number [µL]
+---@field equilibratingTime number [sec]
+---@field maxEquilibratingVolume number [µL]
+
+---@class ErrorCode
+---@field err string
+---@field message string
+
+---@class PIDParams
+---@overload fun(): PID
+---@field P number?
+---@field Pmin number?
+---@field Pmax number?
+---@field I number?
+---@field Imin number?
+---@field Imax number?
+---@field D number?
+---@field Dmin number?
+---@field Dmax number?
+---@field ResultMin number?
+---@field ResultMax number?
+---@field IWindow number?

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Limits xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExternalPressure DefaultOffset="129.239" MinOffset="100" MaxOffset="160" DefaultFactor="0.01972" MinFactor="0.01932" MaxFactor="0.02012" />
+</Limits>

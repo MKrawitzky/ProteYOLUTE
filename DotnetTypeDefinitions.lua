@@ -1,0 +1,2945 @@
+--- This file is auto generated. Do not edit manually.
+---@meta
+
+---@class JournalEntry
+---@overload fun(): JournalEntry
+---@overload fun(procedureName: string?, name: string?, val: any?, unit: string?, format: string?): JournalEntry
+---@overload fun(destination: LogTo?, procedureName: string?, name: string?, val: any?, unit: string?, format: string?): JournalEntry
+---@field Set (fun(procedureName: string?, name: string?, val: any?, unit: string?, format: string?): JournalEntry) |  (fun(destination: LogTo?, procedureName: string?, name: string?, val: any?, unit: string?, format: string?): JournalEntry)
+---@field Dispose (fun(self: JournalEntry))
+---@field Destination LogTo
+---@field ProcedureName string
+---@field Name string
+---@field Value any
+---@field Unit string
+---@field Format string
+
+---@class LuaHelper
+---@field ToList (fun(enumerable: any?): any)
+---@field WrapEnumerable (fun(enumerable: any?): any)
+
+---@class LoggingDictator
+---@overload fun(participant: IBusinessProcedureParticipant?, suppress: boolean): LoggingDictator
+---@field Prevent (fun(participant: IBusinessProcedureParticipant?): LoggingDictator)
+---@field Demand (fun(participant: IBusinessProcedureParticipant?): LoggingDictator)
+---@field Dispose (fun(self: LoggingDictator))
+
+---@class IBusinessProcedureParticipant
+---@field Standby (fun(self: IBusinessProcedureParticipant))
+---@field Identity string
+---@field IsIdle boolean
+---@field LoggingSuppressed boolean
+---@field StatusLoggingSuppressed boolean
+
+---@class IInstalledHardwareContext
+---@field GetArgumentValue1 (fun(self: IInstalledHardwareContext, name: string?): any)
+---@field GetArgumentValue2 (fun(self: IInstalledHardwareContext, name: string?): any)
+---@field Contains (fun(self: IInstalledHardwareContext, name: string?): boolean)
+---@field IsColumnOvenConnected boolean
+---@field Tray1Type string
+---@field Tray2Type string
+---@field MaxPumpPressure number
+---@field SyringeZeroPosition number
+---@field IsExtendedLoggingEnabled boolean
+---@field IsService boolean
+
+---@class IJournal: IBusinessProcedureParticipant
+---@field Add (fun(self: IJournal, entry: JournalEntry?))
+---@field Delete (fun(self: IJournal, entryName: string?))
+---@field ContainsTable (fun(self: IJournal, tableName: string?): boolean)
+---@field AddToTable (fun(self: IJournal, name: string?, primaryName: string?, primaryUnit: string?, primaryFormat: string?, secondaryName: string?, secondaryUnit: string?, secondaryFormat: string?, primary: number, secondary: number)) |  (fun(self: IJournal, name: string?, primary: number, secondary: number))
+
+---@class ILedParticipant
+---@field SetLedState (fun(self: ILedParticipant, state: LedState?))
+---@field SetBrightness (fun(self: ILedParticipant, brightness: LedBrightness?, changeColor: boolean?))
+---@field EnterServiceMode (fun(self: ILedParticipant))
+---@field ExitServiceMode (fun(self: ILedParticipant))
+
+---@class LedBrightness
+---@field Full LedBrightness
+---@field Intermediate LedBrightness
+---@field Off LedBrightness
+
+---@class LedState
+---@field Off LedState
+---@field Booting LedState
+---@field Idle LedState
+---@field IdleFlow LedState
+---@field DirectFlow LedState
+---@field Preparation LedState
+---@field SelfTest LedState
+---@field Acquisition LedState
+---@field Maintenance LedState
+---@field Calibration LedState
+---@field Diagnostics LedState
+---@field Disconnected LedState
+---@field Decompress LedState
+---@field Error LedState
+---@field Service LedState
+
+---@class IPalParticipant: IBusinessProcedureParticipant
+---@field QueryModule (fun(self: IPalParticipant, moduleName: string?): IModule)
+---@field GetAxisPositionSync (fun(self: IPalParticipant, axisIndex: number): IActivityResult)
+---@field ConfigurationService IPalPlusConfigurationService
+---@field RobotHelper IRobotHelper
+---@field PalResourceType PalPlusResourceType
+
+---@class IRobotHelper
+---@field ActivitiesCloseSession (fun(self: IRobotHelper))
+---@field Reset (fun(self: IRobotHelper))
+---@field GetSyringeExchangeHelper (fun(self: IRobotHelper, resource: PalPlusResourceType?): SyringeExchangeHelper)
+---@field ShowsRobotInformationCenter (fun(self: IRobotHelper))
+---@field Configuration IPalPlusConfigurationService
+---@field Scheduler IPalPlusSchedulerService
+---@field Activities ActivityExecutionHelper
+---@field GCs any
+---@field LCs any
+---@field WashStations WashstationHelper
+---@field Tools ToolsHelper
+---@field Injectors any
+---@field Agitators any
+---@field Trays TrayHelper
+
+---@class IPalPlusSchedulerService
+---@field GetConfiguration (fun(self: IPalPlusSchedulerService): SchedulerConfiguration)
+---@field SetConfiguration (fun(self: IPalPlusSchedulerService, schedulerConfiguration: SchedulerConfiguration?))
+---@field IsBuiltInMethod (fun(self: IPalPlusSchedulerService, methodName: string?): boolean)
+---@field HasMethod (fun(self: IPalPlusSchedulerService, methodName: string?): boolean)
+---@field GetMethodNames (fun(self: IPalPlusSchedulerService): any)
+---@field LoadMethodOrScript (fun(self: IPalPlusSchedulerService, xmlMethodStream: any?): string) |  (fun(self: IPalPlusSchedulerService, xmlMethodStream: any?, newMethodName: string?): string) |  (fun(self: IPalPlusSchedulerService, xmlMethodStream: any?, newMethodName: string?, targetConfiguration: IPalPlusConfigurationService?): string)
+---@field RemoveMethod (fun(self: IPalPlusSchedulerService, methodName: string?))
+---@field SaveMethod (fun(self: IPalPlusSchedulerService, methodName: string?, xmlStream: any?))
+---@field SetMethodParameters (fun(self: IPalPlusSchedulerService, methodName: string?, methodParameters: ParameterCollection?)) |  (fun(self: IPalPlusSchedulerService, methodName: string?, methodParameters: ParameterCollection?, resetAllParameterToItsDefaults: boolean))
+---@field GetMethodParameters (fun(self: IPalPlusSchedulerService, methodName: string?): ParameterCollection)
+---@field GetMethodParametersRight (fun(self: IPalPlusSchedulerService, methodName: string?): ParameterCollection)
+---@field GetMethodDefinition (fun(self: IPalPlusSchedulerService, methodName: string?): IMethodDefinition) |  (fun(self: IPalPlusSchedulerService, methodName: string?, script: string?): IMethodDefinition)
+---@field ValidateMethod (fun(self: IPalPlusSchedulerService, methodName: string?): any)
+---@field ValidateMethodParameters (fun(self: IPalPlusSchedulerService, methodName: string?, validationParameters: ParameterCollection?): any)
+---@field QueueForRun (fun(self: IPalPlusSchedulerService, methodName: string?, displayName: string?, sampleParameters: ParameterCollection?): string) |  (fun(self: IPalPlusSchedulerService, methodName: string?, sampleParameters: ParameterCollection?): string)
+---@field StartRun (fun(self: IPalPlusSchedulerService, useOptimizedStartupForSingleSampleBatch: boolean?, calledBeforeStartedInitializeBatchEventHandlers: any?): IJobInfoBatch)
+---@field AddSamplesToRunningBatch (fun(self: IPalPlusSchedulerService): IJobInfoBatch)
+---@field CreateBatch (fun(self: IPalPlusSchedulerService, useOptimizedStartupForSingleSampleBatch: boolean?): IJobInfoBatch) |  (fun(self: IPalPlusSchedulerService): IJobInfoBatch)
+---@field StartBatch (fun(self: IPalPlusSchedulerService, batch: IJobInfoBatch?): string)
+---@field StartCalculateSchedule (fun(self: IPalPlusSchedulerService, clearLocallyQueuedSamples: boolean): boolean) |  (fun(self: IPalPlusSchedulerService, clearLocallyQueuedSamples: boolean, fittingResolution: TimeSpan?): boolean) |  (fun(self: IPalPlusSchedulerService, batchToCalculate: IJobInfoBatch?): boolean) | 
+---@field AbortRun (fun(self: IPalPlusSchedulerService)) |  (fun(self: IPalPlusSchedulerService, clearLocallyQueuedForRunSamples: boolean))
+---@field ClearQueue (fun(self: IPalPlusSchedulerService))
+---@field StopRun (fun(self: IPalPlusSchedulerService)) |  (fun(self: IPalPlusSchedulerService, clearLocallyQueuedForRunSamples: boolean))
+---@field GetJobInfo (fun(self: IPalPlusSchedulerService, jobId: string?): IJobInfo)
+---@field GetJobBatchTimingStatus (fun(self: IPalPlusSchedulerService): BatchTimingStatus)
+---@field Lock (fun(self: IPalPlusSchedulerService, lockType: PalPlusLockType?): boolean)
+---@field Unlock (fun(self: IPalPlusSchedulerService): boolean)
+---@field CanLock (fun(self: IPalPlusSchedulerService, lockType: PalPlusLockType?): boolean)
+---@field StartRunAsBatch (fun(self: IPalPlusSchedulerService, useOptimizedStartupForSingleSampleBatch: boolean?): IJobInfoBatch)
+---@field SetSignal (fun(self: IPalPlusSchedulerService, inputSignal: InputSignal?, state: boolean))
+---@field WaitForSignal (fun(self: IPalPlusSchedulerService, signal: InputSignal?, timeout: TimeSpan?): boolean) |  (fun(self: IPalPlusSchedulerService, signal: OutputSignal?, timeout: TimeSpan?): boolean) |  (fun(self: IPalPlusSchedulerService, signal: InputSignal?): boolean) |  (fun(self: IPalPlusSchedulerService, signal: OutputSignal?): boolean)
+---@field CancelWaitingSignal (fun(self: IPalPlusSchedulerService, signal: InputSignal?): boolean) |  (fun(self: IPalPlusSchedulerService, signal: OutputSignal?): boolean)
+---@field CancelAllWaitingSignals (fun(self: IPalPlusSchedulerService))
+---@field CountQueue number
+---@field IsLocked boolean
+
+---@class SchedulerConfiguration: ParameterCollection, IParameterCollection
+---@overload fun(): SchedulerConfiguration
+---@field GetErrorReactionModes (fun(): any)
+---@field AutomaticResetOnAbort any
+---@field AutomaticResetOnError any
+---@field ResetRobotWhenGoingIdle any
+---@field BufferTime number
+---@field DisableTerminalStopDuringRun any
+---@field ErrorReactionMode ErrorReactionMode
+
+---@class IParameterCollection
+---@field Clear (fun(self: IParameterCollection))
+---@field SetValue (fun(self: IParameterCollection, parameterName: string?, value: any?)) |  (fun(self: IParameterCollection, parameterName: string?, value: number)) |  (fun(self: IParameterCollection, parameterName: string?, value: IModuleReference?)) |  (fun(self: IParameterCollection, parameterName: string?, value: any?)) |  (fun(self: IParameterCollection, parameterName: string?, value: number)) |  (fun(self: IParameterCollection, parameterName: string?, value: number)) |  (fun(self: IParameterCollection, parameterName: string?, value: boolean)) |  (fun(self: IParameterCollection, parameterName: string?, value: string?)) |  (fun(self: IParameterCollection, parameterName: string?, value: number, unit: string?)) |  (fun(self: IParameterCollection, parameterName: string?, quantity: Quantity?)) |  (fun(self: IParameterCollection, parameterName: string?, vector: EuclideanVector?)) |  (fun(self: IParameterCollection, parameterName: string?, cuboid: EuclideanCuboid?))
+---@field GetObject (fun(self: IParameterCollection, parameterName: string?): any)
+---@field GetValue (fun(self: IParameterCollection, parameterName: string?): any)
+---@field HasParameter (fun(self: IParameterCollection, name: string?): boolean)
+---@field RemoveParameter (fun(self: IParameterCollection, parameterName: string?): boolean)
+---@field IsQuantity (fun(self: IParameterCollection, parameterName: string?): boolean)
+---@field Item any
+---@field ParameterNames any
+---@field Count number
+
+---@class IModuleReference
+---@field Name string
+---@field ModuleTypeName string
+---@field Address any
+---@field ObjectId any
+---@field IsCapabilityReference boolean
+---@field IsDescriptionReference boolean
+---@field IsObjectReference boolean
+---@field IsUniqueReference boolean
+
+---@class PalPlusResourceType
+---@field NoHead PalPlusResourceType
+---@field Body PalPlusResourceType
+---@field LeftHead PalPlusResourceType
+---@field RightHead PalPlusResourceType
+---@field Invalid PalPlusResourceType
+
+---@class IActivityResult
+---@field GetValue (fun(self: IActivityResult, parameterName: string?): any) |  (fun(self: IActivityResult, parameterName: string?): any)
+---@field GetExecutionLog (fun(self: IActivityResult): string)
+---@field GetExecutedParameterValues (fun(self: IActivityResult): IParameterCollection)
+---@field ActivityName string
+---@field Activity IActivity
+---@field HasRuntimeError boolean
+---@field RuntimeError DriverActivityRuntimeError
+---@field ParameterNames any
+---@field HasOutput boolean
+---@field ReturnValue any
+---@field Definition IParameterDefinitionContainer
+
+---@class IParameterDefinitionContainer
+---@field HasParameter (fun(self: IParameterDefinitionContainer, parameterName: string?): boolean)
+---@field GetParameterDefinition (fun(self: IParameterDefinitionContainer, parameterName: string?): IParameterDefinition)
+---@field IsType (fun(self: IParameterDefinitionContainer): boolean) |  (fun(self: IParameterDefinitionContainer, typeDescription: string?): boolean)
+---@field HasCapability (fun(self: IParameterDefinitionContainer, capabilityName: string?): boolean) |  (fun(self: IParameterDefinitionContainer): boolean)
+---@field Item IParameterDefinition
+---@field Name string
+---@field ParameterCount number
+---@field InheritedCapabilities any
+
+---@class DriverActivityRuntimeError: DriverException
+---@overload fun(message: string?, innerException: PalActivityRuntimeError?): DriverActivityRuntimeError
+---@field Activity IActivity
+---@field ErrorCode ActivityRuntimeErrorCodes
+---@field ErrorCodeId number
+---@field FormattedErrorCodeId string
+
+---@class DriverException
+---@overload fun(message: string?): DriverException
+---@overload fun(message: string?, innerException: any?): DriverException
+
+---@class IActivity: IDriverObject
+---@field Result IActivityResult
+---@field Definition IActivityDefinition
+
+---@class IDriverObject
+---@field GetValue (fun(self: IDriverObject, parameterName: string?): any)
+---@field GetOptionsEnumerationName (fun(self: IDriverObject, parameterName: string?): any)
+---@field ObjectId any
+---@field Name string
+---@field TypeName string
+---@field Description string
+---@field Item any
+---@field Parameters IParameterCollection
+---@field Definition IParameterDefinitionContainer
+
+---@class IActivityDefinition: IParameterDefinitionContainer
+---@field CanRunOnNoHeadContext boolean
+
+---@class IParameterDefinition
+---@field GetValue (fun(self: IParameterDefinition, property: ParameterAttribute?, unit: string?): number)
+---@field Name string
+---@field DisplayName string
+---@field Description string
+---@field HelpText string
+---@field UnitSymbol string
+---@field TypeName string
+---@field UnitFamily string
+---@field HasUnit boolean
+---@field ValueType any
+---@field HasBounds boolean
+---@field MinValue any
+---@field MaxValue any
+---@field DefaultValue any
+---@field IsMandatory boolean
+---@field HasDefault boolean
+---@field IsOptionsEnumeration boolean
+---@field ParameterOptions any
+
+---@class ParameterAttribute
+---@field Min ParameterAttribute
+---@field Max ParameterAttribute
+---@field Default ParameterAttribute
+
+---@class IModule: IModuleReference
+---@field GetParameters (fun(self: IModule): ParameterCollection)
+---@field GetOptionsEnumerationName (fun(self: IModule, parameterName: string?): any)
+---@field GetValue (fun(self: IModule, parameterName: string?): any)
+---@field GetChildren (fun(self: IModule, predicateFilter: any?): any)
+---@field GetChildByName (fun(self: IModule, moduleName: string?): IModuleReference)
+---@field GetChildrenByType (fun(self: IModule, moduleType: string?): any)
+---@field GetChildObjects (fun(self: IModule, predicateFilter: any?): any) |  (fun(self: IModule): any)
+---@field IsType (fun(self: IModule): boolean)
+---@field Description string
+---@field Item any
+---@field Parameters IParameterCollection
+---@field Children any
+---@field ParentObject IModule
+---@field FullPathName string
+---@field Definition IParameterDefinitionContainer
+
+---@class IPalPlusConfigurationService
+---@field GetVial (fun(self: IPalPlusConfigurationService, vialPositionString: string?): ISamplePosition)
+---@field GetNextVial (fun(self: IPalPlusConfigurationService, currentVial: ISamplePosition?): ISamplePosition)
+---@field GetRelativeVial (fun(self: IPalPlusConfigurationService, vialPositionString: string?, delta: number): ISamplePosition) |  (fun(self: IPalPlusConfigurationService, vialPositionString: ISamplePosition?, delta: number): ISamplePosition)
+---@field GetVialRange (fun(self: IPalPlusConfigurationService): any) |  (fun(self: IPalPlusConfigurationService, firstVial: ISamplePosition?, lastVial: ISamplePosition?): any) |  (fun(self: IPalPlusConfigurationService, tray: IModule?): any)
+---@field GetTrayContainerNames (fun(self: IPalPlusConfigurationService): any)
+---@field GetTrayContainers (fun(self: IPalPlusConfigurationService): any)
+---@field GetTraysForContainerName (fun(self: IPalPlusConfigurationService, trayHolderContainerName: string?): any) |  (fun(self: IPalPlusConfigurationService, trayHolderContainerName: string?, includeEmptySlots: boolean): any)
+---@field GetTrayByContainerPath (fun(self: IPalPlusConfigurationService, traySlotPathLocation: string?): ITray)
+---@field GetRackTypes (fun(self: IPalPlusConfigurationService): any)
+---@field GetRackVialTypes (fun(self: IPalPlusConfigurationService): any) |  (fun(self: IPalPlusConfigurationService, rackType: IModule?): any)
+---@field SetRackTypeOnTrayContainerSlot (fun(self: IPalPlusConfigurationService, tray: ITray?, newRackType: ITrayType?, racksVialType: IRackItemType?)) |  (fun(self: IPalPlusConfigurationService, trayHolderName: string?, slotIndex: number, newRackType: ITrayType?, racksVialType: IRackItemType?))
+---@field GetParkStationNames (fun(self: IPalPlusConfigurationService): any)
+---@field GetParkSlotsForStationName (fun(self: IPalPlusConfigurationService, parkStationName: string?): any)
+---@field GetMountedToolForHead (fun(self: IPalPlusConfigurationService, arm: PalPlusResourceType?): ITool)
+---@field QueryModules (fun(self: IPalPlusConfigurationService): any) |  (fun(self: IPalPlusConfigurationService, prefetchParameters: boolean): any) |  (fun(self: IPalPlusConfigurationService, moduleType: string?): any) |  (fun(self: IPalPlusConfigurationService, moduleType: string?, prefetchParameters: boolean): any) |  (fun(self: IPalPlusConfigurationService, moduleType: string?, prefetchParameters: boolean, recursive: boolean): any) |  (fun(self: IPalPlusConfigurationService, parameterDefinition: IParameterDefinition?): any) |  (fun(self: IPalPlusConfigurationService): any) |  (fun(self: IPalPlusConfigurationService, prefetchParameters: boolean): any)
+---@field IsReferenceOfType (fun(self: IPalPlusConfigurationService, reference: IModuleReference?): boolean)
+---@field GetModuleDefinitions (fun(self: IPalPlusConfigurationService): any)
+---@field GetModuleDefinition (fun(self: IPalPlusConfigurationService, moduleDescriptionType: string?): IParameterDefinitionContainer)
+---@field GetCapabilityDefinitions (fun(self: IPalPlusConfigurationService): any)
+---@field GetCapabilityDefinition (fun(self: IPalPlusConfigurationService, capabilityDescriptionType: string?): IDriverCapabilityDefinition)
+---@field GetModule (fun(self: IPalPlusConfigurationService, uri: any?): IModule) |  (fun(self: IPalPlusConfigurationService, moduleReference: IModuleReference?): IModule)
+---@field GetModuleByName (fun(self: IPalPlusConfigurationService, nameOrPathName: string?): IModule)
+---@field RefreshModule (fun(self: IPalPlusConfigurationService, module: IModule?): IModule)
+---@field GetChildModules (fun(self: IPalPlusConfigurationService, module: IModule?): any) |  (fun(self: IPalPlusConfigurationService, module: IModule?, prefetchChildrenParameter: boolean): any)
+---@field SynchronizeRobotDateTime (fun(self: IPalPlusConfigurationService, applyUtcTime: boolean?): boolean)
+---@field GetCurrentRobotDateTime (fun(self: IPalPlusConfigurationService): any)
+---@field ValidateConfiguration (fun(self: IPalPlusConfigurationService): any) |  (fun(self: IPalPlusConfigurationService, executePlausibilityChecks: boolean): any)
+---@field CreateModuleForUpdate (fun(self: IPalPlusConfigurationService, module: IModule?): any)
+---@field IsModuleInsideSharedSpace (fun(self: IPalPlusConfigurationService, module: IModule?): boolean)
+---@field WriteConfiguration (fun(self: IPalPlusConfigurationService, stream: any?)) |  (fun(self: IPalPlusConfigurationService, configFileName: string?))
+---@field CreateBackup (fun(self: IPalPlusConfigurationService, comments: string?): number[])
+---@field GetTeachPoints (fun(self: IPalPlusConfigurationService, module: IModule?, arm: PalPlusResourceType?): any)
+---@field RenameModule (fun(self: IPalPlusConfigurationService, module: IModule?, newName: string?): boolean)
+---@field PrefetchParametersDefault boolean
+---@field SupportsSmartUsageData boolean
+---@field UserControls IPalPlusUserControlsService
+---@field SystemInformation ISystemInformation
+---@field NetworkInformation INetworkInformation
+---@field UseSharedSpace boolean
+
+---@class IRackItemType: IModule, IModuleReference, ICapability
+
+---@class ITray: IModule, IModuleReference, ICapability, ITeachTarget, IMoveTarget
+---@field Description string
+---@field TrayType string
+---@field TrayVialTypeName string
+---@field TrayContainerName string
+---@field TrayContainerReference IModuleReference
+---@field TrayVialTypeReference IModuleReference
+---@field Count any
+---@field SlotIndex any
+---@field SlotName string
+---@field IsThreePointTaught any
+---@field HasCover any
+
+---@class ITeachTarget: IModule, IModuleReference, ICapability
+
+---@class ITool: IModule, IModuleReference, ICapability
+---@field Volume Quantity
+---@field Length Quantity
+---@field Type string
+---@field Location string
+
+---@class ITrayType: IModule, IModuleReference, ICapability
+
+---@class ISamplePosition
+---@field TrayAddress any
+---@field Tray IModuleReference
+---@field ContainerName string
+---@field SlotIndex number
+---@field Index number
+---@field Location string
+
+---@class ICapability
+
+---@class SyringeExchangeHelper
+---@field MoveToExchangePosition (fun(self: SyringeExchangeHelper))
+---@field Home (fun(self: SyringeExchangeHelper))
+---@field ManageLocking boolean
+
+---@class Severity
+---@field Dialog Severity
+---@field Info Severity
+---@field Warn Severity
+---@field Error Severity
+---@field Tip Severity
+
+---@class LogTo
+---@field Journal LogTo
+---@field Twin LogTo
+---@field Both LogTo
+
+---@class IApplySettingsContext
+---@field GetArgumentValue (fun(self: IApplySettingsContext, name: string?): any) |  (fun(self: IApplySettingsContext, header: string?, name: string?): any)
+---@field HasArgumentValue (fun(self: IApplySettingsContext, name: string?): boolean) |  (fun(self: IApplySettingsContext, header: string?, name: string?): boolean)
+
+---@class IProcedureExecutionContext
+---@field GetArgumentValue (fun(self: IProcedureExecutionContext, name: string?): any) |  (fun(self: IProcedureExecutionContext, header: string?, name: string?): any)
+---@field HasArgumentValue (fun(self: IProcedureExecutionContext, name: string?): boolean) |  (fun(self: IProcedureExecutionContext, header: string?, name: string?): boolean)
+---@field GetProcedureParticipant (fun(self: IProcedureExecutionContext, role: string?): any)
+---@field ResetProgress (fun(self: IProcedureExecutionContext, initialProgress: number))
+---@field AdvanceProgress (fun(self: IProcedureExecutionContext, amount: number))
+---@field WaitForSignal (fun(self: IProcedureExecutionContext, signal: string?))
+---@field SetSignal (fun(self: IProcedureExecutionContext, signal: string?))
+---@field CheckForApply (fun(self: IProcedureExecutionContext): IApplySettingsContext)
+---@field Report (fun(self: IProcedureExecutionContext, subject: any?, severity: Severity?, manualDismiss: boolean, message: string?, ...: any))
+---@field Log (fun(self: IProcedureExecutionContext, message: string?, ...: any))
+---@field SendToLogbook (fun(self: IProcedureExecutionContext, message: string?))
+---@field LogMeta (fun(self: IProcedureExecutionContext, metaID: string?, metaTageName: string?, unit: string?, message: string?, ...: any))
+---@field Abort (fun(self: IProcedureExecutionContext))
+---@field Sleep (fun(self: IProcedureExecutionContext, millis: number))
+---@field Signalize (fun(self: IProcedureExecutionContext, color: any?, ...: any)) |  (fun(self: IProcedureExecutionContext, color: any?, arg: any?))
+---@field SignalizeText (fun(self: IProcedureExecutionContext, color: any?, ...: any)) |  (fun(self: IProcedureExecutionContext, color: any?, arg: any?))
+---@field ShowComposition (fun(self: IProcedureExecutionContext, isShow: boolean))
+---@field SetAbortEnabled (fun(self: IProcedureExecutionContext, isAbortEnabled: boolean))
+---@field SetApplyEnabled (fun(self: IProcedureExecutionContext, isApplyEnabled: boolean))
+---@field SetDiagramLoggingEnabled (fun(self: IProcedureExecutionContext, isLoggingEnabled: boolean))
+---@field SupressEvent (fun(self: IProcedureExecutionContext, formatMessage: string?))
+---@field WaitForSupressEvent (fun(self: IProcedureExecutionContext, formatMessage: string?, millis: number): number)
+---@field Name string
+---@field Description string
+---@field AppKey ApplicationKey
+---@field HardwareContext IInstalledHardwareContext
+---@field PrivateDataPath string
+---@field LogFileDataPath string
+
+---@class ApplicationKey
+---@overload fun(): ApplicationKey
+---@field Sample string
+---@field Special string
+
+---@class IProcedureStatusParticipant: IBusinessProcedureParticipant
+---@field SetStatus (fun(self: IProcedureStatusParticipant, status: string?, remove: string?))
+---@field RemoveStatus (fun(self: IProcedureStatusParticipant, status: string?))
+
+---@class IProcedureValidationContext
+---@field GetArgumentValue (fun(self: IProcedureValidationContext, name: string?): any) |  (fun(self: IProcedureValidationContext, header: string?, name: string?): any)
+---@field SetArgumentValue (fun(self: IProcedureValidationContext, name: string?, value: any?)) |  (fun(self: IProcedureValidationContext, header: string?, name: string?, value: any?))
+---@field HasArgumentValue (fun(self: IProcedureValidationContext, name: string?): boolean) |  (fun(self: IProcedureValidationContext, header: string?, name: string?): boolean)
+---@field Report (fun(self: IProcedureValidationContext, subject: string?, severity: Severity?, manualDismiss: boolean, message: string?, ...: any)) |  (fun(self: IProcedureValidationContext, header: string?, subject: string?, severity: Severity?, manualDismiss: boolean, message: string?, ...: any))
+
+---@class AdjustmentContext
+---@overload fun(procedure: ProcedureInfo?): AdjustmentContext
+---@field SetArgumentValue (fun(self: AdjustmentContext, name: string?, value: any?)) |  (fun(self: AdjustmentContext, header: string?, name: string?, value: any?))
+---@field ProcedureArguments ProcedureArguments
+---@field AdvProcedureArguments ProcedureArguments
+---@field AdvChildProcedureArguments ChildProcedureArguments
+
+---@class ChildProcedureArguments
+---@overload fun(): ChildProcedureArguments
+
+---@class ProcedureArguments
+---@overload fun(): ProcedureArguments
+
+---@class ProcedureInfo
+---@overload fun(name: string?, description: string?, parameters: any?, advParameters: any?, advChildParameters: any?, advHeader: string?, advHeaderFgColor: number[]?): ProcedureInfo
+---@overload fun(info: ProcedureInfo?): ProcedureInfo
+---@field CreateArguments (fun(self: ProcedureInfo): ProcedureArguments)
+---@field CreateAdvancedArguments (fun(self: ProcedureInfo): ProcedureArguments)
+---@field CreateAdvancedChildArguments (fun(self: ProcedureInfo): ChildProcedureArguments)
+---@field Name string
+---@field DisplayName string
+---@field LegacyName string
+---@field Description string
+---@field Parameters any
+---@field AdvParameters any
+---@field AdvChildParameters any
+---@field Hidden boolean
+---@field IsLegacy boolean
+---@field DecompressOnExit boolean
+---@field IsApplyActive boolean
+---@field IsService boolean
+---@field OverwriteLogFiles boolean
+---@field NumberOfLogFilesToKeep number
+---@field Version string
+---@field AdvHeader string
+---@field AdvHeaderFgColor number[]
+---@field LedState LedState
+
+---@class ExperimentInfo
+---@overload fun(): ExperimentInfo
+---@field ElutionName string
+---@field Separator IChromatographyColumnType
+---@field Trap IChromatographyColumnType
+---@field OvenTemperature number
+---@field AnalysisTime TimeSpan
+---@field IsKeepGradient boolean
+---@field IsKeepAdvancedSettings boolean
+---@field AppKey ApplicationKey
+
+---@class IChromatographyColumnType
+---@field Length number
+---@field ColumnDiameter number
+---@field ParticleDiameter number
+---@field ColumnPorosity number
+---@field IsColumnPorosity boolean
+---@field ParticlePoreSize number
+---@field IsParticlePoreSize boolean
+---@field MaximumPressure number
+---@field IsMaximumPressure boolean
+---@field MaximumFlow number
+---@field IsMaximumFlow boolean
+---@field MaximumTemperature number
+---@field IsMaximumTemperature boolean
+---@field IsAdvancedSettings boolean
+---@field ColumnVolume number
+---@field UnityFlow number
+---@field Name string
+---@field Comment string
+---@field Manufacturer string
+---@field TypeMaterial string
+---@field PartNumber string
+---@field SerialNumber string
+---@field Function ChromatographyColumnFunction
+
+---@class ChromatographyColumnFunction
+---@field Trap ChromatographyColumnFunction
+---@field Separator ChromatographyColumnFunction
+
+---@class GradientContainer
+---@overload fun(): GradientContainer
+---@field AddSetPoint (fun(self: GradientContainer, setPoint: SetPoint?, relative: boolean?))
+---@field GetSetPoint (fun(self: GradientContainer, index: number): SetPoint)
+---@field Clear (fun(self: GradientContainer))
+---@field Duration number
+---@field Count number
+---@field SetPoint fun(time: number, flow: number, mix: number): SetPoint
+
+---@class SetPoint
+---@overload fun(time: number, flow: number, mix: number): SetPoint
+---@field Time number
+---@field Flow number
+---@field Mix number
+
+---@class InitHelper
+---@overload fun(appKey: ApplicationKey?, hardwareContext: IInstalledHardwareContext?): InitHelper
+---@field DeclareParameter (fun(self: InitHelper, name: string?, defaultValue: any?)) |  (fun(self: InitHelper, name: string?, defaultValue: any?, unit: string?)) |  (fun(self: InitHelper, name: string?, defaultValue: any?, unit: string?, type: string?, isService: boolean?)) |  (fun(self: InitHelper, name: string?, defaultValue: any?, unit: string?, type: string?, toolTipText: string?, toolTipImageName: string?)) |  (fun(self: InitHelper, name: string?, defaultValue: any?, unit: string?, type: string?, isService: boolean?, toolTipText: string?, toolTipImageName: string?)) |  (fun(self: InitHelper, name: string?, defaultValue: any?, unit: string?, type: string?, isService: boolean?, toolTipText: string?, toolTipImageName: string?, indent: number?, group: string?, decimals: number?))
+---@field DeclareASParameter (fun(self: InitHelper, name: string?, defaultValue: any?, unit: string?)) |  (fun(self: InitHelper, name: string?, defaultValue: any?, unit: string?, type: string?, isService: boolean?)) |  (fun(self: InitHelper, headerName: string?, name: string?, defaultValue: any?, unit: string?, isService: boolean?)) |  (fun(self: InitHelper, headerName: string?, name: string?, defaultValue: any?, unit: string?, type: string?, toolTipText: string?, toolTipImageName: string?, indent: number?, group: string?, decimals: number?)) |  (fun(self: InitHelper, headerName: string?, name: string?, defaultValue: any?, unit: string?, type: string?, isService: boolean?, toolTipText: string?, toolTipImageName: string?, indent: number?, group: string?, decimals: number?))
+---@field DeclareASHeader (fun(self: InitHelper, header: string?, rgbColor: any?))
+---@field ExtractProcedureInfo (fun(self: InitHelper): ProcedureInfo)
+---@field Name string
+---@field Description string
+---@field DisplayName string
+---@field LegacyName string
+---@field IsLegacy boolean
+---@field Hidden boolean
+---@field DecompressOnExit boolean
+---@field OverwriteLogFiles boolean
+---@field IsApplyActive boolean
+---@field IsService boolean
+---@field NumberOfLogFilesToKeep number
+---@field Version string
+---@field AdvHeader string
+---@field AdvHeaderFgColor number[]
+---@field LedState LedState
+---@field AppKey ApplicationKey
+---@field HardwareContext IInstalledHardwareContext
+
+---@class Pump
+---@overload fun(ipAddress: string?): Pump
+---@field Dispose (fun(self: Pump))
+---@field PumpSideInit (fun(self: Pump, channel: Channel?, manualMode: boolean))
+---@field SetDeviceSignal (fun(self: Pump, signal: DeviceSignal?))
+---@field SetPumpSideSignal (fun(self: Pump, channel: Channel?, signal: PumpSideSignal?))
+---@field SetMethodSignal (fun(self: Pump, methodIndex: number, signal: MethodSignal?))
+---@field CanSetMethodSignal (fun(self: Pump, methodIndex: number): boolean)
+---@field SignalsPending (fun(self: Pump): boolean)
+---@field AcknowledgeDeviceError (fun(self: Pump))
+---@field AcknowledgePumpSideError (fun(self: Pump, channel: Channel?))
+---@field AcknowledgeMethodError (fun(self: Pump, methodIndex: number))
+---@field SetLedPattern (fun(self: Pump, pattern: LedPattern?, foreground_color: LedColor?, background_color: LedColor?))
+---@field BeginEdit (fun(self: Pump))
+---@field EndEdit (fun(self: Pump))
+---@field LoadMethod (fun(self: Pump, methodIndex: number, method: PumpMethod?))
+---@field SetHexUploadConfigErase (fun(self: Pump, eraseConfig: boolean): boolean)
+---@field UploadHexFile (fun(self: Pump, hexFilePath: string?): boolean)
+---@field IsOnline boolean
+---@field DeviceConnection DeviceConnection
+---@field DeviceDataAccess DeviceDataAccess
+---@field PumpSideStateChangedEvent fun(object: any?, method: table): PumpSideStateChangedEvent
+---@field MethodStateChangedEvent fun(object: any?, method: table): MethodStateChangedEvent
+---@field EventOnlineStatusChanged fun(object: any?, method: table): EventOnlineStatusChanged
+---@field SetValuesCommittedEvent fun(object: any?, method: table): SetValuesCommittedEvent
+---@field CurrentValuesChangedEvent fun(object: any?, method: table): CurrentValuesChangedEvent
+
+---@class CurrentValuesChangedEvent
+---@overload fun(object: any?, method: table): CurrentValuesChangedEvent
+---@field Invoke (fun(self: CurrentValuesChangedEvent, startIndex: number, length: number))
+---@field BeginInvoke (fun(self: CurrentValuesChangedEvent, startIndex: number, length: number, callback: any?, object: any?): any)
+---@field EndInvoke (fun(self: CurrentValuesChangedEvent, result: any?))
+
+---@class SetValuesCommittedEvent
+---@overload fun(object: any?, method: table): SetValuesCommittedEvent
+---@field Invoke (fun(self: SetValuesCommittedEvent))
+---@field BeginInvoke (fun(self: SetValuesCommittedEvent, callback: any?, object: any?): any)
+---@field EndInvoke (fun(self: SetValuesCommittedEvent, result: any?))
+
+---@class EventOnlineStatusChanged
+---@overload fun(object: any?, method: table): EventOnlineStatusChanged
+---@field Invoke (fun(self: EventOnlineStatusChanged, online: boolean))
+---@field BeginInvoke (fun(self: EventOnlineStatusChanged, online: boolean, callback: any?, object: any?): any)
+---@field EndInvoke (fun(self: EventOnlineStatusChanged, result: any?))
+
+---@class MethodStateChangedEvent
+---@overload fun(object: any?, method: table): MethodStateChangedEvent
+---@field Invoke (fun(self: MethodStateChangedEvent, oldState: MethodState?, newState: MethodState?))
+---@field BeginInvoke (fun(self: MethodStateChangedEvent, oldState: MethodState?, newState: MethodState?, callback: any?, object: any?): any)
+---@field EndInvoke (fun(self: MethodStateChangedEvent, result: any?))
+
+---@class MethodState
+---@field NoMethod MethodState
+---@field Loading MethodState
+---@field Loaded MethodState
+---@field TargetPressureA MethodState
+---@field Compressing MethodState
+---@field Equilibrating MethodState
+---@field ReadyForExternalStart MethodState
+---@field Running MethodState
+---@field Stopped MethodState
+---@field Recycling MethodState
+---@field RecyclingCFAspirateA MethodState
+---@field RecyclingCFCompressA MethodState
+---@field RecyclingCFAspirateB MethodState
+---@field RecyclingCFCompressB MethodState
+---@field RunningTrunk MethodState
+---@field Standby MethodState
+
+---@class PumpSideStateChangedEvent
+---@overload fun(object: any?, method: table): PumpSideStateChangedEvent
+---@field Invoke (fun(self: PumpSideStateChangedEvent, oldState: PumpSideState?, newState: PumpSideState?))
+---@field BeginInvoke (fun(self: PumpSideStateChangedEvent, oldState: PumpSideState?, newState: PumpSideState?, callback: any?, object: any?): any)
+---@field EndInvoke (fun(self: PumpSideStateChangedEvent, result: any?))
+
+---@class PumpSideState
+---@field Uninitialized PumpSideState
+---@field Initializing PumpSideState
+---@field Initialized PumpSideState
+---@field Aspirating PumpSideState
+---@field Compressing PumpSideState
+---@field StoppedCompressing PumpSideState
+---@field Releasing PumpSideState
+---@field Purging PumpSideState
+---@field StoppedPurging PumpSideState
+---@field PumpingIsocraticSpeed PumpSideState
+---@field PumpingIsocraticFlow PumpSideState
+---@field PumpingIsocraticPressure PumpSideState
+---@field PumpingBinarySpeed PumpSideState
+---@field PumpingBinaryFlow PumpSideState
+---@field PumpingBinaryPressure PumpSideState
+---@field StoppedPumping PumpSideState
+---@field InitializingManualMode PumpSideState
+---@field ManualMode PumpSideState
+
+---@class DeviceDataAccess
+---@field SetByte (fun(self: DeviceDataAccess, index: number, value: number, notifyChanges: boolean))
+---@field GetSerialNo (fun(self: DeviceDataAccess): number)
+---@field SetSerialNo (fun(self: DeviceDataAccess, serialNo: number))
+---@field GetDeviceType (fun(self: DeviceDataAccess): DeviceType)
+---@field GetHardwareVersion (fun(self: DeviceDataAccess): number)
+---@field GetFirmwareVersion (fun(self: DeviceDataAccess): number)
+---@field IsFirmwareCompatible (fun(self: DeviceDataAccess): boolean)
+---@field GetPistonRadius (fun(self: DeviceDataAccess): number)
+---@field GetSystemInfo (fun(self: DeviceDataAccess): SystemInfo)
+---@field GetMaxPressure (fun(self: DeviceDataAccess): number)
+---@field GetHomeSpeed (fun(self: DeviceDataAccess): number)
+---@field SetHomeSpeed (fun(self: DeviceDataAccess, value: number))
+---@field GetAspirateSpeed (fun(self: DeviceDataAccess): number)
+---@field SetAspirateSpeed (fun(self: DeviceDataAccess, aspirateSpeed: number))
+---@field GetMaxAspirateSpeed (fun(self: DeviceDataAccess): number)
+---@field GetPurgeSpeed (fun(self: DeviceDataAccess): number)
+---@field SetPurgeSpeed (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_P (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_P (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_Pmin (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_Pmin (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_Pmax (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_Pmax (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_I (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_I (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_Imin (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_Imin (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_Imax (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_Imax (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_D (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_D (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_Dmin (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_Dmin (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_Dmax (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_Dmax (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_IWindow (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_IWindow (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_ResultMin (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_ResultMin (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID_ResultMax (fun(self: DeviceDataAccess): number)
+---@field SetPressurePID_ResultMax (fun(self: DeviceDataAccess, value: number))
+---@field GetPressurePID (fun(self: DeviceDataAccess): PID)
+---@field SetPressurePID (fun(self: DeviceDataAccess, pressurePID: PID?))
+---@field GetInternalHeatingPID_P (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_P (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_Pmin (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_Pmin (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_Pmax (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_Pmax (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_I (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_I (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_Imin (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_Imin (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_Imax (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_Imax (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_D (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_D (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_Dmin (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_Dmin (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_Dmax (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_Dmax (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_IWindow (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_IWindow (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_ResultMin (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_ResultMin (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID_ResultMax (fun(self: DeviceDataAccess): number)
+---@field SetInternalHeatingPID_ResultMax (fun(self: DeviceDataAccess, value: number))
+---@field GetInternalHeatingPID (fun(self: DeviceDataAccess): PID)
+---@field SetInternalHeatingPID (fun(self: DeviceDataAccess, internalHeatingPID: PID?))
+---@field GetExternalHeatingPID_P (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_P (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_Pmin (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_Pmin (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_Pmax (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_Pmax (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_I (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_I (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_Imin (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_Imin (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_Imax (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_Imax (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_D (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_D (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_Dmin (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_Dmin (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_Dmax (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_Dmax (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_IWindow (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_IWindow (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_ResultMin (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_ResultMin (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID_ResultMax (fun(self: DeviceDataAccess): number)
+---@field SetExternalHeatingPID_ResultMax (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalHeatingPID (fun(self: DeviceDataAccess): PID)
+---@field SetExternalHeatingPID (fun(self: DeviceDataAccess, externalHeatingPID: PID?))
+---@field GetZeroPressureOffsetA (fun(self: DeviceDataAccess): number)
+---@field SetZeroPressureOffsetA (fun(self: DeviceDataAccess, value: number))
+---@field GetPressureScalingFactorA (fun(self: DeviceDataAccess): number)
+---@field SetPressureScalingFactorA (fun(self: DeviceDataAccess, value: number))
+---@field GetPressureTrackingExcessFactor (fun(self: DeviceDataAccess): number)
+---@field SetPressureTrackingExcessFactor (fun(self: DeviceDataAccess, value: number))
+---@field GetLastDeviceErrorFlags (fun(self: DeviceDataAccess): number)
+---@field GetLastSideAErrorFlags (fun(self: DeviceDataAccess): number)
+---@field GetLastSideBErrorFlags (fun(self: DeviceDataAccess): number)
+---@field GetLastMethod1ErrorFlags (fun(self: DeviceDataAccess): number)
+---@field GetLastMethod2ErrorFlags (fun(self: DeviceDataAccess): number)
+---@field GetErrorInfo (fun(self: DeviceDataAccess): ErrorInfo)
+---@field GetFlowPID_P (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_P (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_Pmin (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_Pmin (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_Pmax (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_Pmax (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_I (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_I (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_Imin (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_Imin (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_Imax (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_Imax (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_D (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_D (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_Dmin (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_Dmin (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_Dmax (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_Dmax (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_IWindow (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_IWindow (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_ResultMin (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_ResultMin (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID_ResultMax (fun(self: DeviceDataAccess): number)
+---@field SetFlowPID_ResultMax (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowPID (fun(self: DeviceDataAccess): PID)
+---@field SetFlowPID (fun(self: DeviceDataAccess, flowPID: PID?))
+---@field GetFlowCalibrationFactorA (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationFactorA (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationFactorB (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationFactorB (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowResistanceA (fun(self: DeviceDataAccess): number)
+---@field SetFlowResistanceA (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowResistanceB (fun(self: DeviceDataAccess): number)
+---@field SetFlowResistanceB (fun(self: DeviceDataAccess, value: number))
+---@field GetValveSchema (fun(self: DeviceDataAccess): number)
+---@field SetValveSchema (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowResistanceOut (fun(self: DeviceDataAccess): number)
+---@field SetFlowResistanceOut (fun(self: DeviceDataAccess, value: number))
+---@field GetCompressibilityFactorB (fun(self: DeviceDataAccess): number)
+---@field SetCompressibilityFactorB (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationFactorExtendedA (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationFactorExtendedA (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationFactorExtendedB (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationFactorExtendedB (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationOffsetA (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationOffsetA (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationOffsetB (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationOffsetB (fun(self: DeviceDataAccess, value: number))
+---@field GetEnableEthernet (fun(self: DeviceDataAccess): boolean)
+---@field SetEnableEthernet (fun(self: DeviceDataAccess, enableEthernet: boolean))
+---@field GetUseDHCP (fun(self: DeviceDataAccess): boolean)
+---@field SetUseDHCP (fun(self: DeviceDataAccess, useDHCP: boolean))
+---@field GetIPAddress (fun(self: DeviceDataAccess): number)
+---@field SetIPAddress (fun(self: DeviceDataAccess, value: number))
+---@field GetNetmask (fun(self: DeviceDataAccess): number)
+---@field SetNetmask (fun(self: DeviceDataAccess, value: number))
+---@field GetGateway (fun(self: DeviceDataAccess): number)
+---@field SetGateway (fun(self: DeviceDataAccess, value: number))
+---@field GetServiceCounter (fun(self: DeviceDataAccess, channel: Channel?, serviceCounterType: ServiceCounterType?): number)
+---@field ResetServiceCounter (fun(self: DeviceDataAccess, channel: Channel?, serviceCounterType: ServiceCounterType?))
+---@field GetAvailableSensorsBitField (fun(self: DeviceDataAccess): number)
+---@field SetAvailableSensorsBitField (fun(self: DeviceDataAccess, availableFlowSensorA: boolean, availableInternalPressureSensorA: boolean, availableExternalPressureSensorA: boolean, pressureControllerUsesExternalSensorA: boolean, availableFlowSensorB: boolean, availableInternalPressureSensorB: boolean, availableExternalPressureSensorB: boolean, pressureControllerUsesExternalSensorB: boolean))
+---@field GetAvailableFlowSensorA (fun(self: DeviceDataAccess): boolean)
+---@field GetAvailableInternalPressureSensorA (fun(self: DeviceDataAccess): boolean)
+---@field GetAvailableExternalPressureSensorA (fun(self: DeviceDataAccess): boolean)
+---@field GetPressureControllerUsesExternalSensorA (fun(self: DeviceDataAccess): boolean)
+---@field GetAvailableFlowSensorB (fun(self: DeviceDataAccess): boolean)
+---@field GetAvailableInternalPressureSensorB (fun(self: DeviceDataAccess): boolean)
+---@field GetAvailableExternalPressureSensorB (fun(self: DeviceDataAccess): boolean)
+---@field GetPressureControllerUsesExternalSensorB (fun(self: DeviceDataAccess): boolean)
+---@field GetPressurePIDNegativeResultDivisor (fun(self: DeviceDataAccess): number)
+---@field SetPressurePIDNegativeResultDivisor (fun(self: DeviceDataAccess, value: number))
+---@field GetZeroPressureOffsetB (fun(self: DeviceDataAccess): number)
+---@field SetZeroPressureOffsetB (fun(self: DeviceDataAccess, value: number))
+---@field GetPressureScalingFactorB (fun(self: DeviceDataAccess): number)
+---@field SetPressureScalingFactorB (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalZeroPressureOffsetA (fun(self: DeviceDataAccess): number)
+---@field SetExternalZeroPressureOffsetA (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalPressureScalingFactorA (fun(self: DeviceDataAccess): number)
+---@field SetExternalPressureScalingFactorA (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalZeroPressureOffsetB (fun(self: DeviceDataAccess): number)
+---@field SetExternalZeroPressureOffsetB (fun(self: DeviceDataAccess, value: number))
+---@field GetExternalPressureScalingFactorB (fun(self: DeviceDataAccess): number)
+---@field SetExternalPressureScalingFactorB (fun(self: DeviceDataAccess, value: number))
+---@field SetFlowCalibrationFactorA2 (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationFactorA2 (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationFactorB2 (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationFactorB2 (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationFactorExtendedA2 (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationFactorExtendedA2 (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationFactorExtendedB2 (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationFactorExtendedB2 (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationOffsetExtendedA (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationOffsetExtendedA (fun(self: DeviceDataAccess): number)
+---@field SetFlowCalibrationOffsetExtendedB (fun(self: DeviceDataAccess, value: number))
+---@field GetFlowCalibrationOffsetExtendedB (fun(self: DeviceDataAccess): number)
+---@field GetCurrentValvePosition (fun(self: DeviceDataAccess, channel: Channel?): ValvePosition)
+---@field GetSetManualValvePosition (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field SetManualValvePosition (fun(self: DeviceDataAccess, channel: Channel?, position: number, clockwise: boolean)) |  (fun(self: DeviceDataAccess, channel: Channel?, valvePosition: ValvePosition?))
+---@field GetMinPressureLimit (fun(self: DeviceDataAccess): number) |  (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field SetMinPressureLimit (fun(self: DeviceDataAccess, channel: Channel?, minPressureLimit: number))
+---@field GetMaxPressureLimit (fun(self: DeviceDataAccess): number) |  (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field SetMaxPressureLimit (fun(self: DeviceDataAccess, channel: Channel?, maxPressureLimit: number))
+---@field GetTargetPressure (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field SetTargetPressure (fun(self: DeviceDataAccess, channel: Channel?, value: number))
+---@field GetCurrentFlowControlMode (fun(self: DeviceDataAccess, channel: Channel?): ManualFlowControlMode)
+---@field SetCurrentFlowControlMode (fun(self: DeviceDataAccess, channel: Channel?, manualFlowControlMode: ManualFlowControlMode?))
+---@field GetSetFlow (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field SetIsocraticFlow (fun(self: DeviceDataAccess, channel: Channel?, nextFlowValue: number))
+---@field GetSetPistonSpeed (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field SetIsocraticPistonSpeed (fun(self: DeviceDataAccess, channel: Channel?, nextFlowValue: number))
+---@field GetSetInternalTemperature (fun(self: DeviceDataAccess): number)
+---@field SetInternalTemperature (fun(self: DeviceDataAccess, internalTemperature: number))
+---@field GetSetExternalTemperature (fun(self: DeviceDataAccess): number)
+---@field SetExternalTemperature (fun(self: DeviceDataAccess, externalTemperature: number))
+---@field GetDigitalOutput (fun(self: DeviceDataAccess, digitalOutput: DigitalOutput?): boolean)
+---@field GetDigitalOutputs (fun(self: DeviceDataAccess): number)
+---@field SetDigitalOutputs (fun(self: DeviceDataAccess, setBits: number, resetBits: number))
+---@field SetDigitalOutput (fun(self: DeviceDataAccess, digitalOutput: DigitalOutput?, value: boolean))
+---@field GetCurrentManualValvePosition (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetPistonState (fun(self: DeviceDataAccess, channel: Channel?): PistonState)
+---@field GetCurrentPistonSpeed (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetPistonPosition (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetPistonFillingPercentage (fun(self: DeviceDataAccess, pumpDeviceChannel: Channel?): number)
+---@field GetLeftVolume (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetCurrentPressure_IU (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field HasFlowSensor (fun(self: DeviceDataAccess, channel: Channel?): boolean)
+---@field GetTotalFlow (fun(self: DeviceDataAccess): number)
+---@field GetCurrentFlow (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetCurrentFlowSensorTemperature (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetFlowCalibrationFactor (fun(self: DeviceDataAccess, channel: Channel?): number) |  (fun(self: DeviceDataAccess, channel: Channel?, inExtendedRange: boolean): number)
+---@field GetCurrentInternalTemperature (fun(self: DeviceDataAccess): number)
+---@field GetCurrentExternalTemperature (fun(self: DeviceDataAccess): number)
+---@field GetDigitalInputs (fun(self: DeviceDataAccess): number)
+---@field GetDigitalInput (fun(self: DeviceDataAccess, digitalInput: DigitalInput?): boolean)
+---@field GetPressurePIDState (fun(self: DeviceDataAccess): PIDState)
+---@field GetFlowPIDState (fun(self: DeviceDataAccess): PIDState)
+---@field GetABPIDState (fun(self: DeviceDataAccess): PIDState)
+---@field SetMACAddress (fun(self: DeviceDataAccess, macAddress: number[]?): boolean)
+---@field GetMACAddress (fun(self: DeviceDataAccess): number[])
+---@field GetDeviceError (fun(self: DeviceDataAccess): DeviceError)
+---@field GetDeviceErrorHint1 (fun(self: DeviceDataAccess): number)
+---@field GetDeviceErrorHint2 (fun(self: DeviceDataAccess): number)
+---@field GetPumpSideState (fun(self: DeviceDataAccess, channel: Channel?): PumpSideState)
+---@field GetPumpSideError (fun(self: DeviceDataAccess, channel: Channel?): PumpSideError)
+---@field GetPumpSideErrorHint1 (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetPumpSideErrorHint2 (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field GetValveState (fun(self: DeviceDataAccess, channel: Channel?): ValveState)
+---@field SetPressureCalibration (fun(self: DeviceDataAccess, channel: Channel?, usesExternalSensor: boolean, zeroPressureOffset: number, pressureScalingFactor: number)) |  (fun(self: DeviceDataAccess, zeroPressureOffsetA: number, pressureScalingFactorA: number, zeroPressureOffsetB: number, pressureScalingFactorB: number))
+---@field GetCurrentPressure (fun(self: DeviceDataAccess, channel: Channel?): number)
+---@field Manualmode_Pump_constantSpeed (fun(self: DeviceDataAccess, channel: Channel?, purgeSpeed: number))
+---@field Manualmode_Pump_constantPressure (fun(self: DeviceDataAccess, channel: Channel?, targetPressure: number))
+---@field Manualmode_Pump_constantFlow (fun(self: DeviceDataAccess, channel: Channel?, purgeSpeed: number))
+---@field Manualmode_Pump_constantPressure_binary (fun(self: DeviceDataAccess, targetPressure: number, percentB: number))
+---@field Manualmode_Pump_constantFlow_binary (fun(self: DeviceDataAccess, setFlowA: number, setFlowB: number))
+---@field GetMethodState (fun(self: DeviceDataAccess, methodIndex: number): MethodState)
+---@field GetMethodRuntime (fun(self: DeviceDataAccess, methodIndex: number): TimeSpan)
+---@field GetMethodRunLength (fun(self: DeviceDataAccess, methodIndex: number): TimeSpan)
+---@field GetMethodError (fun(self: DeviceDataAccess, methodIndex: number): MethodError)
+---@field ValveCanSwitchTo (fun(self: DeviceDataAccess, channel: Channel?, valvePosition: ValvePosition?): boolean)
+---@field ValveCanInit (fun(self: DeviceDataAccess, channel: Channel?): boolean)
+---@field GetControlByPressure (fun(self: DeviceDataAccess): boolean)
+---@field GetPercentA (fun(self: DeviceDataAccess): number)
+---@field GetPercentBNotNull (fun(self: DeviceDataAccess): number)
+---@field GetPercentB (fun(self: DeviceDataAccess): any)
+---@field IsPumpSideSignalAllowed (fun(self: DeviceDataAccess, channel: Channel?, pumpSideSignal: PumpSideSignal?): boolean)
+---@field GetSettings (fun(self: DeviceDataAccess): PumpSettings)
+---@field SetSettings (fun(self: DeviceDataAccess, settings: PumpSettings?))
+---@field DeviceDataEqual (fun(self: DeviceDataAccess, arrayToCompare: number[]?): boolean)
+---@field TotalPistonVolume number
+---@field MaxFlowratePerChannel number
+---@field MaxPurgeSpeed number
+---@field CompatibleFirmwareVersions any
+---@field DEVICEDATASIZE number
+---@field PERSISTEDDATASIZE number
+
+---@class DigitalOutput
+---@field TE1 DigitalOutput
+---@field TE2 DigitalOutput
+---@field TE3 DigitalOutput
+---@field TE4 DigitalOutput
+---@field PO1 DigitalOutput
+---@field PO2 DigitalOutput
+
+---@class PistonState
+---@field Uninitialized PistonState
+---@field AtHomePosition PistonState
+---@field Stopped PistonState
+---@field Moving PistonState
+---@field AtEndPosition PistonState
+
+---@class ManualFlowControlMode
+---@field Off ManualFlowControlMode
+---@field ConstantSpeed ManualFlowControlMode
+---@field ConstantPressure_single ManualFlowControlMode
+---@field ConstantPressure_binary ManualFlowControlMode
+---@field ConstantFlow_single ManualFlowControlMode
+---@field ConstantFlow_binary ManualFlowControlMode
+
+---@class ServiceCounterType
+---@field ValveSwitchCountTotal ServiceCounterType
+---@field PistonStrokeMileageTotal ServiceCounterType
+---@field ValveSwitchCountPerSeal ServiceCounterType
+---@field PistonStrokeMileagePerSeal ServiceCounterType
+
+---@class ErrorInfo
+---@overload fun(): ErrorInfo
+---@field LastDeviceErrorFlags number
+---@field LastSideAErrorFlags number
+---@field LastSideBErrorFlags number
+---@field LastMethod1ErrorFlags number
+---@field LastMethod2ErrorFlags number
+
+---@class DeviceType
+---@field SPPump DeviceType
+---@field UltraPump DeviceType
+---@field unknown DeviceType
+
+---@class PID
+---@overload fun(): PID
+---@field P number
+---@field Pmin number
+---@field Pmax number
+---@field I number
+---@field Imin number
+---@field Imax number
+---@field D number
+---@field Dmin number
+---@field Dmax number
+---@field ResultMin number
+---@field ResultMax number
+---@field IWindow number
+
+---@class SystemInfo
+---@overload fun(): SystemInfo
+---@field SerialNo number
+---@field DeviceType DeviceType
+---@field HardwareVersion number
+---@field FirmwareVersion number
+---@field PistonRadius number
+
+---@class LedColor
+---@field FromRgb (fun(r: number, g: number, b: number): LedColor) |  (fun(r: number, g: number, b: number): LedColor)
+---@field R number
+---@field G number
+---@field B number
+
+---@class DeviceConnection
+---@field Dispose (fun(self: DeviceConnection))
+---@field ConnectDevices (fun(self: DeviceConnection))
+---@field Abort (fun(self: DeviceConnection))
+---@field SetHexUploadConfigErase (fun(self: DeviceConnection, eraseConfig: boolean): boolean)
+---@field UploadHexFile (fun(self: DeviceConnection, hexFilePath: string?): boolean)
+---@field connectionState ConnectionState
+---@field deviceInfo DeviceInfo
+---@field DeviceConnectStateChangedEvent fun(object: any?, method: table): DeviceConnectStateChangedEvent
+
+---@class DeviceConnectStateChangedEvent
+---@overload fun(object: any?, method: table): DeviceConnectStateChangedEvent
+---@field Invoke (fun(self: DeviceConnectStateChangedEvent, currentState: ConnectionState?))
+---@field BeginInvoke (fun(self: DeviceConnectStateChangedEvent, currentState: ConnectionState?, callback: any?, object: any?): any)
+---@field EndInvoke (fun(self: DeviceConnectStateChangedEvent, result: any?))
+
+---@class DeviceInfo
+---@overload fun(serialNo: number?, firmwareVersion: number?, deviceType: DeviceType?): DeviceInfo
+---@field SerialNo number
+---@field FirmwareVersion number
+---@field DeviceType DeviceType
+---@field HardwareVersion number
+
+---@class ConnectionState
+---@field Unconnected ConnectionState
+---@field Connecting ConnectionState
+---@field ConnectionError ConnectionState
+---@field Connected ConnectionState
+---@field StartingFirmwareUpdate ConnectionState
+---@field FirmwareUpdating ConnectionState
+
+---@class LedPattern
+---@field PatternNone LedPattern
+---@field PatternMoving LedPattern
+---@field PatternPulsating LedPattern
+
+---@class MethodSignal
+---@field LoadHeader MethodSignal
+---@field Unload MethodSignal
+---@field LoadRTT MethodSignal
+---@field Initialize MethodSignal
+---@field TargetPressureAReached MethodSignal
+---@field Compressed MethodSignal
+---@field Equilibrated MethodSignal
+---@field Start MethodSignal
+---@field Abort MethodSignal
+---@field OutOfVolume MethodSignal
+---@field MaxReadyTimePassed MethodSignal
+---@field Done MethodSignal
+---@field AcknowledgeStop MethodSignal
+---@field Underpressure MethodSignal
+---@field Overpressure MethodSignal
+---@field StartTrunk MethodSignal
+---@field NoSignal MethodSignal
+
+---@class PumpMethod
+---@overload fun(UNUSED_numPistons: number): PumpMethod
+---@overload fun(): PumpMethod
+---@overload fun(filename: string?): PumpMethod
+---@field GetRTTLine (fun(self: PumpMethod, lineNo: number): RTTLine)
+---@field AddRTTLine (fun(self: PumpMethod, rttLine: RTTLine?): number)
+---@field DeleteRTTLine (fun(self: PumpMethod, lineNo: number))
+---@field SaveToFile (fun(self: PumpMethod, filename: string?))
+---@field NumberOfPistons number
+---@field HighPressureVersion any
+---@field Description string
+---@field ContinuousFlowMode boolean
+---@field AutoInit boolean
+---@field AutoStart boolean
+---@field FlowControl boolean
+---@field TargetPressure number
+---@field MinPressureLimit number
+---@field MaxPressureLimit number
+---@field MaxFlowLimit number
+---@field StandbyFlow number
+---@field SolventA string
+---@field SolventB string
+---@field InitialTime number
+---@field BStartDelay number
+---@field MaxInitialReadyTime number
+---@field PumpCompartmentTemperature any
+---@field ColumnTemperature any
+---@field ReadyDO number
+---@field InitDI number
+---@field StartDI number
+---@field RTTLineCount number
+---@field HasUnsavedChanges boolean
+---@field MAX_PRESSURE number
+---@field MAX_FLOWRATE number
+
+---@class RTTLine
+---@field Time number
+---@field Flow any
+---@field PercentB any
+---@field ConstantPressure any
+---@field TE1 any
+---@field TE2 any
+---@field TE3 any
+---@field TE4 any
+---@field PO1 any
+---@field PO2 any
+
+---@class DeviceSignal
+---@field NoSignal DeviceSignal
+---@field UpdateFirmware DeviceSignal
+---@field AcknowledgeError DeviceSignal
+---@field UncommitAllData DeviceSignal
+
+---@class PumpSideSignal
+---@field Aspirate PumpSideSignal
+---@field Dispense PumpSideSignal
+---@field Release PumpSideSignal
+---@field PumpIsocraticSpeed PumpSideSignal
+---@field PumpIsocraticFlow PumpSideSignal
+---@field PumpIsocraticPressure PumpSideSignal
+---@field PumpBinarySpeed PumpSideSignal
+---@field PumpBinaryFlow PumpSideSignal
+---@field PumpBinaryPressure PumpSideSignal
+---@field Compress PumpSideSignal
+---@field Stop PumpSideSignal
+---@field AcknowledgeError PumpSideSignal
+---@field PistonAtHome PumpSideSignal
+---@field EndOfVolume PumpSideSignal
+---@field Underpressure PumpSideSignal
+---@field Overpressure PumpSideSignal
+---@field ManualMode PumpSideSignal
+---@field AutonomousMode PumpSideSignal
+---@field NoSignal PumpSideSignal
+
+---@class Channel
+---@field A Channel
+---@field B Channel
+
+---@class ValvePosition
+---@field Home ValvePosition
+---@field ASP ValvePosition
+---@field DISP ValvePosition
+---@field REL ValvePosition
+---@field PUMP ValvePosition
+---@field COMP ValvePosition
+---@field unknown ValvePosition
+
+---@class ActivityExecutionHelper: ActivityHelperBase
+---@overload fun(session: IDirectExecutionSession?): ActivityExecutionHelper
+---@field InjectSampleGC (fun(self: ActivityExecutionHelper, Injector: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Injector: IModuleReference?, InjectedSignal: IModuleReference?, PenetrationDepth: Quantity?, PenetrationSpeed: Quantity?, Volume: Quantity?, FlowRate: Quantity?, PreDelay: Quantity?, PostDelay: Quantity?, WaitTime: Quantity?, TimerTolerance: Quantity?, Timer: any?, WaitTimer: any?, InjectedSignalMode: any?): any)
+---@field ResumeRotator (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field ResumeStirrer (fun(self: ActivityExecutionHelper, Stirrer: IModuleReference?): any)
+---@field StopSpmeAdsorb (fun(self: ActivityExecutionHelper): any)
+---@field CalibrateRobotArmCurrent (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Usage: any?): any)
+---@field OpenFlipTube (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field PenetrateWithBottomSense (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, HeightFromBottom: Quantity?, Speed: Quantity?, SearchDistance: Quantity?): any)
+---@field ParkTool (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Slot: IModuleReference?, Safe: any?, Shutdown: any?, ReleaseNdlGuideAdapter: any?): any)
+---@field StopSpmeInject (fun(self: ActivityExecutionHelper): any)
+---@field GetAxisPosition (fun(self: ActivityExecutionHelper, Axis: any?): any)
+---@field MovePlunger (fun(self: ActivityExecutionHelper, Movement: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Movement: Quantity?, Speed: Quantity?, IsRelativeMovement: any?): any)
+---@field Wait (fun(self: ActivityExecutionHelper, Time: Quantity?): any)
+---@field PulsedSpmeConditioning (fun(self: ActivityExecutionHelper, ConditioningTime: Quantity?, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, ConditioningTime: Quantity?, PulseDuration: Quantity?, PauseDuration: Quantity?, Target: IModuleReference?, PenetrationSpeed: Quantity?, FiberPenetrationDepth: Quantity?): any)
+---@field GetObjectPosition (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, ChildTarget: IModuleReference?): any)
+---@field SetStandbyTemperature (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, StandbyTemperature: Quantity?, CommitImmediately: any?): any)
+---@field PenetrateObject (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, Depth: Quantity?, Speed: Quantity?): any)
+---@field ResumeAgitator (fun(self: ActivityExecutionHelper, Agitator: IModuleReference?): any)
+---@field FillingStrokes (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Volume: Quantity?, AspirateFlowRate: Quantity?, DispenseFlowRate: Quantity?, PullupDelay: Quantity?, DispenseDelay: Quantity?, Count: any?): any)
+---@field WaitForChromatograph (fun(self: ActivityExecutionHelper, Chromatograph: IModuleReference?): any)
+---@field StopIdleDrift (fun(self: ActivityExecutionHelper): any)
+---@field SetParameter (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Name: string?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Name: string?, ValueInt: any?, ValueString: string?): any)
+---@field PickTool (fun(self: ActivityExecutionHelper, Slot: IModuleReference?): any)
+---@field PauseStirrer (fun(self: ActivityExecutionHelper, Stirrer: IModuleReference?): any)
+---@field PlayMelody (fun(self: ActivityExecutionHelper, MelodyName: string?): any) |  (fun(self: ActivityExecutionHelper, MelodyName: string?, BeatFactor: any?, PlaybackMode: any?): any)
+---@field GSTSetReleaseObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Reset: any?, RetractDistanceAfter: Quantity?, MagnetDelay: Quantity?): any)
+---@field ActivateToolTip (fun(self: ActivityExecutionHelper, ToolTip: any?): any)
+---@field EmptySyringe (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, FlowRate: Quantity?): any)
+---@field PauseAgitator (fun(self: ActivityExecutionHelper, Agitator: IModuleReference?): any)
+---@field GetSignalState (fun(self: ActivityExecutionHelper, Signal: IModuleReference?): any)
+---@field DecapObject (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Decapper: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Decapper: IModuleReference?, DecapperIndex: any?): any)
+---@field AspirateSyringe (fun(self: ActivityExecutionHelper, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Volume: Quantity?, FlowRate: Quantity?, OverfillRate: Quantity?, PullupDelay: Quantity?): any)
+---@field GetTimerElapsedTime (fun(self: ActivityExecutionHelper, Timer: any?): any)
+---@field SetSignal (fun(self: ActivityExecutionHelper, Signal: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Signal: IModuleReference?, Mode: any?): any)
+---@field PreFillSyringe (fun(self: ActivityExecutionHelper, Volume: Quantity?): any)
+---@field MoveAttachedObjectOnto (fun(self: ActivityExecutionHelper, Destination: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Destination: IModuleReference?, DestinationIndex: any?, MotionFactor: Quantity?, MotionOption: any?, RetractDistanceAfterTouchdown: Quantity?, DetectionCurrent: Quantity?): any)
+---@field CapObject (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Capper: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Capper: IModuleReference?, CapperIndex: any?, Dispose: any?): any)
+---@field StartSpmeAdsorb (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, PenetrationSpeed: Quantity?, FiberPenetrationDepth: Quantity?, DoAgitation: any?): any)
+---@field ResetLiquidClass (fun(self: ActivityExecutionHelper): any)
+---@field MoveToExchangePosition (fun(self: ActivityExecutionHelper, machineObject: IModuleReference?): any)
+---@field LeaveObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, StripDistance: Quantity?, LeaveDrawerOpen: any?, WipeOff: any?): any)
+---@field ReleaseNeedleGuideAdapter (fun(self: ActivityExecutionHelper, AdapterStation: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, AdapterStation: IModuleReference?, CheckAdapterMounted: any?): any)
+---@field MoveToHome (fun(self: ActivityExecutionHelper): any)
+---@field DisposeVial (fun(self: ActivityExecutionHelper, Source: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Source: IModuleReference?, NeedleTransportPenetrationDepth: Quantity?): any)
+---@field StopSpmeDesorb (fun(self: ActivityExecutionHelper): any)
+---@field PenetrateWithNeedleSealing (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field ApplyPressure (fun(self: ActivityExecutionHelper, Target: IModuleReference?, PenetrationDepth: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, PressurizeTime: Quantity?, PenetrationDepth: Quantity?, PenetrationSpeed: Quantity?, LeaveObject: any?): any)
+---@field PickNeedleGuideAdapter (fun(self: ActivityExecutionHelper, AdapterStation: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, AdapterStation: IModuleReference?, CheckAdapterMounted: any?): any)
+---@field SampleRelativeTorqueModeMoveCurrent (fun(self: ActivityExecutionHelper, Axis: any?, Velocity: Quantity?): any)
+---@field SetContactState (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, State: any?, Offset: EuclideanVector?): any)
+---@field MoveTorqueMode (fun(self: ActivityExecutionHelper, Axis: any?, Distance: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Axis: any?, Distance: Quantity?, TorqueCurrent: Quantity?, Speed: Quantity?, Timeout: Quantity?, Method: any?, SteadyImpactThreshold: Quantity?, SteadyImpactDuration: Quantity?, Relative: any?, PosDirMoveCurrent: Quantity?, NegDirMoveCurrent: Quantity?): any)
+---@field StartIdleDrift (fun(self: ActivityExecutionHelper): any)
+---@field StartPurgeSyringe (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Timer: any?): any)
+---@field PushObject (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, Force: Quantity?, SearchDistance: Quantity?): any)
+---@field StartSpmeDesorb (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, PenetrationSpeed: Quantity?, FiberPenetrationDepth: Quantity?): any)
+---@field MoveRelative (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, ReferencePoint: IModuleReference?, MovementX: Quantity?, MovementY: Quantity?, MovementZ: Quantity?, AccelerationFactor: Quantity?, DrfOption: any?, ForceDirectMovement: any?): any)
+---@field LowerNeedleGuide (fun(self: ActivityExecutionHelper): any)
+---@field SetAgitator (fun(self: ActivityExecutionHelper, Agitator: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Speed: Quantity?, Agitator: IModuleReference?, State: any?, OnTime: Quantity?, OffTime: Quantity?, Timer: any?): any)
+---@field CloseFlipTube (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field ValidateTemperatureControl (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field DispenseSyringe (fun(self: ActivityExecutionHelper, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Volume: Quantity?, FlowRate: Quantity?): any)
+---@field SetTemperature (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Temperature: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Temperature: Quantity?, Tolerance: Quantity?, MonitorTemperature: any?, Wait: any?): any)
+---@field GLSIsLinerCapped (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field SwitchOffHeater (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field SetSuctionCup (fun(self: ActivityExecutionHelper, Function: any?): any)
+---@field GetActualVolume (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field Beep (fun(self: ActivityExecutionHelper, Duration: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Duration: Quantity?, Frequency: Quantity?): any)
+---@field Depenetrate (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, WipeOff: any?, DepthReduction: Quantity?): any)
+---@field GSTSetGrabObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Reset: any?, GrabDistance: Quantity?, GrabSpeed: Quantity?, RetractDistanceBefore: Quantity?, RetractDistanceAfter: Quantity?, MagnetDelay: Quantity?): any)
+---@field GetArmPosition (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Part: any?): any)
+---@field SetToolState (fun(self: ActivityExecutionHelper, Attachable: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Attachable: IModuleReference?, AttachmentState: any?): any)
+---@field MoveAbsolute (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, DestinationX: Quantity?, DestinationY: Quantity?, DestinationZ: Quantity?, Part: any?, AccelerationFactor: Quantity?, DrfOption: any?, ForceDirectMovement: any?): any)
+---@field TransportVialHome (fun(self: ActivityExecutionHelper, Vial: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Vial: IModuleReference?, LeaveObject: any?, LeaveDrawerOpen: any?, MotionFactor: Quantity?, MotionOption: any?): any)
+---@field PauseRotator (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field RetractNeedleGuide (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Distance: Quantity?): any)
+---@field SetStirrer (fun(self: ActivityExecutionHelper, Stirrer: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Stirrer: IModuleReference?, Speed: Quantity?, State: any?, OnTime: Quantity?, OffTime: Quantity?): any)
+---@field StartSpmeInject (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, PenetrationSpeed: Quantity?, FiberPenetrationDepth: Quantity?, InjectedSignal: IModuleReference?, InjectedSignalMode: any?): any)
+---@field DetectObjectContainer (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, SearchDistance: Quantity?, DetectionCurrent: Quantity?, EvaluateContainerCollision: any?): any)
+---@field FastInjectSampleGC (fun(self: ActivityExecutionHelper, Injector: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Injector: IModuleReference?, InjectedSignal: IModuleReference?, WaitTime: Quantity?, TimerTolerance: Quantity?, WaitTimer: any?, Timer: any?, PenetrationDepth: Quantity?, Volume: Quantity?, AccelerationDistance: Quantity?, PenetrateOverlapDistance: Quantity?, DepenetrateOverlapDistance: Quantity?, PlungerRetractDelay: Quantity?, DepenetrationDelay: Quantity?): any)
+---@field GLSSetGrabObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Reset: any?, GrabDistance: Quantity?, RetractDistanceBefore: Quantity?, RetractDistanceAfter: Quantity?): any)
+---@field WaitForSyncSignal (fun(self: ActivityExecutionHelper, Signal: IModuleReference?): any)
+---@field ResetAfterSample (fun(self: ActivityExecutionHelper): any)
+---@field StopPurgeSyringe (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Volume: Quantity?): any)
+---@field ReadBarcode (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, Home: any?, ExpectedBarcode: string?, MotionFactor: Quantity?, MotionOption: any?, VerticalClearance: Quantity?): any)
+---@field MultiStageInjectSampleGc (fun(self: ActivityExecutionHelper, Injector: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Injector: IModuleReference?, InjectedSignal: IModuleReference?, Phase1Volume: Quantity?, Phase1FlowRate: Quantity?, Phase1PenetrationDepth: Quantity?, Phase1PenetrationSpeed: Quantity?, Phase2FlowRate: Quantity?, Phase3Volume: Quantity?, Phase3FlowRate: Quantity?, Phase3PenetrationDepth: Quantity?, PreDelay: Quantity?, PostDelay: Quantity?, WaitTime: Quantity?, TimerTolerance: Quantity?, Timer: any?, WaitTimer: any?, InjectedSignalMode: any?): any)
+---@field SetVolatilePosition (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Type: any?, Position: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Type: any?, Position: IModuleReference?, PositionIndex: any?, OnTopOfPosition: any?): any)
+---@field StartTimer (fun(self: ActivityExecutionHelper, Timer: any?): any)
+---@field MoveNeedleGuide (fun(self: ActivityExecutionHelper, Movement: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Movement: Quantity?, AccelerationFactor: Quantity?, IsRelativeMovement: any?): any)
+---@field UseLiquidClass (fun(self: ActivityExecutionHelper, LiquidClass: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, LiquidClass: IModuleReference?, MultiDispense: any?): any)
+---@field SetAttachmentState (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, State: any?, Mode: any?, Offset: EuclideanVector?): any)
+---@field MoveToPosition (fun(self: ActivityExecutionHelper, ReferencePoint: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, ReferencePoint: IModuleReference?, MovementX: Quantity?, MovementY: Quantity?, MovementZ: Quantity?, SearchDistance: Quantity?, AccelerationFactor: Quantity?, UseTouchDown: any?, ForceDirectMovement: any?): any)
+---@field SwitchGasValve (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any)
+---@field ObstacleAvoidanceTest (fun(self: ActivityExecutionHelper, Destination: EuclideanVector?): any)
+---@field SetScheduledSignal (fun(self: ActivityExecutionHelper, Signal: IModuleReference?, Time: Quantity?): any)
+---@field ApproachObject (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, OpenCoverPlate: any?, MotionFactor: Quantity?, MotionOption: any?, OffsetX: Quantity?, OffsetY: Quantity?, OffsetZ: Quantity?, TransportAttachedObjectIntoContainer: any?): any)
+---@field SetRotator (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Speed: Quantity?, State: any?, OnTime: Quantity?, OffTime: Quantity?, WaitForConstSpeed: any?): any)
+---@field MoveToObject (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, CutFoil: any?, OpenCoverPlate: any?, UseTouchDown: any?): any)
+---@field DetectObject (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, CoverPlateIsOpen: any?, SearchDistance: Quantity?, DetectionCurrent: Quantity?): any)
+---@field PurgeVial (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, PurgeTime: Quantity?, PenetrationDepth: Quantity?): any)
+---@field WaitForTimer (fun(self: ActivityExecutionHelper, Timer: any?, Time: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Timer: any?, Time: Quantity?, Tolerance: Quantity?): any)
+---@field PenetrateWithConstForce (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field GLSSetReleaseObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Reset: any?, RetractDistanceAfter: Quantity?): any)
+---@field SetActualVolume (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, Volume: Quantity?): any)
+---@field TransportVial (fun(self: ActivityExecutionHelper, Source: IModuleReference?, Destination: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Source: IModuleReference?, Destination: IModuleReference?, DestinationIndex: any?, Home: any?, LeaveObject: any?, LeaveDrawerOpen: any?, NeedleTransportPenetrationDepth: Quantity?, MotionFactor: Quantity?, MotionOption: any?): any)
+---@field ChangeTool (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Tool: IModuleReference?): any)
+---@field MoveValveDrive (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: Quantity?, Velocity: Quantity?): any)
+---@field ScrewCap (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, HeightCheck: any?, HeightCheckMaxDeviation: Quantity?): any)
+---@field IsStepperMoving (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field CalibrateDeCapper (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field GenericGripperGrip (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, GripForce: Quantity?, GripDirection: any?): any)
+---@field GripperGrip (fun(self: ActivityExecutionHelper): any)
+---@field EmptyTip (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, FlowRate: Quantity?, DispenseDelay: Quantity?, MoveToWaste: any?): any)
+---@field GetStepperPosition (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field GLSCapLiner (fun(self: ActivityExecutionHelper, Source: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Source: IModuleReference?, Cdcs: IModuleReference?): any)
+---@field GetCentrifugeRotorTemperature (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field GenericGripperReleaseObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, RetractDistanceBefore: Quantity?, RetractDistanceAfter: Quantity?, RelReleaseDistance: Quantity?, ReleaseDirection: any?): any)
+---@field ReleasePressure (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, ReleaseTime: Quantity?): any)
+---@field DropTip (fun(self: ActivityExecutionHelper): any)
+---@field GSTOperatemVAPLocking (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any)
+---@field AspirateTipWithLiquidClass (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, Volume: Quantity?, UseLLD: any?, DoDetection: any?, CheckVolume: any?): any)
+---@field MoveStepperRelative (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?, Velocity: any?, Acceleration: any?, WaitForTerm: any?): any)
+---@field DispenseDilutor (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, Volume: Quantity?, FlowRate: Quantity?): any)
+---@field SetStepperPosition (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any)
+---@field AirgapTip (fun(self: ActivityExecutionHelper, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Volume: Quantity?, FlowRate: Quantity?): any)
+---@field UnscrewCap (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Retighten: any?, SlipCheck: any?): any)
+---@field ParkToolAdapter (fun(self: ActivityExecutionHelper): any)
+---@field GSTGrabObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, GrabDistance: Quantity?, GrabSpeed: Quantity?, RetractDistanceBefore: Quantity?, RetractDistanceAfter: Quantity?, MagnetDelay: Quantity?): any)
+---@field GenericGripperRelease (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, RelReleaseDistance: Quantity?, ReleaseDirection: any?): any)
+---@field GLSGrabObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, GrabDistance: Quantity?, RetractDistanceBefore: Quantity?, RetractDistanceAfter: Quantity?): any)
+---@field DispenseTipWithLiquidClass (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, Volume: Quantity?, UseLLD: any?): any)
+---@field SetThermalMixer (fun(self: ActivityExecutionHelper, ThermalMixer: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, ThermalMixer: IModuleReference?, Speed: Quantity?, OnTime: Quantity?, OffTime: Quantity?, State: any?): any)
+---@field ReturnTip (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, DropForce: Quantity?, StripForce: Quantity?, EmptyTipInWaste: any?, DropInAir: any?): any)
+---@field ParkDeCapper (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field DeliverLiquidDilutor (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, Volume: Quantity?, AspirateFlowRate: Quantity?, AspiratePullupDelay: Quantity?, DispenseFlowRate: Quantity?, SolventPort: any?, DeliveryPort: any?): any)
+---@field HomeStepper (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Direction: any?, Velocity: any?): any)
+---@field GenericGripperMoveAdapterRelative (fun(self: ActivityExecutionHelper, RelDistance: Quantity?): any)
+---@field GetSampleAndCleanInjector (fun(self: ActivityExecutionHelper, SampleTarget: IModuleReference?, AspirateVolume: Quantity?, InjectorTarget: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, SampleTarget: IModuleReference?, SampleIndex: any?, UseTouchDown: any?, LeaveSample: any?, PenetrationDepth: Quantity?, PenetrationSpeed: Quantity?, UseBottomSense: any?, HeightFromBottom: Quantity?, AspirateVolume: Quantity?, AspirateRearAirGapVolume: Quantity?, AspirateFrontAirGapVolume: Quantity?, AspirateFlowRate: Quantity?, AspirateOverfillRate: Quantity?, AspiratePullupDelay: Quantity?, InjectorTarget: IModuleReference?, WashPump1: IModuleReference?, WashPumpIndex1: any?, WashTime1: Quantity?, WashPump2: IModuleReference?, WashPumpIndex2: any?, WashTime2: Quantity?): any)
+---@field SetVortexMixer (fun(self: ActivityExecutionHelper, VortexMixer: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Speed: Quantity?, VortexMixer: IModuleReference?, State: any?): any)
+---@field GSTParkmVAPHead (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field SetCentrifuge (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Speed: Quantity?, gForce: any?, State: any?, WaitForConstSpeed: any?): any)
+---@field PrimeDilutor (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, WastePosition: IModuleReference?, SolventPort: any?, Volume: Quantity?, FlowRate: Quantity?): any)
+---@field SetValveDriveSchedule (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, Target1: IModuleReference?, Position1: Quantity?, Velocity1: Quantity?, Target2: IModuleReference?, Position2: Quantity?, Velocity2: Quantity?, Signal1: IModuleReference?, Signal2: IModuleReference?, WaitTime: Quantity?): any)
+---@field GetAnalogSignalValue (fun(self: ActivityExecutionHelper, Signal: IModuleReference?): any)
+---@field SetPump (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, PumpIndex: any?, Volume: Quantity?, FlowRate: Quantity?, FlowFactor: Quantity?, State: any?, Wait: any?): any)
+---@field OperateCentrifugeCover (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any)
+---@field EmptyDilutor (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, FlowRate: Quantity?): any)
+---@field GripperReset (fun(self: ActivityExecutionHelper): any)
+---@field GSTPositionmVAPHead (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, AddDetectionCurrent: Quantity?): any)
+---@field GenericGripperMoveAdapterAbsolute (fun(self: ActivityExecutionHelper, AbsDistance: Quantity?): any)
+---@field SetPwmOutput (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, Voltage: Quantity?, BurstVoltage: Quantity?, BurstDuration: Quantity?): any)
+---@field GrabObject (fun(self: ActivityExecutionHelper): any)
+---@field SwitchCentrifugePosition (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field OperateDeCapperBracket (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Operation: any?): any)
+---@field InjectSampleLC (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, InjectedSignal1: IModuleReference?, InjectedSignal2: IModuleReference?, Volume: Quantity?, FlowRate: Quantity?, PreDelay: Quantity?, PostDelay: Quantity?, Timer: any?, WaitTimer: any?, WaitTime: Quantity?, TimerTolerance: Quantity?): any)
+---@field VortexVial (fun(self: ActivityExecutionHelper, Source: IModuleReference?, VortexMixer: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Source: IModuleReference?, VortexMixerSpeed: Quantity?, VortexMixer: IModuleReference?, Time: Quantity?, LeaveDrawerOpen: any?): any)
+---@field GLSOperateLinexInjectorHead (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any)
+---@field AspirateTip (fun(self: ActivityExecutionHelper, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Volume: Quantity?, FlowRate: Quantity?, PullupDelay: Quantity?, TrackLiquidLevel: any?): any)
+---@field GLSReleaseObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, RetractDistanceAfter: Quantity?): any)
+---@field PickUpTip (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, ContinuationTarget: IModuleReference?, Index: any?, Validate: any?, PickUpForce: Quantity?, ValidationForce: Quantity?): any)
+---@field GenericGripperGrabObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, GrabDistance: Quantity?, GrabSpeed: Quantity?, RetractDistanceBefore: Quantity?, RetractDistanceAfter: Quantity?, AbsAdapterDistance: Quantity?, GripForce: Quantity?, GripDirection: any?): any)
+---@field GLSDecapLiner (fun(self: ActivityExecutionHelper, Source: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Source: IModuleReference?, Cdcs: IModuleReference?): any)
+---@field SwitchDilutorValve (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, ValvePosition: any?): any)
+---@field AspirateDilutor (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Dilutor: IModuleReference?, Volume: Quantity?, FlowRate: Quantity?, OverfillRate: Quantity?, PullupDelay: Quantity?): any)
+---@field MoveStepperAbsolute (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?, Velocity: any?, Acceleration: any?, WaitForTerm: any?): any)
+---@field DeCapperDispose (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field GSTReleaseObject (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, RetractDistanceAfter: Quantity?, MagnetDelay: Quantity?): any)
+---@field DispenseTip (fun(self: ActivityExecutionHelper, Volume: Quantity?): any) |  (fun(self: ActivityExecutionHelper, Volume: Quantity?, FlowRate: Quantity?, DispenseDelay: Quantity?, TrackLiquidLevel: any?): any)
+---@field StopBubbleDetector (fun(self: ActivityExecutionHelper, Target: IModuleReference?, NumberOfExcpectedLevelChanges: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, NumberOfExcpectedLevelChanges: any?, BubbleFilter: any?, CompareOption: any?): any)
+---@field LeaveDeCapper (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field GetAnalogSignalADCValue (fun(self: ActivityExecutionHelper, Signal: IModuleReference?): any)
+---@field MoveStepperVelocity (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Velocity: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Direction: any?, Velocity: any?, Acceleration: any?): any)
+---@field GLSOperateLinexCDCS (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Sequence: any?): any)
+---@field OperateCartridgeFeeder (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Operation: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Operation: any?, Position: Quantity?): any)
+---@field MoveTwoPositionNPortValve (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?, InjectedSignal1: IModuleReference?, InjectedSignal2: IModuleReference?): any)
+---@field StartBubbleDetector (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any)
+---@field MoveSelectorValve (fun(self: ActivityExecutionHelper, Target: IModuleReference?, DestinationPort: any?): any)
+---@field StopStepper (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, WaitForTerm: any?): any)
+---@field CloseOpenDrawers (fun(self: ActivityExecutionHelper, Stack: IModuleReference?): any)
+---@field RinseWashLiner (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Cycles: any?): any)
+---@field GetPwmOutputActualCurrent (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?): any)
+---@field DisposeTip (fun(self: ActivityExecutionHelper): any) |  (fun(self: ActivityExecutionHelper, WasteTarget: IModuleReference?, StripForce: Quantity?, DropInAir: any?): any)
+---@field CleanInjector (fun(self: ActivityExecutionHelper, Target: IModuleReference?, WashSource: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, WashSource: IModuleReference?, WashVolume: Quantity?, NeedleGap: Quantity?, DispenseFlowRate: Quantity?, DispensePullupDelay: Quantity?, WashPenetrationDepth: Quantity?, AspirateFlowRate: Quantity?, AspiratePullupDelay: Quantity?, WashIndex: any?, LeaveObjectAfterClean: any?): any)
+---@field MoveInjectorValve (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Position: any?, InjectedSignal1: IModuleReference?, InjectedSignal2: IModuleReference?): any)
+---@field ReleaseObject (fun(self: ActivityExecutionHelper): any)
+---@field GripperRelease (fun(self: ActivityExecutionHelper): any)
+---@field PickToolAdapter (fun(self: ActivityExecutionHelper, ToolAdapter: IModuleReference?): any)
+---@field SetLcToolPosition (fun(self: ActivityExecutionHelper, Target: IModuleReference?, WashSource: any?, LcPosition: any?): any)
+---@field PenetrateWithLiquidLevelDetection (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Index: any?, BlowOutRate: Quantity?, RetractionAfterDetection: Quantity?): any)
+---@field CleanSyringe (fun(self: ActivityExecutionHelper, WashSource: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, WashSource: IModuleReference?, WashIndex: any?, WashPenetrationDepth: Quantity?, AspirateFlowRate: Quantity?, PullupDelay: Quantity?, WasteTarget: IModuleReference?, WasteIndex: any?, WastePenetrationDepth: Quantity?, DispenseFlowRate: Quantity?, WashVolume: Quantity?, WashAirGapVolume: Quantity?, Cycles: any?): any)
+---@field GSTSwitchmVAPIIValve (fun(self: ActivityExecutionHelper, Target: IModuleReference?): any) |  (fun(self: ActivityExecutionHelper, Target: IModuleReference?, Valve1State: any?, Valve2State: any?, Valve3State: any?, Valve4State: any?, Valve5State: any?, Valve6State: any?): any)
+---@field GenericGripperGetAdapterDistance (fun(self: ActivityExecutionHelper): any)
+
+---@class IDirectExecutionSession
+---@field CreateActivity (fun(self: IDirectExecutionSession, name: string?): IActivity) |  (fun(self: IDirectExecutionSession): TActivity)
+---@field Execute (fun(self: IDirectExecutionSession, activity: IActivity?): IActivityResult) |  (fun(self: IDirectExecutionSession, activityBatch: IActivityBatch?): any)
+---@field AllocateVial (fun(self: IDirectExecutionSession, position: ISamplePosition?): IVialReference) |  (fun(self: IDirectExecutionSession, trayReferenceOrVolatileObjectFactory: IModuleReference?, index: number): IVialReference) |  (fun(self: IDirectExecutionSession, trayReferenceOrVolatileObjectFactory: IModuleReference?, index: number, allocateBehavoir: AllocateVialBehavoir?): IVialReference)
+---@field GetVial (fun(self: IDirectExecutionSession, trayReferenceOrVolatileObjectFactory: IModuleReference?, index: number): IVialReference)
+---@field RequestAbort (fun(self: IDirectExecutionSession))
+---@field SendStatusMessageByKey (fun(self: IDirectExecutionSession, key: string?, ...: any))
+---@field SendStatusMessageByText (fun(self: IDirectExecutionSession, messageText: string?, ...: any))
+---@field Item any
+---@field SessionName string
+---@field SessionObjectNames any
+---@field IsInvalidated boolean
+---@field ThrowRuntimeErrorOnExecuteActivity boolean
+---@field ExecuteWaitActivitiesLocallyOnClient boolean
+---@field Name string
+---@field ResourceType PalPlusResourceType
+
+---@class AllocateVialBehavoir
+---@field None AllocateVialBehavoir
+---@field AllowNoneVolatileResources AllocateVialBehavoir
+---@field LateResolveVolatileSource AllocateVialBehavoir
+---@field ReuseVialsByItsOriginLocation AllocateVialBehavoir
+---@field Default AllocateVialBehavoir
+
+---@class IVialReference: IModuleReference
+---@field Index number
+---@field Tray IModuleReference
+---@field Source IModuleReference
+---@field CanActVolatile boolean
+---@field IsVolatile boolean
+---@field IsLateResolvingSource boolean
+
+---@class IActivityBatch
+---@field Contains (fun(self: IActivityBatch, activity: IActivity?): boolean)
+---@field Name string
+---@field IsCompelete boolean
+---@field Results any
+
+---@class ActivityHelperBase
+---@field Lock (fun(self: ActivityHelperBase, lockType: PalPlusResourceLockType?): boolean)
+---@field Unlock (fun(self: ActivityHelperBase): boolean)
+
+---@class PalPlusResourceLockType
+---@field None PalPlusResourceLockType
+---@field LeftHead PalPlusResourceLockType
+---@field RightHead PalPlusResourceLockType
+---@field Operation PalPlusResourceLockType
+---@field Maintenance PalPlusResourceLockType
+---@field All PalPlusResourceLockType
+---@field TerminalStop PalPlusResourceLockType
+
+---@class TActivity: IActivity, IDriverObject
+
+---@class WashstationHelper
+---@overload fun(robot: RobotHelper?): WashstationHelper
+---@field Standard any
+---@field Large any
+---@field Solvent any
+
+---@class RobotHelper: IRobotHelper
+---@field Dispose (fun(self: RobotHelper))
+---@field ActivitiesCloseSession (fun(self: RobotHelper))
+---@field GetSyringeExchangeHelper (fun(self: RobotHelper, resource: PalPlusResourceType?): SyringeExchangeHelper)
+---@field ShowsRobotInformationCenter (fun(self: RobotHelper))
+---@field Reset (fun(self: RobotHelper))
+---@field Configuration IPalPlusConfigurationService
+---@field Scheduler IPalPlusSchedulerService
+---@field Activities ActivityExecutionHelper
+---@field GCs any
+---@field LCs any
+---@field WashStations WashstationHelper
+---@field Tools ToolsHelper
+---@field Injectors any
+---@field Agitators any
+---@field Trays TrayHelper
+
+---@class ToolsHelper
+---@overload fun(robot: RobotHelper?): ToolsHelper
+---@field GetMountedToolForHead (fun(self: ToolsHelper, head: PalPlusResourceType?): ITool)
+---@field GetParkStationNames (fun(self: ToolsHelper): any)
+---@field GetParkSlotsForStationName (fun(self: ToolsHelper, parkStationName: string?): any)
+---@field LeftHeadTool ITool
+---@field RightHeadTool ITool
+
+---@class TrayHelper
+---@overload fun(robot: RobotHelper?): TrayHelper
+---@field GetTrayContainerNames (fun(self: TrayHelper): any)
+---@field GetTraysForContainerName (fun(self: TrayHelper, trayHolderContainerName: string?): any)
+---@field GetTrayByContainerPath (fun(self: TrayHelper, traySlotPath: string?): ITray)
+---@field Racks any
+---@field WellPlates any
+
+---@class ParameterCollection: IParameterCollection
+---@overload fun(): ParameterCollection
+---@overload fun(other: ParameterCollection?): ParameterCollection
+---@field ToPalPlusDictionaryValues (fun(self: ParameterCollection): any)
+---@field FromPalPlusDictionaryValues (fun(dataDict: any?): ParameterCollection) |  (fun(dataDict: any?, filterNullValues: boolean): ParameterCollection)
+---@field Clear (fun(self: ParameterCollection))
+---@field SetValues (fun(self: ParameterCollection, other: ParameterCollection?))
+---@field SetValue (fun(self: ParameterCollection, parameterName: string?, value: any?)) |  (fun(self: ParameterCollection, parameterName: string?, value: number)) |  (fun(self: ParameterCollection, parameterName: string?, value: IModuleReference?)) |  (fun(self: ParameterCollection, parameterName: string?, value: any?)) |  (fun(self: ParameterCollection, parameterName: string?, value: number)) |  (fun(self: ParameterCollection, parameterName: string?, value: number)) |  (fun(self: ParameterCollection, parameterName: string?, value: boolean)) |  (fun(self: ParameterCollection, parameterName: string?, value: string?)) |  (fun(self: ParameterCollection, parameterName: string?, value: number, unit: string?)) |  (fun(self: ParameterCollection, parameterName: string?, quantity: Quantity?)) |  (fun(self: ParameterCollection, parameterName: string?, vector: EuclideanVector?)) |  (fun(self: ParameterCollection, parameterName: string?, cuboid: EuclideanCuboid?))
+---@field GetValue (fun(self: ParameterCollection, parameterName: string?): any) |  (fun(self: ParameterCollection, parameterName: string?): any) |  (fun(self: ParameterCollection, parameterName: string?, unit: string?): number)
+---@field IsQuantity (fun(self: ParameterCollection, parameterName: string?): boolean)
+---@field GetObject (fun(self: ParameterCollection, parameterName: string?): any)
+---@field GetUnit (fun(self: ParameterCollection, parameterName: string?): string)
+---@field HasParameter (fun(self: ParameterCollection, parameterName: string?): boolean)
+---@field RemoveParameter (fun(self: ParameterCollection, parameterName: string?): boolean)
+---@field FromXml (fun(xmlStream: any?): ParameterCollection)
+---@field ToXml (fun(self: ParameterCollection, xmlStream: any?))
+---@field Item any
+---@field ParameterNames any
+---@field Count number
+
+---@class IMethodDefinition
+---@field GetSampleParameter (fun(self: IMethodDefinition, name: string?): IParameterDefinition)
+---@field GetMethodParameter (fun(self: IMethodDefinition, name: string?): IParameterDefinition)
+---@field GetMethodGroup (fun(self: IMethodDefinition, name: string?): IMethodCategoryGroup)
+---@field GetDefaultConfiguration (fun(self: IMethodDefinition): ParameterCollection)
+---@field CycleName string
+---@field EntryPoint string
+---@field ReturnType string
+---@field HasReturnValue boolean
+---@field Description string
+---@field ScriptVersion string
+---@field PlainTextHash string
+---@field Metadata ParameterCollection
+---@field MethodParameters any
+---@field SampleParameters any
+---@field MethodParameterCategoryGroups any
+
+---@class IMethodCategoryGroup
+---@field GroupName string
+---@field Description string
+---@field Index number
+---@field IsExpanded boolean
+---@field MethodGroupItems any
+
+---@class IJobInfoBatch
+---@field GetJobInfo (fun(self: IJobInfoBatch, sampleId: string?): IJobInfo)
+---@field Wait (fun(self: IJobInfoBatch)) |  (fun(self: IJobInfoBatch, milliSecondsTimeOut: number): boolean)
+---@field BatchId string
+---@field HasSkippedSample boolean
+---@field IsAborted boolean
+---@field HasCompleted boolean
+---@field Jobs any
+---@field JobIDs any
+---@field JobCount number
+
+---@class TimeSpan
+---@overload fun(ticks: number): TimeSpan
+---@overload fun(hours: number, minutes: number, seconds: number): TimeSpan
+---@overload fun(days: number, hours: number, minutes: number, seconds: number): TimeSpan
+---@overload fun(days: number, hours: number, minutes: number, seconds: number, milliseconds: number): TimeSpan
+---@overload fun(days: number, hours: number, minutes: number, seconds: number, milliseconds: number, microseconds: number): TimeSpan
+---@field Add (fun(self: TimeSpan, ts: TimeSpan?): TimeSpan)
+---@field Compare (fun(t1: TimeSpan?, t2: TimeSpan?): number)
+---@field FromDays (fun(value: number): TimeSpan) |  (fun(days: number): TimeSpan) |  (fun(days: number, hours: number?, minutes: number?, seconds: number?, milliseconds: number?, microseconds: number?): TimeSpan)
+---@field Duration (fun(self: TimeSpan): TimeSpan)
+---@field GetHashCode (fun(self: TimeSpan): number)
+---@field FromHours (fun(hours: number): TimeSpan) |  (fun(hours: number, minutes: number?, seconds: number?, milliseconds: number?, microseconds: number?): TimeSpan) |  (fun(value: number): TimeSpan)
+---@field FromMinutes (fun(minutes: number): TimeSpan) |  (fun(minutes: number, seconds: number?, milliseconds: number?, microseconds: number?): TimeSpan) |  (fun(value: number): TimeSpan)
+---@field FromSeconds (fun(seconds: number): TimeSpan) |  (fun(seconds: number, milliseconds: number?, microseconds: number?): TimeSpan) |  (fun(value: number): TimeSpan)
+---@field FromMilliseconds (fun(milliseconds: number, microseconds: number?): TimeSpan) |  (fun(value: number): TimeSpan)
+---@field FromMicroseconds (fun(microseconds: number): TimeSpan) |  (fun(value: number): TimeSpan)
+---@field Negate (fun(self: TimeSpan): TimeSpan)
+---@field Subtract (fun(self: TimeSpan, ts: TimeSpan?): TimeSpan)
+---@field Multiply (fun(self: TimeSpan, factor: number): TimeSpan)
+---@field Divide (fun(self: TimeSpan, divisor: number): TimeSpan) |  (fun(self: TimeSpan, ts: TimeSpan?): number)
+---@field FromTicks (fun(value: number): TimeSpan)
+---@field Ticks number
+---@field Days number
+---@field Hours number
+---@field Milliseconds number
+---@field Microseconds number
+---@field Nanoseconds number
+---@field Minutes number
+---@field Seconds number
+---@field TotalDays number
+---@field TotalHours number
+---@field TotalMilliseconds number
+---@field TotalMicroseconds number
+---@field TotalNanoseconds number
+---@field TotalMinutes number
+---@field TotalSeconds number
+---@field Zero TimeSpan
+---@field MaxValue TimeSpan
+---@field MinValue TimeSpan
+---@field NanosecondsPerTick number
+---@field TicksPerMicrosecond number
+---@field TicksPerMillisecond number
+---@field TicksPerSecond number
+---@field TicksPerMinute number
+---@field TicksPerHour number
+---@field TicksPerDay number
+---@field MicrosecondsPerMillisecond number
+---@field MicrosecondsPerSecond number
+---@field MicrosecondsPerMinute number
+---@field MicrosecondsPerHour number
+---@field MicrosecondsPerDay number
+---@field MillisecondsPerSecond number
+---@field MillisecondsPerMinute number
+---@field MillisecondsPerHour number
+---@field MillisecondsPerDay number
+---@field SecondsPerMinute number
+---@field SecondsPerHour number
+---@field SecondsPerDay number
+---@field MinutesPerHour number
+---@field MinutesPerDay number
+---@field HoursPerDay number
+
+---@class IJobInfo
+---@field RetrieveResult (fun(self: IJobInfo): any)
+---@field GetExecutionLog (fun(self: IJobInfo): string)
+---@field MethodName string
+---@field SampleParameters IParameterCollection
+---@field Batch IJobInfoBatch
+---@field Errors any
+---@field JobId string
+---@field JobState PalPlusSampleState
+---@field JobResult PalPlusSampleResult
+---@field RemainingTime TimeSpan
+---@field SkippedSample boolean
+---@field SequenceAborted boolean
+---@field SampleLocation ISamplePosition
+---@field ErrorType JobErrorTypes
+---@field ErrorMessage string
+---@field ProcessingError string
+---@field ValidationError string
+---@field RuntimeError string
+---@field HasCompleted boolean
+---@field HasError boolean
+
+---@class JobErrorTypes
+---@field None JobErrorTypes
+---@field ProcessingError JobErrorTypes
+---@field ValidationError JobErrorTypes
+---@field RuntimeError JobErrorTypes
+
+---@class PalPlusSampleResult
+---@field Unknown PalPlusSampleResult
+---@field Success PalPlusSampleResult
+---@field Failed PalPlusSampleResult
+---@field FakeInjected PalPlusSampleResult
+
+---@class PalPlusSampleState
+---@field Unknown PalPlusSampleState
+---@field Created PalPlusSampleState
+---@field Queued PalPlusSampleState
+---@field Running PalPlusSampleState
+---@field Done PalPlusSampleState
+---@field Refused PalPlusSampleState
+---@field Aborted PalPlusSampleState
+
+---@class BatchTimingStatus
+---@field RemainingTime TimeSpan
+---@field CurrentJobTiming JobTimingStatus
+---@field NextJobTiming JobTimingStatus
+---@field Empty BatchTimingStatus
+
+---@class JobTimingStatus
+---@field RemainingTime TimeSpan
+---@field StartTime any
+---@field JobId string
+
+---@class PalPlusLockType
+---@field None PalPlusLockType
+---@field Maintenance PalPlusLockType
+---@field Operation PalPlusLockType
+
+---@class InputSignal: DynamicModule, IDriverObject, IModule, IModuleReference, ISignal, ICapability
+---@field TypeName string
+---@field Source IModuleReference
+---@field BlockingTime Quantity
+---@field SignalOn any
+
+---@class DynamicModule: Module, IDriverObject, IModule, IModuleReference
+---@field Parameters IParameterCollection
+
+---@class ISignal: IModule, IModuleReference, ICapability
+
+---@class Module: DriverObject, IDriverObject, IModule, IModuleReference
+---@field GetParameters (fun(self: Module): ParameterCollection)
+---@field GetChildren (fun(self: Module, predicateFilter: any?): any)
+---@field GetChildByName (fun(self: Module, moduleName: string?): IModuleReference)
+---@field GetChildrenByType (fun(self: Module, moduleType: string?): any)
+---@field GetChildObjects (fun(self: Module, predicateFilter: any?): any) |  (fun(self: Module): any)
+---@field GetHashCode (fun(self: Module): number)
+---@field ToModuleClassName (fun(descriptionName: string?): string)
+---@field Address any
+---@field ModuleTypeName string
+---@field ParentObject IModule
+---@field FullPathName string
+---@field Children any
+
+---@class DriverObject: IDriverObject
+---@field GetValue (fun(self: DriverObject, parameterName: string?): any)
+---@field GetHashCode (fun(self: DriverObject): number)
+---@field IsType (fun(self: DriverObject): boolean)
+---@field GetOptionsEnumerationName (fun(self: DriverObject, parameterName: string?): any)
+---@field Name string
+---@field ObjectId any
+---@field Description string
+---@field TypeName string
+---@field Item any
+---@field Parameters IParameterCollection
+---@field Definition IParameterDefinitionContainer
+
+---@class OutputSignal: DynamicModule, IDriverObject, IModule, IModuleReference, ISignal, ICapability, IChangeableParamSet
+---@field TypeName string
+---@field Destination IModuleReference
+---@field DestinationAux IModuleReference
+---@field PulseDuration Quantity
+---@field SignalOn any
+---@field SwitchOffOnReset any
+
+---@class IChangeableParamSet: IModule, IModuleReference, ICapability
+
+---@class ErrorReactionMode
+---@field OnErrorAbortAllSamples ErrorReactionMode
+---@field OnErrorContinue ErrorReactionMode
+---@field OnErrorDoFakeInjectionAndContinue ErrorReactionMode
+---@field OnMissingVialContinue ErrorReactionMode
+---@field OnMissingVialDoFakeInjectionAndContinue ErrorReactionMode
+---@field OnMissingVialContinueAndSkipBarcodeError ErrorReactionMode
+---@field SkipBarcodeError ErrorReactionMode
+---@field OnBarcodeErrorAbortSampleAndContinueSequence ErrorReactionMode
+---@field OnBarcodeAndMissingVialErrorAbortSampleAndContinueSequence ErrorReactionMode
+
+---@class Quantity
+---@overload fun(value: number): Quantity
+---@overload fun(value: Quantity?): Quantity
+---@overload fun(value: number, unit: string?): Quantity
+---@field SupportsUnitSymbol (fun(self: Quantity, unitSymbol: string?): boolean)
+---@field ConvertTo (fun(self: Quantity, unit: string?): Quantity)
+---@field ToTimeSpan (fun(self: Quantity): TimeSpan)
+---@field GetHashCode (fun(self: Quantity): number)
+---@field Value number
+---@field ValueSI number
+---@field Unit string
+---@field UnitSI string
+
+---@class EuclideanVector
+---@overload fun(x: number, y: number, z: number): EuclideanVector
+---@overload fun(x: number, y: number, z: number, unit: string?): EuclideanVector
+---@overload fun(x: Quantity?, y: Quantity?, z: Quantity?): EuclideanVector
+---@field GetHashCode (fun(self: EuclideanVector): number)
+---@field Unit string
+---@field X number
+---@field Y number
+---@field Z number
+---@field QuantityX Quantity
+---@field QuantityY Quantity
+---@field QuantityZ Quantity
+
+---@class EuclideanCuboid
+---@overload fun(origin: EuclideanVector?, width: number, depth: number, height: number): EuclideanCuboid
+---@field GetHashCode (fun(self: EuclideanCuboid): number)
+---@field Unit string
+
+---@class PalActivityRuntimeError: PalRuntimeError
+---@overload fun(message: string?, reason: PalError?, localizationkey: string?, ...: any): PalActivityRuntimeError
+---@overload fun(message: string?, reason: PalError?, localizationkey: string?): PalActivityRuntimeError
+---@overload fun(message: string?, reason: PalError?, localizationkey: string?, localizationArguments: any[]?, isRaisedFromScript: boolean): PalActivityRuntimeError
+---@overload fun(message: string?, reason: PalError?, localizationkey: string?, isRaisedFromScript: boolean): PalActivityRuntimeError
+---@overload fun(message: string?, reason: PalError?, innerException: any?, localizationkey: string?, localizationArguments: any[]?): PalActivityRuntimeError
+---@overload fun(message: string?, reason: PalError?, innerException: any?, localizationkey: string?): PalActivityRuntimeError
+---@field ToFormattedErrorCodeText (fun(errorCode: number): string)
+---@field Reason PalError
+---@field FormattedErrorCode string
+---@field ErrorCategory PalErrorCategories
+
+---@class PalErrorCategories
+---@field None PalErrorCategories
+---@field CollisionOccured PalErrorCategories
+---@field ImpactNotFound PalErrorCategories
+---@field BarcodeError PalErrorCategories
+---@field ObjectNotFound PalErrorCategories
+---@field FakeInjectionFailed PalErrorCategories
+---@field CalibrationError PalErrorCategories
+---@field PrematureImpact PalErrorCategories
+---@field PreconditionViolated PalErrorCategories
+---@field PostconditionViolated PalErrorCategories
+---@field InvalidState PalErrorCategories
+---@field General PalErrorCategories
+
+---@class PalError
+---@field None PalError
+---@field CollisionOccured PalError
+---@field CollisionOccured_LinearDrives PalError
+---@field CollisionOccured_PlungerDrive PalError
+---@field CollisionOccured_SafeMoveFailure PalError
+---@field CollisionOccured_OpenCloseFlipTube_UnexpectedImpactFound PalError
+---@field ImpactNotFound PalError
+---@field ImpactNotFound_MoveToObject_ObjectNotFound PalError
+---@field ImpactNotFound_PenetrateWithBottomSense_NoImpact PalError
+---@field ImpactNotFound_DetectTarget_NoDetection PalError
+---@field ImpactNotFound_MountTool_SlotPositionNotOk PalError
+---@field ImpactNotFound_MountTool_NoImpactFound PalError
+---@field ImpactNotFound_UnmountTool_SlotPositionNotOk PalError
+---@field ImpactNotFound_UnmountTool_NoImpactFound PalError
+---@field ImpactNotFound_PenetrateWithConstForce_NoImpact PalError
+---@field ImpactNotFound_PenetrateWithNeedleSealing_NoImpact PalError
+---@field ImpactNotFound_OpenCloseFlipTube_NoImpact PalError
+---@field BarcodeError PalError
+---@field BarcodeError_ReadBarcode_NoBarcode PalError
+---@field BarcodeError_ReadBarcode_BarcodeMismatch PalError
+---@field ObjectNotFound PalError
+---@field ObjectNotFound_MoveToObject_ObjectNotFound PalError
+---@field ObjectNotFound_MoveToObject_ObjectUnexpectedImpact PalError
+---@field ObjectNotFound_PickUpTip_TipNotFound PalError
+---@field FakeInjectionFailed PalError
+---@field FakeInjectionFailed_Scheduler_FakeInjectionFailed PalError
+---@field CalibrationError PalError
+---@field CalibrationError_CalibrationFailed PalError
+---@field CalibrationError_NoImpactFound PalError
+---@field CalibrationError_UnknownMode PalError
+---@field CalibrationError_HallSensorValuesNotValid PalError
+---@field CalibrationError_HallSensorIsCovered PalError
+---@field CalibrationError_NoHalSensorFound PalError
+---@field PrematureImpact PalError
+---@field PrematureImpact_InjectSampleGc PalError
+---@field PrematureImpact_ApproachingObject PalError
+---@field PrematureImpact_PickAdapter_WrongImpactZPosition PalError
+---@field PrematureImpact_OpenFlipTube PalError
+---@field PrematureImpact_MoveAttachedObjectOnto PalError
+---@field PreconditionViolated PalError
+---@field PreconditionViolated_ParameterOfObjectNotSet PalError
+---@field PreconditionViolated_NoTool PalError
+---@field PreconditionViolated_ObjectPenetrated PalError
+---@field PreconditionViolated_ObjectAttached PalError
+---@field PreconditionViolated_ApplyPressure_WrongTool PalError
+---@field PreconditionViolated_AspirateSyringe_WrongTool PalError
+---@field PreconditionViolated_Aspirate_Overfill PalError
+---@field PreconditionViolated_MaxPlungerSpeedExceeded PalError
+---@field PreconditionViolated_DispenseSyringe_WrongTool PalError
+---@field PreconditionViolated_DispenseSyringe_Underfill PalError
+---@field PreconditionViolated_EmptySyringe_WrongTool PalError
+---@field PreconditionViolated_FastInjectSampleGc_UnsupportedInjector PalError
+---@field PreconditionViolated_PenetrateObject_MaxPenetrationDepth PalError
+---@field PreconditionViolated_FillingStrokes_WrongTool PalError
+---@field PreconditionViolated_DriveCheck_NotHomed PalError
+---@field PreconditionViolated_DriveCheck_NotCalibrated PalError
+---@field PreconditionViolated_MoveToObject_InvalidObjectTarget PalError
+---@field PreconditionViolated_MoveToObject_InvalidTarget PalError
+---@field PreconditionViolated_NeedleGuideType_MissingInterface PalError
+---@field PreconditionViolated_NeedleGuideType_InvalidTarget PalError
+---@field PreconditionViolated_MoveToObject_FiberExposed PalError
+---@field PreconditionViolated_ParkTool_SlotOccupied PalError
+---@field PreconditionViolated_ActivityExecution_General PalError
+---@field PreconditionViolated_PenetrateObject_WrongTool PalError
+---@field PreconditionViolated_ObjectNotConfigured PalError
+---@field PreconditionViolated_PenetrateObject_TargetNotPenetratable PalError
+---@field PreconditionViolated_PenetrateObject_FiberExposed PalError
+---@field PreconditionViolated_PenetrateWithBottomSense_WrongTool PalError
+---@field PreconditionViolated_PenetrateWithBottomSense_NotSupported PalError
+---@field PreconditionViolated_PenetrateWithBottomSense_MaxHeightFromBottom PalError
+---@field PreconditionViolated_PenetrateWithBottomSense_NeedleTooShort PalError
+---@field PreconditionViolated_PickTool_NoToolAvailable PalError
+---@field PreconditionViolated_PickToolAdapter_ToolOccupied PalError
+---@field PreconditionViolated_StartPurgeSyringe_WrongTool PalError
+---@field PreconditionViolated_PreFillSyringe_Overfill PalError
+---@field PreconditionViolated_PreFillSyringe_ObjectPenetrated PalError
+---@field PreconditionViolated_PurgeVial_WrongTool PalError
+---@field PreconditionViolated_PurgeVial_NoAdapter PalError
+---@field PreconditionViolated_NeedleGuideType_PurgeNotSupported PalError
+---@field PreconditionViolated_ReadBarcode_NoBarcodeReader PalError
+---@field PreconditionViolated_ReadBarcode_UndefinedTarget PalError
+---@field PreconditionViolated_TransportVial_InvalidObjectTarget PalError
+---@field PreconditionViolated_NeedleGuideType_TransportNotSupported PalError
+---@field PreconditionViolated_ReleasePressure_WrongTool PalError
+---@field PreconditionViolated_ReleasePressure_NoAdapter PalError
+---@field PreconditionViolated_SetSignal_NoDestination PalError
+---@field PreconditionViolated_SpmeAdsorb_WrongTool PalError
+---@field PreconditionViolated_SpmeDesorb_WrongTool PalError
+---@field PreconditionViolated_SpmeInject_WrongTool PalError
+---@field PreconditionViolated_StopPurgeSyringe_WrongTool PalError
+---@field PreconditionViolated_TransportVial_IncompatibleDestination PalError
+---@field PreconditionViolated_TransportVialHome_NoHome PalError
+---@field PreconditionViolated_ValidateTemperatureControl_NotRunning PalError
+---@field PreconditionViolated_VortexVial_IncompatibleDestination PalError
+---@field PreconditionViolated_CheckTeachPosition_OutOfRange PalError
+---@field PreconditionViolated_CheckTeachPosition_WrongTeachMode PalError
+---@field PreconditionViolated_DetectTarget_WrongTool PalError
+---@field PreconditionViolated_DetectTarget_NeedleguideRetracted PalError
+---@field PreconditionViolated_DetectTarget_FiberExposed PalError
+---@field PreconditionViolated_MoveDrawer_NoStack PalError
+---@field PreconditionViolated_MoveDrawer_OtherDrawerOpen PalError
+---@field PreconditionViolated_StripVial_NoParent PalError
+---@field PreconditionViolated_CheckPenetrationPositionUtility_InvalidIndex PalError
+---@field PreconditionViolated_CheckSlotPositionUtility_OutOfRange PalError
+---@field PreconditionViolated_CheckSlotPositionUtility_SlotNotEmpty PalError
+---@field PreconditionViolated_ParkToolUtility_NoToolAttached PalError
+---@field PreconditionViolated_PickToolUtility_ToolAttached PalError
+---@field PreconditionViolated_CheckOcAlignment_WrongTool PalError
+---@field PreconditionViolated_CheckOcAlignment_NeedleTooShort PalError
+---@field PreconditionViolated_TogglePurgeSyringeUtility_WrongTool PalError
+---@field PreconditionViolated_ActivityExecution_MissingParameter PalError
+---@field PreconditionViolated_ParkToolUtility_ToolNotMounted PalError
+---@field PreconditionViolated_CleanInjector_WrongTool PalError
+---@field PreconditionViolated_CleanSyringe_WrongTool PalError
+---@field PreconditionViolated_SyringeIsNotEmpty PalError
+---@field PreconditionViolated_DisposeVial_NoWasteContainer PalError
+---@field PreconditionViolated_ParkTool_ToolTooLongForFiberProtection PalError
+---@field PreconditionViolated_PenetrateObject_MaxToolPenetrationDepth PalError
+---@field PreconditionViolated_CleanSyringe_TargetNotWashSource PalError
+---@field PreconditionViolated_SetLcToolPosition_WrongTool PalError
+---@field PreconditionViolated_RuntimeChk_ParamOutOfRange PalError
+---@field PreconditionViolated_DilutorNoSyringeAssigned PalError
+---@field PreconditionViolated_NeedleToolHasNoNeedleAssigned PalError
+---@field PreconditionViolated_DilutorValveDriveUndefined PalError
+---@field PreconditionViolated_DilutorValvePositionUndefined PalError
+---@field PreconditionViolated_DilutorTool_NoDilutor PalError
+---@field PreconditionViolated_DilutorSyringe_NotEmpty PalError
+---@field PreconditionViolated_DilutorTool_WrongDilutor PalError
+---@field PreconditionViolated_TargetNotTaught PalError
+---@field PreconditionViolated_MaxPenetrationDepthExceeded PalError
+---@field PreconditionViolated_RightArm_SetupReference PalError
+---@field PreconditionViolated_GripperGrip_WrongTool PalError
+---@field PreconditionViolated_GripperRelease_WrongTool PalError
+---@field PreconditionViolated_GripperReset_WrongTool PalError
+---@field PreconditionViolated_GripperSetup_WrongTool PalError
+---@field PreconditionViolated_GrabObject_WrongTool PalError
+---@field PreconditionViolated_ReleaseObject_WrongTool PalError
+---@field PreconditionViolated_NoContactState PalError
+---@field PreconditionViolated_NoAttachmentState PalError
+---@field PreconditionViolated_TransportVial_InvalidSource PalError
+---@field PreconditionViolated_TransportVialHome_InvalidObject PalError
+---@field PreconditionViolated_PenetrateInjector_WrongMode PalError
+---@field PreconditionViolated_DilutorWrongToolMounted PalError
+---@field PreconditionViolated_ToolAdapter_InvalidTarget PalError
+---@field PreconditionViolated_PickParkTool_SlotNotTaught PalError
+---@field PreconditionViolated_CalibrateTemperature_TemperaturesCannotBeEqual PalError
+---@field PreconditionViolated_CalibrateTemperature_MaximalTempDifferenceExceeded PalError
+---@field PreconditionViolated_GetAnalogSignalADCValue_ADCValueNotSupported PalError
+---@field PreconditionViolated_StepperIsMovingOrStopping PalError
+---@field PreconditionViolated_SetPump_FlowrateBelowMin PalError
+---@field PreconditionViolated_SetPump_FlowrateExceeded PalError
+---@field PreconditionViolated_InjectLc_WrongInjector PalError
+---@field PreconditionViolated_NoRoboticToolChangeCapability PalError
+---@field PreconditionViolated_HomeStepper_HomeSpeedNotConfigured PalError
+---@field PreconditionViolated_DisposeTip_NoWasteContainer PalError
+---@field PreconditionViolated_DisposeTip_TipIsNotDisposable PalError
+---@field PreconditionViolated_GripperGripUtility_ToolNotMounted PalError
+---@field PreconditionViolated_GripperReleaseUtility_ToolNotMounted PalError
+---@field PreconditionViolated_StripTip_NoParent PalError
+---@field PreconditionViolated_WrongTool PalError
+---@field PreconditionViolated_InvalidAttachedObject PalError
+---@field PreconditionViolated_WrongAttachementMode PalError
+---@field PreconditionViolated_ObjectHasNoHome PalError
+---@field PreconditionViolated_NotPenetrated PalError
+---@field PreconditionViolated_InvalidPenetratedObject PalError
+---@field PreconditionViolated_Aspirate_OverfillPipette PalError
+---@field PreconditionViolated_Aspirate_InvalidFillTip PalError
+---@field PreconditionViolated_Dispense_UnderfillPipette PalError
+---@field PreconditionViolated_PickUpTip_InvalidTarget PalError
+---@field PreconditionViolated_TravelConstraints PalError
+---@field PreconditionViolated_LiquidLevelTracking_NotPossible PalError
+---@field PreconditionViolated_EmptyTip_NoWaste PalError
+---@field PreconditionViolated_NoLiquidClassInUse PalError
+---@field PreconditionViolated_NoMatchingLiquidClassScope PalError
+---@field PreconditionViolated_InvalidTool PalError
+---@field PreconditionViolated_TargetNotReady PalError
+---@field PreconditionViolated_PenetrateObject_InvalidTarget PalError
+---@field PreconditionViolated_NoCocToolOrInjector PalError
+---@field PreconditionViolated_NoArrowInjector PalError
+---@field PreconditionViolated_SetRotator_RotatorNotHomed PalError
+---@field PreconditionViolated_SetRotator_IntermittencyNotSupported PalError
+---@field PreconditionViolated_NoLcInjectorValve PalError
+---@field PreconditionViolated_GSTPositionmVAPHead_NoObjectInPosition PalError
+---@field PreconditionViolated_GSTPositionmVAPHead_InvalidTarget PalError
+---@field PreconditionViolated_DeCapper_SliderNotHomedOrAttached PalError
+---@field PreconditionViolated_ParkDeCapper_SliderNotAttached PalError
+---@field PreconditionViolated_UnScrewCap_NoObjectTransported PalError
+---@field PreconditionViolated_UnscrewCap_ObjectIncompatible PalError
+---@field PreconditionViolated_ScrewCap_ObjectIncompatible PalError
+---@field PreconditionViolated_CannotAttachDecappedObject PalError
+---@field PreconditionViolated_CalibrateDeCapper_ObjectInDeCapper PalError
+---@field PreconditionViolated_CapObject_DirectDisposalNotSupported PalError
+---@field PreconditionViolated_DeCapper_NotTaught PalError
+---@field PreconditionViolated_DeCapper_NotCalibrated PalError
+---@field PreconditionViolated_DeCapper_SliderNotHomed PalError
+---@field PreconditionViolated_DeCapper_SliderAttached PalError
+---@field PreconditionViolated_UnScrewCap_ObjectContacted PalError
+---@field PreconditionViolated_DeCapper_BracketNotEmpty PalError
+---@field PreconditionViolated_AspirateTip_InvalidTarget_ PalError
+---@field PreconditionViolated_ApproachObject_ObjectIsAlreadyAttached PalError
+---@field PreconditionViolated_DetectObjectContainer_IncompatibleTarget PalError
+---@field PreconditionViolated_SetVolatilePosition_IncompatiblePosition PalError
+---@field PreconditionViolated_SetVolatilePosition_TargetAndPositionNotSameObject PalError
+---@field PreconditionViolated_TransportVial_PipettingToolRestriction PalError
+---@field PreconditionViolated_UnscrewCap_ObjectDoesNotHaveCap PalError
+---@field PreconditionViolated_UnscrewCap_DeCapperAlreadyHasCap PalError
+---@field PreconditionViolated_ScrewCap_ObjectAlreadyHasCap PalError
+---@field PreconditionViolated_ScrewCap_DeCapperDoesNotHaveCap PalError
+---@field PreconditionViolated_AspirateTip_NoTip PalError
+---@field PreconditionViolated_DeCapperDispose_NoWasteTypeConfigured PalError
+---@field PreconditionViolated_SetVolatilePosition_TypeMustBeCurrent PalError
+---@field PreconditionViolated_GLSIsLinerCapped_TargetMustBeALiner PalError
+---@field PreconditionViolated_GLSSetLinerState_TargetMustBeALiner PalError
+---@field PreconditionViolated_GLSDecapLiner_ObjectDoesNotHaveCaps PalError
+---@field PreconditionViolated_GLSDecapLiner_CDCSAlreadyHasCaps PalError
+---@field PreconditionViolated_GLSDecapLiner_ObjectIncompatible PalError
+---@field PreconditionViolated_GLSCapLiner_ObjectAlreadyHasCaps PalError
+---@field PreconditionViolated_GLSCapLiner_CDCSDoesNotHaveCaps PalError
+---@field PreconditionViolated_GLSCapLiner_ObjectIncompatible PalError
+---@field PreconditionViolated_SetParameter_ExactlyOneAllowed PalError
+---@field PreconditionViolated_ParameterDoesNotExist PalError
+---@field PreconditionViolated_SetParameter_NotAllowed PalError
+---@field PreconditionViolated_ParameterOutOfBounds PalError
+---@field PreconditionViolated_SetParameter_WrongValueType PalError
+---@field PreconditionViolated_SetParameter_NameMustNotBeEmpty PalError
+---@field PreconditionViolated_EmptySyringe_CannotBeEmptied PalError
+---@field PreconditionViolated_GetObjectPosition_TargetMustBeAnObjectContainer PalError
+---@field PreconditionViolated_GetObjectPosition_TargetDoesNotSupportIndex PalError
+---@field PreconditionViolated_OperateCentrifugeCover_CantOpenCoverWhileRunning PalError
+---@field PreconditionViolated_LcToolLoopCapacityExceeded PalError
+---@field PreconditionViolated_PickReleaseNeedleGuideAdapterWrongNgt PalError
+---@field PreconditionViolated_PickNeedleGuideAdapterNoAdapter PalError
+---@field PreconditionViolated_ReleaseNeedleGuideAdapterNotEmpty PalError
+---@field PreconditionViolated_ReleaseNeedleGuideAdapterNoAdapterMounted PalError
+---@field PreconditionViolated_SwitchCentrifugePosition_CantSwitchPositionWhileRunning PalError
+---@field PreconditionViolated_GetAxisPosition_AxisNotAvailable PalError
+---@field PreconditionViolated_DisableCentrifugeRotorUtility_CantDisableRotorWhileRunning PalError
+---@field PreconditionViolated_StartStopBubbleDetector_BubbleDetectorIsDisabled PalError
+---@field PreconditionViolated_SetPump_FlowRateAndFlowFactorBothSet PalError
+---@field PreconditionViolated_SetPump_FlowRateModeNotSupported PalError
+---@field PreconditionViolated_SetPump_FlowFactorModeNotSupported PalError
+---@field PreconditionViolated_MoveTorqueMode_PosAndNegDirMoveCurrentNotSet PalError
+---@field PreconditionViolated_InvalidVisitedObject PalError
+---@field PreconditionViolated_GenericGripperMoveAdapterRelative_RelDistanceOutOfRange PalError
+---@field PreconditionViolated_GenericGripperMoveAdapterAbsolute_AbsDistanceOutOfRange PalError
+---@field PreconditionViolated_ObjectMustBeOfType PalError
+---@field PreconditionViolated_AttachmentModeNotSupported PalError
+---@field PreconditionViolated_SetCentrifuge_SpeedAndGForceBothSet PalError
+---@field PreconditionViolated_ParkTool_CannotUnmountToolWithMountedTeachingAdapter PalError
+---@field PreconditionViolated_LLD_NoPressureMonitor PalError
+---@field PreconditionViolated_LLD_SearchDistance PalError
+---@field PreconditionViolated_LLD_TipNotEmpty PalError
+---@field PreconditionViolated_InjectSampleGC_PenetrationDepthTooSmall PalError
+---@field PreconditionViolated_LcInjectorTypeNotSet PalError
+---@field PreconditionViolated_AspirateTip_InvalidTarget PalError
+---@field PreconditionViolated_ResetDrawersStateUtility_DrawerSensorsEnabled PalError
+---@field PreconditionViolated_PenetrateObject_SPMEArrowIncompatibleWithInjector PalError
+---@field PreconditionViolated_PenetrateWithNeedleSealing_TargetNotNeedleSealable PalError
+---@field PreconditionViolated_MoveAttachedObjectOnto_AttachedObjectInvalidOrMissing PalError
+---@field PreconditionViolated_MoveAttachedObjectOnto_InvalidTarget PalError
+---@field PreconditionViolated_LeaveObject_ObjectCannotBeLeft PalError
+---@field PreconditionViolated_PenetrateWithNeedleSealing_PenetrationDepthsInvalid PalError
+---@field PreconditionViolated_Depenetrate_DepthReductionNotSupported PalError
+---@field PreconditionViolated_Depenetrate_DepthReductionMustNotExceedCurrentPenetrationDepth PalError
+---@field PreconditionViolated_GetSampleAndCleanInjector_WashParametersInconsistent PalError
+---@field PreconditionViolated_ParkTool_DifferentSlotIsReservedForMountedTool PalError
+---@field PreconditionViolated_ParkTool_SlotIsReservedForDifferentTool PalError
+---@field PreconditionViolated_ParkTool_SlotIsNotEmpty PalError
+---@field PreconditionViolated_StopConstForce_RobotArmNotInConstForceMode PalError
+---@field PreconditionViolated_ParkTool_SyringeNotEmpty PalError
+---@field PreconditionViolated_DisposeTip_WrongRack PalError
+---@field PreconditionViolated_OpenCloseFlipTube_WrongTargetObject PalError
+---@field PreconditionViolated_SetSuctionCup_WrongTool PalError
+---@field PreconditionViolated_ActivateToolTipType_WrongTool PalError
+---@field PreconditionViolated_ActivateToolTipType_WrongToolTipType PalError
+---@field PreconditionViolated_OpenCloseFlipTube_InContactWithWrongObject PalError
+---@field PreconditionViolated_OpenCloseFlipTube_InContactWithWrongToolTipType PalError
+---@field PreconditionViolated_LiquidManagementNotSupported PalError
+---@field PreconditionViolated_LiquidManagementVolumeTooBig PalError
+---@field PreconditionViolated_ApproachObject_TransportAttachedObject_NoAttachmentOrNotCompatible PalError
+---@field PostconditionViolated PalError
+---@field PostconditionViolated_ChangeTool_Failed PalError
+---@field PostconditionViolated_HardwareOperationFailed PalError
+---@field PostconditionViolated_DetectObject_ObjectOutsideTolerance PalError
+---@field PostconditionViolated_ToolCheck_ToolNotCalibrated PalError
+---@field PostconditionViolated_ToolCheck_MoreThanOneReferencePoint PalError
+---@field PostconditionViolated_ToolCheck_NoReferencePoint PalError
+---@field PostconditionViolated_ActivityExecution_MissingParameter PalError
+---@field InvalidState PalError
+---@field InvalidState_ObjectNotTaught PalError
+---@field InvalidState_ToolNotCalibrated PalError
+---@field InvalidState_ModuleNotHomed PalError
+---@field InvalidState_DrivesNotCalibrated PalError
+---@field InvalidState_ToolNotIdentified PalError
+---@field InvalidState_NoToolStation PalError
+---@field InvalidState_MoreThanOneRefPoint PalError
+---@field InvalidState_NoRefPoint PalError
+---@field InvalidState_CavityDepth PalError
+---@field InvalidState_NoParkstation PalError
+---@field InvalidState_MoreThanOneTrayPerSlot PalError
+---@field InvalidState_MultiSpanTrayCheck PalError
+---@field InvalidState_TrayNotEmpty PalError
+---@field InvalidState_TrayTypeNotSet PalError
+---@field InvalidState_ObjectTypeNotSet PalError
+---@field InvalidState_ValveDriveNotCalibrated PalError
+---@field InvalidState_WashVialTypeNotSet PalError
+---@field InvalidState_IncompatibleVialOnWashStation PalError
+---@field InvalidState_NeedlePenetrationDef PalError
+---@field InvalidState_NeedlePenetrationMax PalError
+---@field InvalidState_ParkAndChangeStationNotAllowed PalError
+---@field InvalidState_InjectorMinimumNotSet PalError
+---@field InvalidState_HardwareError PalError
+---@field InvalidState_ParkstationNotTaught PalError
+---@field InvalidState_TemperatureLimitMinToHigh PalError
+---@field InvalidState_RackTypeNotAllowed PalError
+---@field InvalidState_CoverTypeNotSet PalError
+---@field InvalidState_CoverTypeIncompatible PalError
+---@field InvalidState_AgitatorVialTypeNotSet PalError
+---@field InvalidState_ToolStationNotSupportedOnRobotType PalError
+---@field InvalidState_ToolNotSupportedOnRobotType PalError
+---@field InvalidState_LeftAndRightHeadDifferentFOR PalError
+---@field InvalidState_InvalidNeedleGuideType_GSTGripperDetected PalError
+---@field InvalidState_InvalidNeedleGuideType_GSTGripperNotDetected PalError
+---@field InvalidState_LcPToolPumpUnavailable PalError
+---@field InvalidState_VolumetricGeometryInvalid PalError
+---@field InvalidState_VolumetricGeometryHeight PalError
+---@field InvalidState_VolumetricGeometryDiameter PalError
+---@field InvalidState_LiquidClassScopeRange PalError
+---@field InvalidState_LiquidClassOverlappingScopes PalError
+---@field InvalidState_GLSLinexCDCS_LinerTypeNotSet PalError
+---@field InvalidState_GLSLinexCDCS_SignalNotSet PalError
+---@field InvalidState_GSTmVAP_VialTypeNotSet PalError
+---@field InvalidState_DeCapper_JawChuckHasUnknownPosition PalError
+---@field InvalidState_DeCapper_NotCalibrated PalError
+---@field InvalidState_Centrifuge_BoardHasError PalError
+---@field InvalidState_PlungerCheckNotCalibrated PalError
+---@field InvalidState_ToolTipTypeNotSet PalError
+---@field InvalidState_SmartObject_NoPlunger PalError
+---@field InvalidState_SmartObject_MaxStrokesExceeded PalError
+---@field InvalidState_SmartObject_SyringeExpired PalError
+---@field InvalidState_TeachingAdapterIsMounted PalError
+---@field InvalidState_Tool_NotApproved PalError
+---@field InvalidState_LcPToolHasNoPumpConfigured PalError
+---@field InvalidState_ToolLiquidGLSGrp_SignalNotSet PalError
+---@field InvalidState_GLSLinexInjector_SignalNotSet PalError
+---@field InvalidState_TrayCooler_YAxisNotLongEnough PalError
+---@field InvalidState_Gasbench_BadNeedleConfiguration PalError
+---@field InvalidState_InjectedSignal_SharedByMultipleChromatographs PalError
+---@field InvalidState_ReadySignal_SharedByMultipleChromatographs PalError
+---@field InvalidState_ParkSlot_ReservedSlotIsTakenByWrongTool PalError
+---@field InvalidState_ParkSlot_ToolHasReservationInOtherSlot PalError
+---@field InvalidState_ParkSlot_MoreThanOneSlotReservedForTool PalError
+---@field InvalidState_Agitator_TooFarMountedLeft PalError
+---@field InvalidState_InputSignal_UsedAsReadyAndAuxReadyOnSameChromatograph PalError
+---@field InvalidState_Tray_NotTaught PalError
+---@field PreconditionViolated_DriveNotHomed PalError
+---@field General PalError
+---@field General_MoveFiber_WrongTool PalError
+---@field General_FiberPenetrationDepthInvalid PalError
+---@field General_ObjectPenetrated PalError
+---@field General_HardwareOperationFailed PalError
+---@field General_ActivityExecution PalError
+---@field General_ChangeTool_ToolNotFound PalError
+---@field General_EnableEepromAccessFailed PalError
+---@field General_ParkTool_NoSlotFound PalError
+---@field General_UnmountTool_SlotPositionNotOk PalError
+---@field General_DisablingToolEepromAccessFailed PalError
+---@field General_ParkTool_PlungerCheckFailed PalError
+---@field General_ParkTool_ParkingFailed PalError
+---@field General_ParkTool_NoFreeParkslot PalError
+---@field General_PickTool_NoSlotFound PalError
+---@field General_PickTool_PickingFailed PalError
+---@field General_ReadBarcode_AmbiguousData PalError
+---@field General_SetTemperature_NotReady PalError
+---@field General_SetTemperature_MaxTemperature PalError
+---@field General_ValidateTemperatureControl_NotRunning PalError
+---@field General_WaitForTimer_TimedOut PalError
+---@field General_WaitForTimer_State PalError
+---@field General_CheckPlunger_Failed PalError
+---@field General_CheckTeachPosition_IncorrectPosition PalError
+---@field General_Homing_Failed PalError
+---@field General_MountTool_PlungerCheckFailed PalError
+---@field General_MoveDrawer_DrawerNotDetected PalError
+---@field General_MoveDrawer_WrongStateAtEnd PalError
+---@field General_MoveDrawer_UndefinedState PalError
+---@field General_Referencing_Failed PalError
+---@field General_ResetSyringe_NoWasteVial PalError
+---@field General_UnmountTool_PlungerCheckFailed PalError
+---@field General_UnmountTool_UnmountingFailed PalError
+---@field General_MountManualToolUtility_MountingFailed PalError
+---@field General_MoveToNextSlotTeachPosition_ParkslotNotEmpty PalError
+---@field General_UnmountManualToolUtility_UnmountingFailed PalError
+---@field General_EnableParkstationError PalError
+---@field General_EnableAxisNotAllowed PalError
+---@field General_ParkToolUtility_NoChangeStation PalError
+---@field General_Scheduler_TypeNotImplemented PalError
+---@field General_UnmountTool_ToolStillMounted PalError
+---@field General_MountTool_PlungerCouplingNotOpen PalError
+---@field General_CheckOcAlignmentUtility_PenetrateFailed PalError
+---@field General_MoveDrawer_CloseFailed PalError
+---@field General_CleanSyringe_WashSourceNotSupported PalError
+---@field General_SetTemperature_MinTemperature PalError
+---@field General_ParkTool_ToolTooLongForFiberProtection PalError
+---@field General_BubbleDetector_Error PalError
+---@field General_MachineObject_ObjectDeletedBecauseOfVersionChange PalError
+---@field General_MoveToNegativePositionNotAllowed PalError
+---@field General_ToolChange_ToolChangeIsNoMorePossible PalError
+---@field General_Teaching_OutsideOfAxisLimit PalError
+---@field General_ActivityExecution_UserAbort PalError
+---@field General_NoWasteVial PalError
+---@field General_NeedlePenetrationDepthInvalidWithPerfCoverPlate PalError
+---@field General_TraySlotCustom_CannotChangeSlotType PalError
+---@field General_DualHead_CollisionAvoidance PalError
+---@field General_PalDrive_TargetOutsideOfAxisLimit PalError
+---@field General_GasValve_IncorrectVoltage PalError
+---@field General_Move_CurrentTooLow PalError
+---@field General_IOExtensionModule_FunctionNotSet PalError
+---@field General_ImportDeviceConfig_FileNotFound PalError
+---@field General_IOExtensionModule_FunctionNotValid PalError
+---@field General_SetMaxTemperature_LowerThanActualOrSetpoint PalError
+---@field General_Teaching_DrawerNotOpen PalError
+---@field General_StepperAxis_HardwarePositionLimitExceeded PalError
+---@field General_MovementTimeoutOccurred PalError
+---@field General_AttachmentModeNotSupported PalError
+---@field General_CheckPlunger_CouplerBent PalError
+---@field General_MountTool_MountingFailed PalError
+---@field General_GSTStirredAgitator_CannotStirAndAgitateSim PalError
+---@field General_GLSLinexCDCS_WaitOnReadyTimeout PalError
+---@field General_Agitator_BeltSlipWarning PalError
+---@field General_Agitator_BeltSlipError PalError
+---@field General_ParkDeCapper_SliderNotHomed PalError
+---@field General_UnscrewCap_CouldNotUnscrewCap PalError
+---@field General_UnscrewCap_RobotArmCannotMove PalError
+---@field General_ScrewCap_CouldNotOpenJawChuck PalError
+---@field General_ScrewCap_CouldNotScrewCap PalError
+---@field General_ScrewCap_RobotArmCannotMove PalError
+---@field General_DeCapper_JawChuckMovementTimeout PalError
+---@field General_DeCapperDispose_RobotArmCannotMove PalError
+---@field General_ParkDeCapper_RobotArmCannotMove PalError
+---@field General_MovementNotPossible PalError
+---@field General_PalDrive_AttachmentStatePreventsMove PalError
+---@field General_DeCapper_CouldNotAttachDeCapper PalError
+---@field General_DeCapper_NoObjectInBracket PalError
+---@field General_ScrewCap_HeightCheckFailed PalError
+---@field General_DeCapper_BracketMovementTimeout PalError
+---@field General_UnscrewCap_CouldNotRetightenCap PalError
+---@field General_PlugInActivityExecution PalError
+---@field General_LeaveTeachPosition_UnexpectedImpact PalError
+---@field General_ApproachObject_CannotOpenCoverPlate PalError
+---@field General_DisposeTip_TipLost PalError
+---@field General_DisposeTip_Failed PalError
+---@field General_UnscrewCap_CapSlippedOut PalError
+---@field General_UnscrewCap_CouldNotRetightenSlippedCap PalError
+---@field General_UnscrewCap_CouldNotRetightenPartiallyUnscrewedCap PalError
+---@field General_DeCapper_InvalidWasteTypeAndUnrecErrorBehaviorCombination PalError
+---@field General_CheckObstaclePositionUtility_UnexpectedObstaclePosition PalError
+---@field General_CheckObstaclePositionUtility_ObstacleAvoidanceDisabled PalError
+---@field General_PathNotFound PalError
+---@field General_PositionNotAccessible PalError
+---@field General_ParallelXYPathNotCollisionFree PalError
+---@field General_InitMagnAdapterStationFailed PalError
+---@field General_Centrifuge_EmergencyShutdown PalError
+---@field General_Centrifuge_NoEmergencyShutdown PalError
+---@field General_Centrifuge_CantHomeWhileRunning PalError
+---@field General_Centrifuge_RotatingImbalanceDetected PalError
+---@field General_CalibratableTemperatureControl_UncalibTempExceedsTempLimit PalError
+---@field General_Rotator_CantApproachWhileRunning PalError
+---@field General_ActivityExecution_IntrinsicAbort PalError
+---@field General_LLD_LiquidContainerEmpty PalError
+---@field General_LLD_LiquidContainer_DoesNotSupportLLD PalError
+---@field General_ToolGenericGripper_ForceOutOfRange PalError
+---@field General_ToolGenericGripper_AdapterDistanceOutOfRange PalError
+---@field General_ToolGenericGripper_CantRotate PalError
+---@field General_ToolGenericGripper_RotationOutOfRange PalError
+---@field General_ToolGenericGripper_MoveAdapterAbsoluteFailed PalError
+---@field General_Centrifuge_DriveHadErrorDuringCentrifugation PalError
+---@field General_SmartSyringe_WriteNotPossible PalError
+---@field General_SmartInterface_HwVersionNotSupported PalError
+---@field General_SmartInterface_NoMemoryMapLoaded PalError
+---@field General_SmartInterface_FieldNotFound PalError
+---@field General_SmartInterface_NotReady PalError
+---@field General_SmartInterface_OperationTimeout PalError
+---@field General_SmartInterface_OperationFailed PalError
+---@field General_SyringePresentButSmartInterfaceNotDetected PalError
+---@field General_SmartInterface_FieldIsBlank PalError
+---@field General_SmartObjectStatusFlag PalError
+---@field General_SmartInterfaceNotReadable PalError
+---@field General_ToolGenericGripper_ErrorOccurredWhileGripping PalError
+---@field General_ToolControl_ToolControlIncompatibleWithSeries2 PalError
+---@field General_RobotArm_RobotArmIncompatibleWithSeries2 PalError
+---@field Generic_ToolGenericGripper_CannotEnableMagnetWithAttachedObject PalError
+---@field General_ToolGenericGripper_NoMagnet PalError
+---@field General_ToolGenericGripper_CouldNotCloseCompletely PalError
+---@field General_Teaching_LargeDifferenceToTeachingOfOtherRobotArm PalError
+---@field General_ValveDriveScheduledMovementsFailed PalError
+---@field General_CouplingCountLimitWarning PalError
+---@field General_CouplingCountLimitExceeded PalError
+---@field General_PenetrateWithConstForce_ErrorOccurredWhilePenetrating PalError
+---@field General_GSTPositionmVAPHead_mVapNotDetected PalError
+---@field General_CalibrateAxes_NoPathForMeasuringCograil PalError
+---@field General_TwoChannelVolPump_PistonHadErrorDuringPumping PalError
+---@field General_TwoChannelVolPump_PistonReachedMaxPressureDuringPumping PalError
+---@field General_TwoChannelVolPump_DefaultFlowRateOutOfRange PalError
+---@field General_TwoChannelVolPump_CannotHomeWhilePumping PalError
+---@field General_Parameter_OutOfRange PalError
+---@field General_Timer_TimerHasNotBeenStarted PalError
+---@field PreconditionViolated_GenericGripperRotateAbsoluteOrRelative_GripperCantRotate PalError
+---@field PreconditionViolated_GenericGripperRotateAbsoluteOrRelative_GripperCantRotateOnCurrentRobotArm PalError
+
+---@class PalRuntimeError: PalException
+
+---@class PalException
+---@field IsLocalized (fun(self: PalException): boolean)
+---@field Actuator string
+---@field ErrorCodeId number
+---@field LocalizationKey string
+---@field LocalizationArguments any
+---@field RaisedFromScript boolean
+
+---@class ActivityRuntimeErrorCodes
+---@field None ActivityRuntimeErrorCodes
+---@field CollisionOccured ActivityRuntimeErrorCodes
+---@field ImpactNotFound ActivityRuntimeErrorCodes
+---@field BarcodeError ActivityRuntimeErrorCodes
+---@field VialNotFound ActivityRuntimeErrorCodes
+---@field FakeInjectionFailed ActivityRuntimeErrorCodes
+---@field CalibrationError ActivityRuntimeErrorCodes
+---@field PreconditionViolated ActivityRuntimeErrorCodes
+---@field PostconditionViolated ActivityRuntimeErrorCodes
+---@field General ActivityRuntimeErrorCodes
+
+---@class IDriverCapabilityDefinition: IParameterDefinitionContainer
+---@field GetNoneInheritedParameters (fun(self: IDriverCapabilityDefinition): any)
+---@field IsInheritedParameter (fun(self: IDriverCapabilityDefinition, parameterName: string?): boolean)
+---@field InheritsFrom (fun(self: IDriverCapabilityDefinition, capabilityName: string?): boolean)
+---@field Implements (fun(self: IDriverCapabilityDefinition, capabilityName: string?): boolean)
+
+---@class IPalPlusUserControlsService
+---@field SaveUserControlData (fun(self: IPalPlusUserControlsService, resultDataPacket: UserControlDataPacket?))
+---@field GetMethodEditorConfigurationPacket (fun(self: IPalPlusUserControlsService, methodName: string?): UserControlDataPacket)
+---@field GetLogbookPacket (fun(self: IPalPlusUserControlsService): UserControlDataPacket)
+---@field GetTrayConfigurationPacket (fun(self: IPalPlusUserControlsService): UserControlDataPacket)
+---@field GetValveDriveConfigurationPacket (fun(self: IPalPlusUserControlsService): UserControlDataPacket) |  (fun(self: IPalPlusUserControlsService, configurations: any?): UserControlDataPacket)
+---@field GetToolConfigurationPacket (fun(self: IPalPlusUserControlsService, toolToConfigure: any?): UserControlDataPacket)
+---@field GetToolsConfigurationPacket (fun(self: IPalPlusUserControlsService): UserControlDataPacket)
+---@field GetToolConfiguration (fun(self: IPalPlusUserControlsService, toolToConfigure: any?): ToolUpdateConfiguration)
+---@field GetSyringeExchangeConfigurationPacket (fun(self: IPalPlusUserControlsService, toolToConfigure: any?): UserControlDataPacket)
+---@field GetNeedleTypeExchangeConfigurationPacket (fun(self: IPalPlusUserControlsService, toolToConfigure: any?): UserControlDataPacket)
+---@field GetPlungerExchangeConfigurationPacket (fun(self: IPalPlusUserControlsService, toolToConfigure: any?): UserControlDataPacket)
+---@field GetClientConfiguration (fun(self: IPalPlusUserControlsService): ExchangeDataPackage)
+---@field GetSchedulerStatusCollector (fun(self: IPalPlusUserControlsService, activate: boolean): ControlDataCollector) |  (fun(self: IPalPlusUserControlsService): ControlDataCollector)
+---@field GetTrayStatusCollector (fun(self: IPalPlusUserControlsService, activate: boolean): ControlDataCollector)
+---@field GetTemperatureChartControlCollector (fun(self: IPalPlusUserControlsService, activate: boolean): ControlDataCollector)
+---@field GetValveDrivesControlCollector (fun(self: IPalPlusUserControlsService, activate: boolean): ControlDataCollector)
+---@field GetToolStatusControlCollector (fun(self: IPalPlusUserControlsService, activate: boolean): ControlDataCollector)
+---@field GetLogbookControlCollector (fun(self: IPalPlusUserControlsService, activate: boolean): ControlDataCollector)
+
+---@class ExchangeDataPackage
+---@field ToXml (fun(self: ExchangeDataPackage): any) |  (fun(self: ExchangeDataPackage, fileName: string?)) |  (fun(self: ExchangeDataPackage, aStream: any?))
+---@field FromXml (fun(aStream: any?): ExchangeDataPackage) |  (fun(fileName: string?): ExchangeDataPackage) |  (fun(xmlDocument: any?): ExchangeDataPackage)
+---@field ToByteArray (fun(self: ExchangeDataPackage): number[])
+---@field FromByteArray (fun(byteArray: number[]?): ExchangeDataPackage)
+---@field ExchangeState ExchangeMode
+
+---@class ControlDataCollector
+---@field Activate (fun(self: ControlDataCollector))
+---@field Deactivate (fun(self: ControlDataCollector))
+---@field Clear (fun(self: ControlDataCollector))
+---@field PackAndClear (fun(self: ControlDataCollector): ControlCollectorDataPackage)
+---@field Dispose (fun(self: ControlDataCollector))
+---@field IsActivated boolean
+---@field CollectedData any
+---@field Count number
+---@field HasData boolean
+---@field Type ControlCollectorDataTypes
+
+---@class ControlCollectorDataTypes
+---@field SchedulerStatusCollector ControlCollectorDataTypes
+---@field TrayStatusCollector ControlCollectorDataTypes
+---@field TemperatureChartControlCollector ControlCollectorDataTypes
+---@field ValveDrivesControlCollector ControlCollectorDataTypes
+---@field ToolStatusControlCollector ControlCollectorDataTypes
+---@field LogbookEntryCollector ControlCollectorDataTypes
+---@field ExchangeUpdateControlCollectorForClient ControlCollectorDataTypes
+---@field Undefined ControlCollectorDataTypes
+
+---@class ControlCollectorDataPackage: ExchangeDataPackage
+---@overload fun(): ControlCollectorDataPackage
+---@field FromByteArray (fun(byteArray: number[]?): ControlCollectorDataPackage)
+---@field FromXml (fun(aStream: any?): ControlCollectorDataPackage) |  (fun(fileName: string?): ControlCollectorDataPackage) |  (fun(xmlDocument: any?): ControlCollectorDataPackage)
+---@field Type ControlCollectorDataTypes
+
+---@class ToolUpdateConfiguration: OfflineControlConfiguration
+---@field ValidateParameters (fun(self: ToolUpdateConfiguration))
+---@field GetEnumMachineObjectReferenceList (fun(self: ToolUpdateConfiguration, parameterDescription: string?): any)
+---@field RequiredParameterNames any
+---@field RequestMachineDataObjects any
+---@field Tool any
+---@field NewSyringe any
+---@field NewNeedle any
+---@field SelectedAdapterType any
+---@field SelectedNeedleGuidType number
+---@field SelectedGasbenchLeftNeedleType any
+---@field SelectedGasbenchRightNeedleType any
+---@field SelectedGasbenchNeedleMode number
+---@field Status number
+---@field MaximumStrokesCount number
+---@field ExpiryDuration number
+---@field UserDescription1 string
+---@field UserDescription2 string
+---@field IsGenericTool boolean
+---@field IsPipetteTool boolean
+---@field HasSmartSyringe boolean
+---@field IsToolInHead boolean
+---@field ParentLocationName string
+---@field LocationName string
+---@field IsSmartSpme boolean
+---@field IsSmartSyringe boolean
+---@field HasTemperatureControl boolean
+---@field XAxisLowerBoundary Ctc.Palplus.Base.Units.Quantity
+---@field XAxisUpperBoundary Ctc.Palplus.Base.Units.Quantity
+---@field TransferTubeVolume Ctc.Palplus.Base.Units.Quantity
+---@field Dilutor any
+---@field GenericToolType any
+---@field SyringeType string
+---@field NeedleType string
+---@field GenericToolTypeParameter string
+---@field NeedleGuideType string
+---@field AdapterType string
+---@field DilutorParameter string
+---@field TipAdapterType string
+---@field GasbenchNeedleMode string
+---@field GasbenchLeftNeedleType string
+---@field GasbenchRightNeedleType string
+
+---@class Ctc.Palplus.Base.Units.Quantity
+---@overload fun(value: number, unit: Unit?): Ctc.Palplus.Base.Units.Quantity
+---@overload fun(value: number, unit: string?): Ctc.Palplus.Base.Units.Quantity
+---@field ConvertTo (fun(self: Ctc.Palplus.Base.Units.Quantity, unit: string?): Ctc.Palplus.Base.Units.Quantity)
+---@field Negate (fun(self: Ctc.Palplus.Base.Units.Quantity): Ctc.Palplus.Base.Units.Quantity)
+---@field Simplify (fun(self: Ctc.Palplus.Base.Units.Quantity))
+---@field Round (fun(self: Ctc.Palplus.Base.Units.Quantity, digits: number): Ctc.Palplus.Base.Units.Quantity) |  (fun(self: Ctc.Palplus.Base.Units.Quantity, unit: Unit?): Ctc.Palplus.Base.Units.Quantity) |  (fun(self: Ctc.Palplus.Base.Units.Quantity, unit: Unit?, digits: number): Ctc.Palplus.Base.Units.Quantity)
+---@field RoundSI (fun(self: Ctc.Palplus.Base.Units.Quantity, digits: number): Ctc.Palplus.Base.Units.Quantity)
+---@field Bound (fun(self: Ctc.Palplus.Base.Units.Quantity, min: Ctc.Palplus.Base.Units.Quantity?, max: Ctc.Palplus.Base.Units.Quantity?): Ctc.Palplus.Base.Units.Quantity) |  (fun(self: Ctc.Palplus.Base.Units.Quantity, siValueMin: number, siValueMax: number): Ctc.Palplus.Base.Units.Quantity)
+---@field GetHashCode (fun(self: Ctc.Palplus.Base.Units.Quantity): number)
+---@field IsZero (fun(self: Ctc.Palplus.Base.Units.Quantity): boolean)
+---@field ValueIn (fun(self: Ctc.Palplus.Base.Units.Quantity, unit: string?): number) |  (fun(self: Ctc.Palplus.Base.Units.Quantity, unit: Unit?): number)
+---@field Max (fun(a: Ctc.Palplus.Base.Units.Quantity?, b: Ctc.Palplus.Base.Units.Quantity?): Ctc.Palplus.Base.Units.Quantity) |  (fun(quantity: Ctc.Palplus.Base.Units.Quantity?, siValue: number): Ctc.Palplus.Base.Units.Quantity)
+---@field Min (fun(a: Ctc.Palplus.Base.Units.Quantity?, b: Ctc.Palplus.Base.Units.Quantity?): Ctc.Palplus.Base.Units.Quantity) |  (fun(quantity: Ctc.Palplus.Base.Units.Quantity?, siValue: number): Ctc.Palplus.Base.Units.Quantity)
+---@field Unit Unit
+---@field ValueUnit number
+---@field ValueSI number
+---@field Abs Ctc.Palplus.Base.Units.Quantity
+---@field IsEmpty boolean
+---@field Empty Ctc.Palplus.Base.Units.Quantity
+
+---@class OfflineControlConfiguration: ControlConfiguration
+---@field SaveResult (fun(self: OfflineControlConfiguration, retainMachineData: boolean): UserControlDataPacket)
+---@field RequestMachineDataObjects any
+---@field RequestMachineDataObjectsMatchingTypes any
+---@field RequiredParameterNames any
+---@field ResultReturnMachineData boolean
+
+---@class ControlConfiguration
+---@field ApplyParameters (fun(self: ControlConfiguration, parameters: any?))
+---@field Create (fun(dataPacket: UserControlDataPacket?): ControlConfiguration) |  (fun(dataPacket: UserControlDataPacket?): any)
+---@field ValidateParameters (fun(self: ControlConfiguration))
+---@field SaveResult (fun(self: ControlConfiguration, retainMachineData: boolean): UserControlDataPacket) |  (fun(self: ControlConfiguration): UserControlDataPacket)
+---@field ViewModel ControlViewModelBase
+---@field DataService IMachineDataService
+
+---@class ControlViewModelBase: ViewModelBase
+
+---@class ViewModelBase
+---@overload fun(): ViewModelBase
+
+---@class IMachineDataService: IActivityDataService, IMachineObjectDescriptionDataService, ICapabilityDataService, IService
+---@field GetSystemInformation (fun(self: IMachineDataService): Ctc.Palplus.PalPlusApi.ISystemInformation)
+---@field HasMachineObject (fun(self: IMachineDataService, reference: MachineObjectReference?): boolean)
+---@field GetMachineObjectByName (fun(self: IMachineDataService, name: string?): any) |  (fun(self: IMachineDataService, pathNames: any?): any)
+---@field GetMachineObjectPath (fun(self: IMachineDataService, reference: MachineObjectReference?): any)
+---@field GetMachineObject (fun(self: IMachineDataService, objectReference: MachineObjectReference?, parameterFragment: ParameterFragment?, avoidCache: boolean): IMachineObjectData) |  (fun(self: IMachineDataService, objectReference: MachineObjectReference?, parameterFragment: ParameterFragment?): IMachineObjectData) |  (fun(self: IMachineDataService, objectId: any?, parameterFragment: ParameterFragment?): IMachineObjectData) |  (fun(self: IMachineDataService, objectReference: MachineObjectReference?): IMachineObjectData)
+---@field GetMachineObjectParent (fun(self: IMachineDataService, childObject: IMachineObjectData?, parameterFragment: ParameterFragment?): IMachineObjectData)
+---@field SaveMachineObject (fun(self: IMachineDataService, machineObjectData: IMachineObjectData?))
+---@field SetTeachingReference (fun(self: IMachineDataService, teachingReference: Vector?))
+---@field SetToolCalibration (fun(self: IMachineDataService, robotResource: RobotResources?, machineObjectReference: MachineObjectReference?, calibration: Vector?, referencePointId: number))
+---@field ExecuteToolTeachingAdapterAction (fun(self: IMachineDataService, machineObjectReference: MachineObjectReference?, action: ToolTeachingAdapterAction?))
+---@field Teach (fun(self: IMachineDataService, robotResource: RobotResources?, machineObjectReference: MachineObjectReference?, teachPoints: any?): TeachPositionsData)
+---@field PersistMachineConfiguration (fun(self: IMachineDataService))
+---@field CreateMachineObject (fun(self: IMachineDataService, machineObject: MachineObjectReference?): IMachineObjectData) |  (fun(self: IMachineDataService, machineObject: MachineObjectReference?, machineObjectParent: MachineObjectReference?): IMachineObjectData) |  (fun(self: IMachineDataService, machineObject: MachineObjectReference?, machineObjectParent: MachineObjectReference?, newObjectId: any?): IMachineObjectData)
+---@field CopyMachineObject (fun(self: IMachineDataService, machineObjectSource: MachineObjectReference?, machineObjectTarget: MachineObjectReference?): IMachineObjectData)
+---@field CreateVial (fun(self: IMachineDataService, target: MachineObjectReference?, index: number, sampleScopeId: number): MachineObjectReference)
+---@field GetVolatileObject (fun(self: IMachineDataService, machineObjectReference: MachineObjectReference?, sampleScopeId: number): IMachineObjectData) |  (fun(self: IMachineDataService, machineObjectReference: MachineObjectReference?, parameterFragment: ParameterFragment?, sampleScopeId: number): IMachineObjectData)
+---@field DeleteMachineObject (fun(self: IMachineDataService, reference: MachineObjectReference?))
+---@field GetMachineObjects (fun(self: IMachineDataService): any) |  (fun(self: IMachineDataService, parameterFragment: ParameterFragment?): any) |  (fun(self: IMachineDataService, parameterFragment: ParameterFragment?, recurse: boolean): any) |  (fun(self: IMachineDataService, descriptionReference: MachineObjectReference?, parameterFragment: ParameterFragment?): any) |  (fun(self: IMachineDataService, descriptionReference: MachineObjectReference?, parameterFragment: ParameterFragment?, recurse: boolean): any) |  (fun(self: IMachineDataService, descriptionReference: MachineObjectReference?): any)
+---@field GetMachineObjectTrees (fun(self: IMachineDataService): any)
+---@field GetMachineObjectTree (fun(self: IMachineDataService, machineObject: MachineObjectReference?): any)
+---@field GetMatchingObjects (fun(self: IMachineDataService, machineObject: MachineObjectReference?, referenceParameter: any?): any)
+---@field GetMachineObjectsReferences (fun(self: IMachineDataService, reference: MachineObjectReference?): any)
+---@field GenerateObjectName (fun(self: IMachineDataService, descriptionReference: MachineObjectReference?): string)
+---@field GetObstacles (fun(self: IMachineDataService): any)
+---@field ResetMachineObjectParameters (fun(self: IMachineDataService, machineObjectReference: MachineObjectReference?)) |  (fun(self: IMachineDataService, machineObjectReference: MachineObjectReference?, parameters: any?))
+---@field ImportTemplates (fun(self: IMachineDataService, pathToTemplateDirectory: string?): any)
+---@field RegisterTemplates (fun(self: IMachineDataService, machineObjects: any?))
+---@field ExportTemplates (fun(self: IMachineDataService, machineObjects: any?))
+---@field ImportDeviceConfig (fun(self: IMachineDataService, machineObjects: any?))
+---@field ExportDeviceConfig (fun(self: IMachineDataService, machineObjects: any?))
+---@field PersistDeviceConfig (fun(self: IMachineDataService, machineObjects: any?))
+---@field GetMachineObjectDataVersion (fun(self: IMachineDataService): any)
+---@field SetSignal (fun(self: IMachineDataService, inputSignal: MachineObjectReference?, signalOn: boolean))
+---@field ResetTeachPoints (fun(self: IMachineDataService))
+---@field ResetTeachingAndCalibration (fun(self: IMachineDataService, robotArmModuleIdentification: string?))
+---@field SetStackDrawerMagnetPlateLocation (fun(self: IMachineDataService, stackDrawer: MachineObjectReference?, location: StackDrawerMagnetPlateLocation?))
+---@field GetValveDriveConfigurationFileNames (fun(self: IMachineDataService): string[])
+---@field SaveValveDriveConfiguration (fun(self: IMachineDataService, filename: string?, data: number[]?))
+---@field GetValveDriveConfiguration (fun(self: IMachineDataService, filename: string?): any)
+---@field DeleteValveDriveConfiguration (fun(self: IMachineDataService, filename: string?))
+---@field IsReadOnly boolean
+---@field UsesConfigurationCache boolean
+
+---@class ToolTeachingAdapterAction
+---@field PrepareForInstallation ToolTeachingAdapterAction
+---@field Installed ToolTeachingAdapterAction
+---@field PrepareForRemoval ToolTeachingAdapterAction
+---@field Removed ToolTeachingAdapterAction
+
+---@class StackDrawerMagnetPlateLocation
+---@field RightHandSide StackDrawerMagnetPlateLocation
+---@field LeftHandSide StackDrawerMagnetPlateLocation
+
+---@class RobotResources
+---@field None RobotResources
+---@field LeftHead RobotResources
+---@field RightHead RobotResources
+---@field Maintenance RobotResources
+---@field TerminalStop RobotResources
+
+---@class IMachineObjectData: IParameterContainer
+---@field CreateUpdateObject (fun(self: IMachineObjectData): IMachineObjectData) |  (fun(self: IMachineObjectData, newName: string?): IMachineObjectData)
+---@field IsSet (fun(self: IMachineObjectData, parameterName: string?): boolean)
+---@field IsReferenced (fun(self: IMachineObjectData, reference: MachineObjectReference?): boolean)
+---@field GetReference (fun(self: IMachineObjectData): MachineObjectReference)
+---@field SetTeachPoints (fun(self: IMachineObjectData, robotResource: RobotResources?, teachpoints: any?))
+---@field GetTeachPoints (fun(self: IMachineObjectData, robotResource: RobotResources?): any)
+---@field DescriptionName string
+---@field MachineObjectDescription IMachineObjectDescriptionData
+---@field Parent MachineObjectReference
+---@field HasParent boolean
+---@field Children any
+---@field ObjectId any
+---@field HasError boolean
+---@field ObjectState DataObjectState
+
+---@class DataObjectState
+---@field Complete DataObjectState
+---@field Partial DataObjectState
+---@field Invalid DataObjectState
+
+---@class IMachineObjectDescriptionData: IDescriptionData, IParameterDescriptionContainer
+---@field HasCapability (fun(self: IMachineObjectDescriptionData, name: string?): boolean)
+---@field CreateUpdateObject (fun(self: IMachineObjectDescriptionData, reference: MachineObjectReference?): IMachineObjectData)
+---@field HasPermission (fun(self: IMachineObjectDescriptionData, userRole: AccessLevels?): boolean)
+---@field Name string
+---@field Capabilities any
+---@field AccessLevel AccessLevels
+---@field Visibility VisibilityLevels
+---@field IconCustomName string
+---@field Category string
+
+---@class VisibilityLevels
+---@field Private VisibilityLevels
+---@field Internal VisibilityLevels
+---@field Public VisibilityLevels
+
+---@class IDescriptionData: IParameterDescriptionContainer
+---@field GetReference (fun(self: IDescriptionData): MachineObjectReference)
+
+---@class IParameterContainer
+---@field GetParameter (fun(self: IParameterContainer, parameterName: string?): IParameter) |  (fun(self: IParameterContainer, parameterName: string?): any)
+---@field SetParameter (fun(self: IParameterContainer, parameter: IParameter?))
+---@field GetValue (fun(self: IParameterContainer, parameterName: string?): any) |  (fun(self: IParameterContainer, parameterName: string?): any)
+---@field GetQuantity (fun(self: IParameterContainer, parameterName: string?): Ctc.Palplus.Base.Units.Quantity)
+---@field SetValue (fun(self: IParameterContainer, parameterName: string?, value: any?)) |  (fun(self: IParameterContainer, parameterName: string?, value: any?))
+---@field SetQuantity (fun(self: IParameterContainer, parameterName: string?, value: Ctc.Palplus.Base.Units.Quantity?))
+---@field Name string
+---@field DescriptionContainer IParameterDescriptionContainer
+---@field Parameters any
+
+---@class IParameter
+---@field Name string
+---@field ParameterDescription IParameterDescription
+---@field Value any
+---@field IsQuantity boolean
+---@field QuantityValue Ctc.Palplus.Base.Units.Quantity
+
+---@class IParameterDescription
+---@field HasPermission (fun(self: IParameterDescription, userRole: AccessLevels?): boolean)
+---@field GetPropertyDependency (fun(self: IParameterDescription, parameterProperty: ParameterProperty?): string)
+---@field HasPropertyDependency (fun(self: IParameterDescription, parameterProperty: ParameterProperty?): boolean)
+---@field CreateParameterFromObject (fun(self: IParameterDescription, value: any?): IParameter)
+---@field CheckValueObject (fun(self: IParameterDescription, value: any?))
+---@field ValueType any
+---@field MinValue any
+---@field AccessLevel AccessLevels
+---@field Visibility VisibilityLevels
+---@field MaxValue any
+---@field DefaultValue any
+---@field HasDefault boolean
+---@field IncrementValue any
+---@field HasBounds boolean
+---@field Name string
+---@field DisplayName string
+---@field Contract string
+---@field EnumValues IEnumeration
+---@field Attributes ParameterAttributes
+---@field IsMandatory boolean
+---@field IsReadOnly boolean
+---@field IsPersistent boolean
+---@field IsSelfInitialized boolean
+---@field IsHardwareBased boolean
+---@field AllowChangesOnlyIfRobotIsIdle boolean
+---@field IsDocumented boolean
+---@field IsRelativePrecision boolean
+---@field IsDataLoggable boolean
+---@field IsVersionable boolean
+---@field IsObsolete boolean
+---@field IsObsoleteWithError boolean
+---@field IsEnumeration boolean
+---@field Unit Unit
+---@field HasUnit boolean
+---@field Direction ParameterDirection
+---@field Sort number
+---@field InternalData any
+
+---@class ParameterDirection
+---@field Input ParameterDirection
+---@field Output ParameterDirection
+
+---@class IEnumeration
+---@field GetEnumValue (fun(self: IEnumeration, index: number): any)
+---@field GetEnumOptionName (fun(self: IEnumeration, index: number): string)
+---@field GetValueByOptionName (fun(self: IEnumeration, enumOptionName: string?): any)
+---@field IndexOf (fun(self: IEnumeration, value: any?): number)
+---@field EnumValues any
+---@field EnumNames any
+---@field IsNoneAllowed boolean
+---@field Count number
+
+---@class ParameterProperty
+---@field MinValue ParameterProperty
+---@field MaxValue ParameterProperty
+---@field DefaultValue ParameterProperty
+
+---@class ParameterAttributes
+---@field None ParameterAttributes
+---@field Mandatory ParameterAttributes
+---@field ReadOnly ParameterAttributes
+---@field Persistent ParameterAttributes
+---@field SelfInitialized ParameterAttributes
+---@field Documented ParameterAttributes
+---@field RelativePrecision ParameterAttributes
+---@field DataLoggable ParameterAttributes
+---@field Versionable ParameterAttributes
+---@field OutputParameter ParameterAttributes
+---@field LocalSystem ParameterAttributes
+---@field HardwareBased ParameterAttributes
+---@field SetParameterActivity ParameterAttributes
+---@field Obsolete ParameterAttributes
+---@field PreselectMachineObject ParameterAttributes
+---@field ObsoleteWithError ParameterAttributes
+---@field AllowChangesOnlyIfRobotIsIdle ParameterAttributes
+
+---@class IParameterDescriptionContainer
+---@field HasParameter (fun(self: IParameterDescriptionContainer, parameterName: string?): boolean)
+---@field GetParameterDescription (fun(self: IParameterDescriptionContainer, parameterName: string?): IParameterDescription) |  (fun(self: IParameterDescriptionContainer, parameterName: string?): any)
+---@field DescriptionName string
+---@field ParameterCount number
+---@field ParameterDescriptions any
+
+---@class TeachPositionsData
+---@overload fun(leftHead: any?, rightHead: any?): TeachPositionsData
+---@field GetSchema (fun(self: TeachPositionsData): any)
+---@field ReadXml (fun(self: TeachPositionsData, reader: any?))
+---@field WriteXml (fun(self: TeachPositionsData, writer: any?))
+---@field GenerateSchema (fun(schemaSet: any?): any)
+---@field Item any
+---@field TeachPointsLeftHead any
+---@field TeachPointsRightHead any
+---@field Empty TeachPositionsData
+
+---@class Vector
+---@overload fun(x: number, y: number, z: number): Vector
+---@overload fun(x: number, y: number, z: number, unitX: Unit?, unitY: Unit?, unitZ: Unit?): Vector
+---@overload fun(x: number, y: number, z: number, unitSymbolX: string?, unitSymbolY: string?, unitSymbolZ: string?): Vector
+---@overload fun(x: number, y: number, z: number, unit: Unit?): Vector
+---@overload fun(x: number, y: number, z: number, unitSymbol: string?): Vector
+---@overload fun(x: Ctc.Palplus.Base.Units.Quantity?, y: Ctc.Palplus.Base.Units.Quantity?, z: Ctc.Palplus.Base.Units.Quantity?): Vector
+---@overload fun(other: Vector?): Vector
+---@overload fun(other: Vector?, unit: Unit?): Vector
+---@overload fun(other: Vector?, unitSymbol: string?): Vector
+---@overload fun(other: Vector?, unitX: Unit?, unitY: Unit?, unitZ: Unit?): Vector
+---@overload fun(other: Vector?, unitSymbolX: string?, unitSymbolY: string?, unitSymbolZ: string?): Vector
+---@field CreateZero (fun(unit: string?): Vector)
+---@field Negate (fun(self: Vector): Vector)
+---@field NegateX (fun(self: Vector): Vector)
+---@field NegateY (fun(self: Vector): Vector)
+---@field NegateZ (fun(self: Vector): Vector)
+---@field Project (fun(self: Vector): Vector)
+---@field Cross (fun(self: Vector, other: Vector?, newUnit: Unit?): Vector)
+---@field Dot (fun(self: Vector, other: Vector?): number)
+---@field Normalize (fun(self: Vector): Vector)
+---@field EpsilonEquals (fun(self: Vector, other: Vector?): boolean) |  (fun(self: Vector, other: Vector?, precision: number): boolean) |  (fun(self: Vector, otherX: number, otherY: number, otherZ: number, precision: number): boolean)
+---@field GetHashCode (fun(self: Vector): number)
+---@field ReadXml (fun(self: Vector, reader: any?))
+---@field WriteXml (fun(self: Vector, writer: any?))
+---@field GenerateSchema (fun(schemaSet: any?): any)
+---@field FromXml (fun(reader: any?): Vector)
+---@field ToXml (fun(writer: any?, vector: Vector?, namespaceUri: string?))
+---@field Create (fun(x: number, y: number, z: number, unitSymbol: string?, defaultUnitSymbol: string?): Vector)
+---@field IsEmpty boolean
+---@field Z number
+---@field Y number
+---@field X number
+---@field QuantityZ Ctc.Palplus.Base.Units.Quantity
+---@field QuantityY Ctc.Palplus.Base.Units.Quantity
+---@field QuantityX Ctc.Palplus.Base.Units.Quantity
+---@field IsPromiscuous boolean
+---@field Unit Unit
+---@field UnitX Unit
+---@field UnitY Unit
+---@field UnitZ Unit
+---@field IsZero boolean
+---@field LengthSquared number
+---@field Length number
+---@field LengthQuantity Ctc.Palplus.Base.Units.Quantity
+---@field NegativeUnitX Vector
+---@field NegativeUnitY Vector
+---@field NegativeUnitZ Vector
+---@field VersorX Vector
+---@field VersorY Vector
+---@field VersorZ Vector
+---@field Zero Vector
+
+---@class Ctc.Palplus.PalPlusApi.ISystemInformation
+---@field Name string
+---@field ProductId string
+---@field SerialNumber string
+---@field SoftwareVersion any
+---@field ProductVersion string
+---@field ProtocolVersion any
+---@field ChangeSet string
+---@field Edition string
+---@field Encryption string
+
+---@class ParameterFragment
+---@field None ParameterFragment
+---@field MemoryRead ParameterFragment
+---@field HardwareRead ParameterFragment
+---@field All ParameterFragment
+---@field AvoidCache ParameterFragment
+
+---@class MachineObjectReference
+---@field FromAddress (fun(uri: any?): MachineObjectReference)
+---@field ToTypeName (fun(descriptionName: string?): string)
+---@field ToDescriptionName (fun(typeName: string?): string)
+---@field FromDescription (fun(descriptionName: string?): MachineObjectReference)
+---@field FromCapability (fun(capabilityName: string?): MachineObjectReference)
+---@field FromObject (fun(descriptionName: string?, objectName: string?, objectId: any?): MachineObjectReference) |  (fun(descriptionName: string?, objectName: string?): MachineObjectReference)
+---@field GetHashCode (fun(self: MachineObjectReference): number)
+---@field ToXml (fun(reference: MachineObjectReference?, writer: any?, namespaceUri: string?))
+---@field FromXml (fun(reader: any?): MachineObjectReference)
+---@field ReadXml (fun(self: MachineObjectReference, reader: any?))
+---@field WriteXml (fun(self: MachineObjectReference, writer: any?))
+---@field GenerateSchema (fun(schemaSet: any?): any)
+---@field Address any
+---@field IsDescriptionReference boolean
+---@field IsCapabilityReference boolean
+---@field IsUniqueReference boolean
+---@field IsObjectReference boolean
+---@field DescriptionName string
+---@field CapabilityName string
+---@field ObjectName string
+---@field ObjectId any
+---@field XmlSerializer any
+
+---@class IService
+
+---@class IActivityDataService
+---@field GetActivityDataVersion (fun(self: IActivityDataService): any)
+---@field GetActivityDescriptions (fun(self: IActivityDataService): any) |  (fun(self: IActivityDataService, includeUnavailable: boolean): any)
+---@field GetActivityDescription (fun(self: IActivityDataService, activityName: string?): IActivityDescriptionData) |  (fun(self: IActivityDataService, activityName: string?, includeUnavailable: boolean): IActivityDescriptionData)
+---@field CheckActivityAvailability (fun(self: IActivityDataService, activityName: string?): boolean)
+---@field GetUtilityActivities (fun(self: IActivityDataService, objectReference: MachineObjectReference?): any)
+
+---@class IActivityDescriptionData: IParameterDescriptionContainer
+---@field HasPermission (fun(self: IActivityDescriptionData, userRole: AccessLevels?): boolean)
+---@field HasCapability (fun(self: IActivityDescriptionData, capabilityName: string?): boolean)
+---@field HasCharacteristic (fun(self: IActivityDescriptionData, characteristic: ActivityCharacteristics?): boolean)
+---@field Create (fun(self: IActivityDescriptionData): IActivityData)
+---@field ActivityName string
+---@field AccessLevel AccessLevels
+---@field Visibility VisibilityLevels
+---@field HasOutput boolean
+---@field OutputParameterDescriptions any
+---@field Capabilities any
+
+---@class IActivityData: IParameterContainer
+---@field IsSet (fun(self: IActivityData, parameterName: string?): boolean)
+---@field ActivityName string
+---@field ActivityDescription IActivityDescriptionData
+
+---@class ActivityCharacteristics
+---@field None ActivityCharacteristics
+---@field HasOutputParameters ActivityCharacteristics
+---@field BypassPlausibilityChecks ActivityCharacteristics
+---@field IsConcurrentlyExecutable ActivityCharacteristics
+---@field ChangesParameterValues ActivityCharacteristics
+
+---@class IMachineObjectDescriptionDataService
+---@field GetMachineObjectDescriptions (fun(self: IMachineObjectDescriptionDataService): any)
+---@field GetMachineObjectDescriptionsByCapability (fun(self: IMachineObjectDescriptionDataService, capability: string?): any)
+---@field GetSupportedMachineObjectChildren (fun(self: IMachineObjectDescriptionDataService, reference: MachineObjectReference?): any)
+---@field GetMachineObjectDescription (fun(self: IMachineObjectDescriptionDataService, descriptionName: string?): IMachineObjectDescriptionData)
+
+---@class AccessLevels
+---@field None AccessLevels
+---@field LaboratoryAssistant AccessLevels
+---@field LaboratorySupervisor AccessLevels
+---@field ServiceTechnician AccessLevels
+---@field LaboratorySupervisorAndAbove AccessLevels
+---@field All AccessLevels
+
+---@class ICapabilityDataService
+---@field GetCapabilityDescriptions (fun(self: ICapabilityDataService): any)
+---@field GetCapabilityDescription (fun(self: ICapabilityDataService, capabilityName: string?): ICapabilityDescriptionData)
+
+---@class ICapabilityDescriptionData: IDescriptionData, IParameterDescriptionContainer
+---@field InheritsFrom (fun(self: ICapabilityDescriptionData, capabilityName: string?): boolean) |  (fun(self: ICapabilityDescriptionData, capabilityDescription: ICapabilityDescriptionData?): boolean)
+---@field ImplementedBy (fun(self: ICapabilityDescriptionData, machineObjectDescription: IMachineObjectDescriptionData?): boolean)
+---@field Implements (fun(self: ICapabilityDescriptionData, capabilityName: string?): boolean) |  (fun(self: ICapabilityDescriptionData, capabilityDescription: ICapabilityDescriptionData?): boolean)
+---@field Name string
+---@field InheritedCapabilities any
+
+---@class Unit
+---@field Clone (fun(self: Unit): any)
+---@field SupportsUnitSymbol (fun(self: Unit, unit: string?): boolean)
+---@field GetUnits (fun(self: Unit): string[])
+---@field IsUnitCompatible (fun(self: Unit, unit: Unit?): boolean)
+---@field ConvertToSI (fun(self: Unit, value: number): number)
+---@field ConvertFromSI (fun(self: Unit, value: number): number)
+---@field PrintNumberString (fun(value: number, digits: number, precision: number, useExponentialFormat: boolean): string) |  (fun(self: Unit, value: number, useExponentialFormat: boolean): string)
+---@field GetHashCode (fun(self: Unit): number)
+---@field Digits number
+---@field Precision number
+---@field Factor number
+---@field Offset number
+---@field UnitSymbol string
+---@field SIUnitSymbol string
+---@field SIUnit Unit
+
+---@class UserControlDataPacket: ExchangeDataPackage
+---@field CreateConfiguration (fun(self: UserControlDataPacket): any)
+---@field FromXml (fun(aStream: any?): UserControlDataPacket) |  (fun(fileName: string?): UserControlDataPacket) |  (fun(xmlDocument: any?): UserControlDataPacket)
+---@field FromByteArray (fun(byteArray: number[]?): UserControlDataPacket)
+---@field Type UserControlDataTypes
+
+---@class UserControlDataTypes
+---@field ClientConfiguration UserControlDataTypes
+---@field MethodEditorConfiguration UserControlDataTypes
+---@field TrayConfiguration UserControlDataTypes
+---@field NeedleTypeExchangeConfiguration UserControlDataTypes
+---@field ToolUpdateConfiguration UserControlDataTypes
+---@field ToolsUpdateConfiguration UserControlDataTypes
+---@field ValveDriveConfiguration UserControlDataTypes
+---@field Unknown UserControlDataTypes
+
+---@class ExchangeMode
+---@field None ExchangeMode
+---@field Request ExchangeMode
+---@field RequestDone ExchangeMode
+---@field Result ExchangeMode
+---@field Update ExchangeMode
+---@field Post ExchangeMode
+---@field Custom ExchangeMode
+
+---@class ISystemInformation
+---@field SetSystemName (fun(self: ISystemInformation, newDeviceName: string?): boolean)
+---@field SetSystemTimeZone (fun(self: ISystemInformation, timeZone: string?, autoDaylightSaving: boolean): boolean)
+---@field SystemName string
+---@field DriverVersion any
+---@field DriverProductVersion string
+---@field Edition string
+---@field AutosamplerEdition string
+---@field AutosamplerEncryption string
+---@field AutosamplerSoftwareVersion any
+---@field AutosamplerProductVersion string
+---@field AutosamplerProtocolVersion any
+---@field AutoSamplerSerialNumber string
+---@field ToolHandlingBehaviorLeft ToolHandlingBehavior
+---@field ToolHandlingBehaviorRight ToolHandlingBehavior
+---@field HeadFeaturesLeft HeadSpecialFetures
+---@field HeadFeaturesRight HeadSpecialFetures
+---@field RobotType PALRobotType
+---@field AutosamplerTypeInformation string
+---@field ChangeSet string
+---@field Region string
+---@field Language string
+---@field TimeZone string
+
+---@class HeadSpecialFetures
+---@field None HeadSpecialFetures
+---@field SmartSyringe HeadSpecialFetures
+
+---@class PALRobotType
+---@field RTC PALRobotType
+---@field RSI PALRobotType
+---@field LSI PALRobotType
+---@field DualHead PALRobotType
+---@field Invalid PALRobotType
+
+---@class ToolHandlingBehavior
+---@field Automatic ToolHandlingBehavior
+---@field Manual ToolHandlingBehavior
+---@field Adapter ToolHandlingBehavior
+---@field NotInstalled ToolHandlingBehavior
+
+---@class INetworkInformation
+---@field UseDHCP boolean
+---@field IPAddress string
+---@field SubnetMask string
+---@field DefaultGateway string
+---@field NameServer1 string
+---@field NameServer2 string
+---@field UseDynamicNameservers boolean
+---@field MacAddress string
+
+---@class IMoveTarget: IModule, IModuleReference, ICapability
+---@field MaxIndex any
+
+---@class DigitalInput
+---@field DI1 DigitalInput
+---@field DI2 DigitalInput
+---@field DI3 DigitalInput
+---@field DI4 DigitalInput
+
+---@class PIDState
+---@field P number
+---@field I number
+---@field D number
+---@field target number
+
+---@class DeviceError
+---@field NoError DeviceError
+---@field AssertionHit DeviceError
+---@field NeedsProductionData DeviceError
+---@field UnauthorizedClient DeviceError
+---@field FlagSupervisor DeviceError
+
+---@class PumpSideError
+---@field NoError PumpSideError
+---@field IllegalSignal PumpSideError
+---@field Overpressure PumpSideError
+---@field ValveFailureInaccurateStop PumpSideError
+---@field ValveFailureRotorBlocked PumpSideError
+---@field ValveFailureEncoderIndexMissed PumpSideError
+---@field PistonFailure PumpSideError
+---@field DispenseChannelBlocked PumpSideError
+---@field CylinderLeak PumpSideError
+---@field TooMuchAirToCompress PumpSideError
+---@field InternalError PumpSideError
+---@field NotImplemented PumpSideError
+---@field FlowSensorFailure PumpSideError
+---@field PressureSensorFailure PumpSideError
+
+---@class ValveState
+---@field Uninitialized ValveState
+---@field Stopped ValveState
+---@field Moving ValveState
+---@field Error ValveState
+
+---@class MethodError
+---@field NoError MethodError
+---@field AbortByUser MethodError
+---@field TargetPressureNotReached MethodError
+---@field CompressionFailed MethodError
+---@field OutOfVolume MethodError
+---@field MaxReadyTimePassed MethodError
+---@field Overpressure MethodError
+---@field Underpressure MethodError
+---@field InternalError MethodError
+---@field PumpSideError MethodError
+---@field DeviceError MethodError
+
+---@class PumpSettings
+---@overload fun(): PumpSettings
+---@field SystemInfo SystemInfo
+---@field ErrorInfo ErrorInfo
+---@field InternalHeatingPID PID
+---@field ExternalHeatingPID PID
+---@field FlowPID PID
+---@field ABPID PID
+---@field PressurePID PID
+---@field HomeSpeed number
+---@field PurgeSpeed number
+---@field ZeroPressureOffsetA number
+---@field ZeroPressureOffsetB number
+---@field PressureScalingFactorA number
+---@field PressureScalingFactorB number
+---@field ExternalZeroPressureOffsetA number
+---@field ExternalZeroPressureOffsetB number
+---@field ExternalPressureScalingFactorA number
+---@field ExternalPressureScalingFactorB number
+---@field PressureTrackingExcessFactor number
+---@field FlowCalibrationFactorA number
+---@field FlowCalibrationFactorExtendedA number
+---@field FlowCalibrationOffsetA number
+---@field FlowCalibrationFactorB number
+---@field FlowCalibrationFactorExtendedB number
+---@field FlowCalibrationOffsetB number
+---@field FlowResistanceA number
+---@field FlowResistanceB number
+---@field FlowResistanceOut number
+---@field FlowController_I number
+---@field FlowController_Imax number
+---@field FlowController_FlowFilterDepth number
+---@field FlowController_PressureFilterDepth number
+---@field PressureController_OutputFilterDepth number
+---@field CompressibilityFactorB number
+---@field PressurePIDNegativeResultDivisor number
+---@field ValveSchema number
+---@field EnableEthernet boolean
+---@field UseDHCP boolean
+---@field IPAddress number
+---@field Netmask number
+---@field Gateway number
+---@field AvailableFlowSensorA boolean
+---@field AvailableFlowSensorB boolean
+---@field AvailableInternalPressureSensorA boolean
+---@field AvailableInternalPressureSensorB boolean
+---@field AvailableExternalPressureSensorA boolean
+---@field AvailableExternalPressureSensorB boolean
+---@field PressureControllerUsesExternalSensorA boolean
+---@field PressureControllerUsesExternalSensorB boolean
+
