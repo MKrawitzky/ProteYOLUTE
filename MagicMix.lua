@@ -155,15 +155,11 @@ function Main (installed, context)
 
 	-- init zirconium channels, abort if unsuccessful
 	if not zr.InitChannel(context, pump, zr.A) then
-		context:Report(N.PumpA, Severity.Error, true, "Pump initialization failed. The pump could not enter manual control mode.
-
-Check that the instrument is powered on and connected. Try restarting the instrument and running this procedure again.")
+		context:Report(N.PumpA, Severity.Error, true, "Pump initialization failed. The pump could not enter manual control mode. Check that the instrument is powered on and connected. Try restarting the instrument and running this procedure again.")
 		context:Abort()
 	end
 	if not zr.InitChannel(context, pump, zr.B) then
-		context:Report(N.PumpB, Severity.Error, true, "Pump initialization failed. The pump could not enter manual control mode.
-
-Check that the instrument is powered on and connected. Try restarting the instrument and running this procedure again.")
+		context:Report(N.PumpB, Severity.Error, true, "Pump initialization failed. The pump could not enter manual control mode. Check that the instrument is powered on and connected. Try restarting the instrument and running this procedure again.")
 		context:Abort()
 	end
 
