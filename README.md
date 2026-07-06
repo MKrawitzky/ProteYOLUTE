@@ -4,99 +4,92 @@
 
 *"We're eluting proteins and we don't care about the rules anymore."*
 
-ProteYOLUTE is a community-driven rewrite of the Bruker proteoElute UHPLC HyStar plugin. Born from frustration with cryptic error messages, removed features, and uninspiring user experience — we're taking it back and making it better.
+**Owner: Michael Krawitzky**
+
+ProteYOLUTE is a complete rewrite of the Bruker proteoElute UHPLC HyStar plugin — both the Lua business logic and the compiled .NET DLLs. What started as error message improvements evolved into full ownership of both plugin DLLs, a pop-out diagram viewer, LED effects engine, manual valve control, and custom tooling.
 
 ---
 
-## The Story
+## What's Been Done
 
-The proteoElute is the latest in a long lineage of nano-flow liquid chromatography systems:
+### Phase 1 — Lua Business Logic
+- **50+ error messages rewritten** across 25 Lua files with clear, actionable diagnostics
+- **ManualValveControl.lua** — interactive valve/pump/LED control procedure
+- **led_effects.lua** — 17 LED color themes with pulsating/moving/solid patterns
+- **signalize_helpers.lua** — enhanced diagram flow visualization
 
+### Phase 2 — DLL Ownership (Both DLLs fully decompiled and buildable)
+
+**BalticWpfControlLib.dll** — Main plugin UI control
+- Fully decompiled from 28,433 errors to 0
+- All compiler-generated artifacts fixed
+- 8 local functions inlined from original IL
+- Pop-out diagram: double-click to open in resizable window
+- Build pipeline: Framework MSBuild + WinFX targets + Roslyn 4.12
+
+**BrukerLC.Styling.dll** — Diagram layout and component styles
+- Fully decompiled XAML templates
+- Diagram layout redesigned with correct component positions
+- Pressure sensors, mixing tee, peltier stack added
+- 3D cylindrical pump visuals with gradient shading
+- 3-second build-deploy cycle
+
+### Tools
+- **Diagram Editor** (`Tools/DiagramEditor/`) — drag-and-drop component positioning with export
+- **Valve Port Editor** (`Tools/ValveEditor/`) — 6-port IDEX valve assignment tool with rotor seal visualization
+
+---
+
+## Valve Port Assignments (IDEX 6-port, CCW: P1=12, P2=10, P3=8, P4=6, P5=4, P6=2 o'clock)
+
+### Valve A (Pump A)
+| Port | Clock | Connection |
+|------|-------|------------|
+| P1 | 12 | From Pressure Sensor A |
+| P2 | 10 | To Waste |
+| P3 | 8 | From Solvent Bottle A |
+| P4 | 6 | From Pump Head |
+| P5 | 4 | To Injection Valve P4 |
+| P6 | 2 | To Pressure Sensor A |
+
+### Valve B (Pump B)
+| Port | Clock | Connection |
+|------|-------|------------|
+| P1 | 12 | From Pressure Sensor B |
+| P2 | 10 | To Waste |
+| P3 | 8 | From Solvent Bottle B |
+| P4 | 6 | From Pump Head |
+| P5 | 4 | **PLUGGED** |
+| P6 | 2 | To Pressure Sensor B |
+
+### Injection Valve (I)
+| Port | Clock | Connection |
+|------|-------|------------|
+| P1 | 12 | Injector Cup/Port |
+| P2 | 10 | Waste |
+| P3 | 8 | Sample Loop (to P6) |
+| P4 | 6 | From Valve A P5 |
+| P5 | 4 | To Trap Valve P6 |
+| P6 | 2 | Sample Loop (to P3) |
+
+### Trap Valve (T)
+| Port | Clock | Connection |
+|------|-------|------------|
+| P1 | 12 | Trap Column (to P4) |
+| P2 | 10 | Waste |
+| P3 | 8 | From Mixing Tee |
+| P4 | 6 | Trap Column (to P1) |
+| P5 | 4 | To Transfer Line/Column/MS |
+| P6 | 2 | From Injection Valve P5 |
+
+### Flow Path
 ```
-Proxeon UHPLC (Odense, Denmark) — touch screen, manual valve control
-  -> Easy-nLC (Bruker/Thermo) — touch screen, manual valve control
-    -> nanoElute 1 & 2 (Bruker) — Lua scripting, PAL3 autosampler
-      -> proteoElute (Bruker) — PAL3 Series II, rainbow LED, outsourced plugin
+Pump Head → Valve P4 → P1 → Pressure Sensor → P6 → Flow Sensor (inline) → Mixing Tee
+Mixing Tee → Trap Valve P3
+Valve A P5 → Injection Valve P4
+Injection Valve P5 → Trap Valve P6
+Trap Valve P5 → Transfer Line → Column → MS
 ```
-
-When the plugin transitioned from nanoElute to proteoElute, there was room for improvement. Error messages were cryptic (`"!!! Reloading gradient failed 10 times !!!"` followed by `"Contact service department"`), manual valve control was no longer available, and the rainbow LED hardware sat mostly unused.
-
-ProteYOLUTE fixes all of that.
-
----
-
-## What's Changed
-
-### Phase 1 — Lua Business Logic (Complete)
-
-**Error Messages Rewritten**
-- 25+ Lua files modified across the entire plugin
-- 40+ instances of bare `"Initialization failed"` replaced with actionable diagnostics
-- Cryptic `"!!!"` marker messages replaced with clear explanations including likely causes and remediation steps
-- `"Contact service department"` replaced with actual troubleshooting guidance
-- Typos and grammar errors fixed (`"Could not establisch"`, `"Pressure could not reached"`)
-
-**Manual Valve Control Restored** (`ManualValveControl.lua`)
-- Interactive control of all four valve types (Pump A, Pump B, Injection, Trap)
-- Named positions with degree labels — no memorizing angles
-- Safety: automatic pressure reduction before switching
-- Live pressure/flow/volume monitoring during operation
-- Pump control: constant pressure, constant speed, or stop with timed operation
-
-**LED Effects Engine** (`Packages/led_effects.lua`)
-- 17 named color themes: Rainbow, Ocean, Sunset, Forest, Lava, Ice, Night, Orange & Black, Red & Black, Blue & White, Green & Black, Purple & Black, Amber & Black, Pink & Black, Cyan & Black, White Pulse, Warm Glow
-- 3 pattern modes: Pulsating (breathing), Moving (chasing), Solid
-- Rainbow cycling mode with 10-step color sequence
-- Status-reactive LED: automatic color based on system state (idle/running/error/warning)
-- Uses the discovered `Pump.SetLedPattern(LedPattern, foreground, background)` API
-
-**Enhanced Diagram Signalization** (`Packages/signalize_helpers.lua`)
-- Pre-built composite flow visualizations: elution, loading, idle, error highlighting
-- Color-coded by solvent channel (Blue = A, Red = B, Purple = mixed)
-- Error highlighting: dims everything, highlights problem components in red
-
-**System Improvements** (`Packages/baltic.lua`)
-- Human-readable valve position label tables
-- Semantic flow color scheme
-- ManualValveControl registered in all maintenance procedure lists
-
----
-
-## Vision
-
-### Phase 2 — UI Overhaul
-- Modern dark-theme WPF interface inspired by NVIDIA GeForce Experience
-- Interactive valve diagrams — click to switch, like the old Proxeon touch screens
-- Real-time pressure/flow charts with smooth animations
-- LED control panel in the UI with live preview
-- Guided troubleshooting wizard when errors occur
-
-### Phase 3 — Full Experience
-- Custom LED animation engine with user-defined color sequences
-- Visual gradient editor with drag-and-drop time points
-- Method builder with real-time flow path preview
-- Maintenance scheduling with clear, friendly reminders
-- System health dashboard
-
-### Long-Term
-- Cross-platform compatibility research (nanoElute, Evosep One share the same CTC PAL3 platform)
-- Open plugin architecture for community extensions
-- Better integration with mass spectrometry acquisition software
-
----
-
-## Architecture
-
-The proteoElute HyStar plugin consists of:
-
-- **HyStar** (`HyStarNT.exe`) — the host chromatography application
-- **.NET DLLs** — `Bruker.Lc.dll`, `BalticWpfControlLib.dll`, `BalticHyStarControl.dll` — the compiled plugin framework
-- **Lua scripts** (this repo) — business logic, procedures, and configuration loaded at runtime via NLua/KeraLua
-- **PAL3 autosampler** — controlled via `PalPlusDriver.dll` and CTC PALplus API
-- **Zirconium pump** — controlled via `ZrHAL.dll` and `Bruker.Zirconium.Pump.Communication.dll`
-- **Rainbow LED** — controlled via `Pump.SetLedPattern()` with `LedColor.FromRgb()` and `LedPattern` enum
-
-The Lua files in this repo are loaded from `C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\` and can be modified without recompiling any DLLs.
 
 ---
 
@@ -104,40 +97,73 @@ The Lua files in this repo are loaded from `C:\BDalSystemData\HyStar\LcPlugin\Pr
 
 ```
 Bruker proteoElute/
-├── ManualValveControl.lua          [NEW] Interactive valve/pump/LED control
-├── Calibrate.lua                   Calibration procedures
-├── Column.lua                      Column diagnostics
-├── Decompress.lua                  System decompression
-├── Diagnose.lua                    Diagnostic launcher
-├── DirectFlow.lua                  Direct flow delivery
-├── DirectInfusion.lua              Direct infusion mode
-├── DotnetTypeDefinitions.lua       .NET API type definitions for Lua
-├── FastOneColumnSeparation.lua     Fast single-column separation
-├── FastTwoColumnSeparation.lua     Fast dual-column separation
-├── Idle.lua                        Idle/standby flow
-├── Maintenance.lua                 Maintenance procedures
-├── OneColumnSeparation.lua         Single-column separation
-├── Prepare.lua                     System preparation
-├── Service.lua                     Service procedures
-├── TwoColumnSeparation.lua         Dual-column separation
-├── Images/                         System diagrams (PNG)
-└── Packages/
-    ├── led_effects.lua             [NEW] LED color themes and patterns
-    ├── signalize_helpers.lua       [NEW] Enhanced diagram visualization
-    ├── baltic.lua                  Core system configuration (enhanced)
-    ├── zirconium.lua               Pump hardware control (errors improved)
-    ├── pump_functions.lua          Pump operations (errors improved)
-    ├── palplus.lua                 PAL autosampler integration
-    ├── degas.lua                   Degassing procedures (errors improved)
-    ├── Diagnostics.lua             Diagnostic test suite
-    └── ...                         Additional support modules
+├── ManualValveControl.lua              Interactive valve/pump/LED control
+├── Packages/
+│   ├── led_effects.lua                 LED color themes and patterns
+│   ├── signalize_helpers.lua           Enhanced diagram visualization
+│   ├── baltic.lua                      Core system configuration
+│   ├── zirconium.lua                   Pump hardware control
+│   ├── pump_functions.lua              Pump operations
+│   └── ...                             All other Lua modules
+├── Tools/
+│   ├── DiagramEditor/                  Drag-and-drop diagram layout editor
+│   └── ValveEditor/                    6-port valve assignment tool
+├── DLL_Extract/
+│   ├── dnspy_baltic/BalticWpfControlLib/   Decompiled main plugin DLL (buildable)
+│   ├── dnspy_styling/BrukerLC.Styling/     Decompiled styling DLL (buildable)
+│   └── fix_decompile_v2.py                 Decompilation artifact fixer
+└── Images/                             System diagram tooltips (PNG)
 ```
+
+---
+
+## Build Pipeline
+
+### Lua (no build needed)
+Edit files in `C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\` — changes take effect next procedure run.
+
+### BrukerLC.Styling.dll (diagram layout)
+```
+MSBuild BrukerLC.Styling.csproj → copy to proteoElute folder → restart HyStar
+```
+3-second build-deploy cycle.
+
+### BalticWpfControlLib.dll (main plugin)
+```
+MSBuild + Roslyn 4.12 → copy to proteoElute folder → restart HyStar
+```
+Requires .NET Framework MSBuild with WinFX targets + standalone Roslyn compiler.
+
+---
+
+## The Story
+
+The proteoElute descends from a long lineage of nano-flow LC systems:
+
+```
+Proxeon UHPLC (Odense, Denmark) — touch screen, manual valve control
+  → Easy-nLC (Bruker/Thermo) — touch screen, manual valve control
+    → nanoElute 1 & 2 (Bruker) — Lua scripting, PAL3 autosampler
+      → proteoElute (Bruker) — PAL3 Series II, rainbow LED
+        → ProteYOLUTE — community rewrite, full ownership
+```
+
+---
+
+## Vision
+
+- Configurable hardware setups: single cell, high flow, trap-less
+- Animated flow arrows showing real-time solvent direction
+- Custom LED animation sequences
+- Visual gradient editor
+- System health dashboard
+- Cross-platform research (nanoElute, Evosep share CTC PAL3 platform)
 
 ---
 
 ## Disclaimer
 
-This project is an independent community modification. It is not affiliated with, endorsed by, or supported by Bruker Corporation. Use at your own risk. Always maintain backups of your original plugin files before applying modifications.
+This project is an independent modification by Michael Krawitzky. It is not affiliated with, endorsed by, or supported by Bruker Corporation. Use at your own risk. Always maintain backups of original plugin files before applying modifications.
 
 ---
 
