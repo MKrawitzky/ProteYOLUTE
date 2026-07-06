@@ -13,16 +13,16 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type DiagramControl}">
 					<Viewbox Stretch="Uniform">
-						<Canvas Width="500" Height="560" Margin="10,0,0,0"
+						<Canvas Width="560" Height="600" Margin="5,0,5,0"
 							HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
 							VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
 							Background="{TemplateBinding Control.Background}">
 
 							<!-- PUMPS -->
-							<PumpControl Canvas.Left="5" Canvas.Top="340"
+							<PumpControl Canvas.Left="10" Canvas.Top="410"
 								DataContext="{TemplateBinding DiagramControl.PumpADataContext}"
 								PumpOrientation="Left" Title="Pump A Details:" />
-							<PumpControl Canvas.Left="265" Canvas.Top="340"
+							<PumpControl Canvas.Left="300" Canvas.Top="405"
 								DataContext="{TemplateBinding DiagramControl.PumpBDataContext}"
 								PumpOrientation="Right" Title="Pump B Details:" />
 
@@ -30,101 +30,105 @@
 								DataContext="{TemplateBinding DiagramControl.PumpLogDataContext}"
 								Heading="Pump Volume Log" />
 
-							<!-- VALVE A (Pump A) — 75% larger via RenderTransform -->
-							<ValveControl Canvas.Left="90" Canvas.Top="350"
+							<!-- VALVE A (Pump A) -->
+							<ValveControl Canvas.Left="70" Canvas.Top="300"
 								DataContext="{TemplateBinding DiagramControl.ValveDDataContext}"
 								ItemsSource="{Binding Path=Connections}"
 								RenderTransformOrigin="0.5,0.5">
-								<ValveControl.RenderTransform>
-									<ScaleTransform ScaleX="1.75" ScaleY="1.75"/>
-								</ValveControl.RenderTransform>
+								<ValveControl.RenderTransform><ScaleTransform ScaleX="1.75" ScaleY="1.75"/></ValveControl.RenderTransform>
 							</ValveControl>
-							<!-- VALVE B (Pump B) — 75% larger -->
-							<ValveControl Canvas.Left="220" Canvas.Top="350"
+							<!-- VALVE B (Pump B) -->
+							<ValveControl Canvas.Left="200" Canvas.Top="300"
 								DataContext="{TemplateBinding DiagramControl.ValveCDataContext}"
 								ItemsSource="{Binding Path=Connections}"
 								RenderTransformOrigin="0.5,0.5">
-								<ValveControl.RenderTransform>
-									<ScaleTransform ScaleX="1.75" ScaleY="1.75"/>
-								</ValveControl.RenderTransform>
+								<ValveControl.RenderTransform><ScaleTransform ScaleX="1.75" ScaleY="1.75"/></ValveControl.RenderTransform>
 							</ValveControl>
 
-							<!-- TRAP VALVE — 75% larger -->
-							<ValveControl Canvas.Left="360" Canvas.Top="70"
+							<!-- TRAP VALVE -->
+							<ValveControl Canvas.Left="410" Canvas.Top="185"
 								DataContext="{TemplateBinding DiagramControl.ValveADataContext}"
 								ItemsSource="{Binding Path=Connections}"
 								RenderTransformOrigin="0.5,0.5">
-								<ValveControl.RenderTransform>
-									<ScaleTransform ScaleX="1.75" ScaleY="1.75"/>
-								</ValveControl.RenderTransform>
+								<ValveControl.RenderTransform><ScaleTransform ScaleX="1.75" ScaleY="1.75"/></ValveControl.RenderTransform>
 							</ValveControl>
-							<!-- INJECTION VALVE — 75% larger -->
-							<ValveControl Canvas.Left="360" Canvas.Top="160"
+							<!-- INJECTION VALVE -->
+							<ValveControl Canvas.Left="410" Canvas.Top="50"
 								DataContext="{TemplateBinding DiagramControl.ValveBDataContext}"
 								ItemsSource="{Binding Path=Connections}"
 								RenderTransformOrigin="0.5,0.5">
-								<ValveControl.RenderTransform>
-									<ScaleTransform ScaleX="1.75" ScaleY="1.75"/>
-								</ValveControl.RenderTransform>
+								<ValveControl.RenderTransform><ScaleTransform ScaleX="1.75" ScaleY="1.75"/></ValveControl.RenderTransform>
 							</ValveControl>
 
 							<!-- INJECTION PORT -->
-							<InjectionControl Canvas.Left="365" Canvas.Top="20"
+							<InjectionControl Canvas.Left="440" Canvas.Top="10"
 								DataContext="{TemplateBinding DiagramControl.InjectionDataContext}" />
 
 							<!-- OUTPUT -->
-							<OutputControl Canvas.Left="430" Canvas.Top="82"
+							<OutputControl Canvas.Left="495" Canvas.Top="250"
 								DataContext="{TemplateBinding DiagramControl.OutputDataContext}" />
 							<TemperatureControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.TemperatureDataContext}" />
 
-							<!-- PRESSURE SENSORS — on pump heads mid body -->
-							<Border Canvas.Left="42" Canvas.Top="385" Width="22" Height="20"
+							<!-- PRESSURE SENSORS -->
+							<Border Canvas.Left="60" Canvas.Top="470" Width="22" Height="20"
 								Background="#FF6A6A6A" BorderBrush="#FF404040" BorderThickness="1.5"
 								CornerRadius="2" ToolTip="Pressure Sensor A">
-								<TextBlock Text="P" FontSize="8" FontWeight="Bold" Foreground="#FFFFFFFF"
+								<TextBlock Text="P" FontSize="8" FontWeight="Bold" Foreground="White"
 									HorizontalAlignment="Center" VerticalAlignment="Center" />
 							</Border>
-							<Border Canvas.Left="254" Canvas.Top="385" Width="22" Height="20"
+							<Border Canvas.Left="280" Canvas.Top="470" Width="22" Height="20"
 								Background="#FF6A6A6A" BorderBrush="#FF404040" BorderThickness="1.5"
 								CornerRadius="2" ToolTip="Pressure Sensor B">
-								<TextBlock Text="P" FontSize="8" FontWeight="Bold" Foreground="#FFFFFFFF"
+								<TextBlock Text="P" FontSize="8" FontWeight="Bold" Foreground="White"
 									HorizontalAlignment="Center" VerticalAlignment="Center" />
 							</Border>
 
-							<!-- FLOW SENSORS — centered between pumps, bottom of pump heads -->
-							<SensorControl Canvas.Left="145" Canvas.Top="440"
+							<!-- FLOW SENSORS -->
+							<SensorControl Canvas.Left="145" Canvas.Top="495"
 								DataContext="{TemplateBinding DiagramControl.SensorADataContext}"
 								SensorOrientation="Left" />
-							<SensorControl Canvas.Left="145" Canvas.Top="415"
+							<SensorControl Canvas.Left="145" Canvas.Top="525"
 								DataContext="{TemplateBinding DiagramControl.SensorBDataContext}"
 								SensorOrientation="Left" />
 
 							<!-- MIXING TEE -->
-							<Border Canvas.Left="330" Canvas.Top="430" Width="26" Height="26"
-								Background="#FF808080" CornerRadius="13"
+							<Border Canvas.Left="395" Canvas.Top="460" Width="30" Height="30"
+								Background="#FF808080" CornerRadius="15"
 								BorderBrush="#FF505050" BorderThickness="2" ToolTip="Mixing Tee">
-								<TextBlock Text="MT" FontSize="8" FontWeight="Bold"
-									Foreground="#FFFFFFFF" HorizontalAlignment="Center"
-									VerticalAlignment="Center" />
+								<TextBlock Text="MT" FontSize="8" FontWeight="Bold" Foreground="White"
+									HorizontalAlignment="Center" VerticalAlignment="Center" />
 							</Border>
 
-							<!-- LOOP — big circle on injection valve -->
+							<!-- TRAP COLUMN (right side of trap valve) -->
+							<TrapControl Canvas.Left="446" Canvas.Top="180"
+								DataContext="{TemplateBinding DiagramControl.TrapDataContext}" />
+
+							<!-- SAMPLE LOOP (curved arc on injection valve) -->
 							<LoopControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.LoopDataContext}" />
 
-							<!-- TRAP COLUMN — on trap valve -->
-							<TrapControl Canvas.Left="-100" Canvas.Top="0"
-								DataContext="{TemplateBinding DiagramControl.TrapDataContext}" />
+							<!-- WASTE PORTS -->
+							<WasteControl x:Name="WasteA" Canvas.Left="375" Canvas.Top="190" />
+							<WasteControl x:Name="WasteB" Canvas.Left="400" Canvas.Top="50"
+								DataContext="{TemplateBinding DiagramControl.WasteBDataContext}" />
+							<WasteControl x:Name="WasteC" Canvas.Left="190" Canvas.Top="300" />
+							<WasteControl x:Name="WasteD" Canvas.Left="60" Canvas.Top="305" />
 
-							<!-- PLUG — Valve B P5 -->
-							<BlindPlugControl Canvas.Left="-100" Canvas.Top="0"
+							<!-- SOLVENT BOTTLES -->
+							<SolventControl Canvas.Left="55" Canvas.Top="370"
+								DataContext="{TemplateBinding DiagramControl.SolventADataContext}" />
+							<SolventControl Canvas.Left="190" Canvas.Top="370"
+								DataContext="{TemplateBinding DiagramControl.SolventBDataContext}" />
+
+							<!-- PLUG on Valve B P5 -->
+							<BlindPlugControl Canvas.Left="218" Canvas.Top="330"
 								DataContext="{TemplateBinding DiagramControl.ValveBPlugDataContextDataContext}" />
 							<BlindPlugControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.ValveAPlugDataContextDataContext}" />
 
 							<!-- PELTIER STACK -->
-							<Border Canvas.Left="10" Canvas.Top="30" Width="140" Height="80"
+							<Border Canvas.Left="5" Canvas.Top="50" Width="220" Height="100"
 								CornerRadius="4" BorderThickness="1.5" BorderBrush="#FF8090A0"
 								ToolTip="Peltier Stack / Sample Cooler">
 								<Border.Background>
@@ -142,12 +146,12 @@
 								</StackPanel>
 							</Border>
 
-							<LineBreakControl Canvas.Left="160" Canvas.Top="430"
+							<LineBreakControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.LineBreakOnPumpALink1DataContext}" />
-							<LineBreakControl Canvas.Left="167" Canvas.Top="430"
+							<LineBreakControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.LineBreakOnPumpALink2DataContext}" />
 
-							<!-- HIDDEN LINK CONTROLS — zero size, for data binding only -->
+							<!-- HIDDEN LINK CONTROLS -->
 							<LinkControlBasic x:Name="PumpAtoValveDTop" Canvas.Left="0" Canvas.Top="0" DataContext="{TemplateBinding DiagramControl.PumpAToValveDTopLinkDataContext}" EndPointLeft="0" EndPointTop="0" PathData="F1 M 0,0 L 0,0" />
 							<LinkControlBasic x:Name="PumpAtoValveDBottom" Canvas.Left="0" Canvas.Top="0" DataContext="{TemplateBinding DiagramControl.PumpAToValveDBottomLinkDataContext}" EndPointLeft="0" EndPointTop="0" PathData="F1 M 0,0 L 0,0" />
 							<LinkControlBasic x:Name="SolventAtoValveD" Canvas.Left="0" Canvas.Top="0" DataContext="{TemplateBinding DiagramControl.SolventAtoValveDLinkDataContext}" EndPointLeft="0" EndPointTop="0" PathData="F1 M 0,0 L 0,0" />
@@ -173,16 +177,46 @@
 							<Rectangle x:Name="RectangleOnPumpBLink1" Canvas.Left="0" Canvas.Top="0" Width="0" Height="0" Fill="{TemplateBinding Control.Background}" />
 							<Rectangle x:Name="RectangleOnPumpBLink2" Canvas.Left="0" Canvas.Top="0" Width="0" Height="0" Fill="{TemplateBinding Control.Background}" />
 
-							<!-- WASTE/SOLVENT — hidden but must exist for data binding -->
-							<WasteControl x:Name="WasteD" Canvas.Left="-100" Canvas.Top="0" />
-							<WasteControl x:Name="WasteC" Canvas.Left="-100" Canvas.Top="0" />
-							<WasteControl x:Name="WasteA" Canvas.Left="-100" Canvas.Top="0" />
-							<WasteControl x:Name="WasteB" Canvas.Left="-100" Canvas.Top="0"
-								DataContext="{TemplateBinding DiagramControl.WasteBDataContext}" />
-							<SolventControl Canvas.Left="-100" Canvas.Top="0"
-								DataContext="{TemplateBinding DiagramControl.SolventADataContext}" />
-							<SolventControl Canvas.Left="-100" Canvas.Top="0"
-								DataContext="{TemplateBinding DiagramControl.SolventBDataContext}" />
+							<!-- TUBING from user's editor save -->
+							<!-- Blue: Valve A P6→PS A→FS A→MixTee path -->
+							<Path Stroke="#FF4488CC" StrokeThickness="2" Fill="Transparent"
+								Data="M 71,490 C 71,510 36,570 36,550" />
+							<Path Stroke="#FF4488CC" StrokeThickness="2" Fill="Transparent"
+								Data="M 115,295 C 115,240 71,420 71,470" />
+							<Path Stroke="#FF4488CC" StrokeThickness="2" Fill="Transparent"
+								Data="M 115,395 C 115,420 36,385 36,410" />
+							<Path Stroke="#FF4488CC" StrokeThickness="2" Fill="Transparent"
+								Data="M 199,505 C 278,505 316,475 395,475" />
+							<Path Stroke="#FF4488CC" StrokeThickness="2" Fill="Transparent"
+								Data="M 158,320 C 223,283 71,505 145,505" />
+
+							<!-- Red: Valve B P6→PS B→FS B→MixTee path -->
+							<Path Stroke="#FFCC4444" StrokeThickness="2" Fill="Transparent"
+								Data="M 291,490 C 291,510 326,565 326,545" />
+							<Path Stroke="#FFCC4444" StrokeThickness="2" Fill="Transparent"
+								Data="M 291,470 C 291,400 245,240 245,295" />
+							<Path Stroke="#FFCC4444" StrokeThickness="2" Fill="Transparent"
+								Data="M 245,395 C 245,425 326,378 326,405" />
+							<Path Stroke="#FFCC4444" StrokeThickness="2" Fill="Transparent"
+								Data="M 199,535 C 285,535 410,570 410,490" />
+							<Path Stroke="#FFCC4444" StrokeThickness="2" Fill="Transparent"
+								Data="M 288,320 C 378,268 42,535 145,535" />
+
+							<!-- Purple: Valve A P5 → Inj Valve -->
+							<Path Stroke="#FF8844CC" StrokeThickness="2" Fill="Transparent"
+								Data="M 410,460 C 410,378 341,296 412,255" />
+
+							<!-- Green: Sample Loop (Inj V P3↔P6) -->
+							<Path Stroke="#FF8FBC8F" StrokeThickness="3" Fill="Transparent"
+								Data="M 412,120 C 455,95 498,70 498,70" />
+
+							<!-- Green: Inj V P5 → Trap V P6 -->
+							<Path Stroke="#FF44AA44" StrokeThickness="2" Fill="Transparent"
+								Data="M 498,205 C 528,188 528,137 498,120" />
+
+							<!-- Green: Trap V → Output -->
+							<Path Stroke="#FF44AA44" StrokeThickness="2" Fill="Transparent"
+								Data="M 455,145 C 455,294 287,444 158,370" />
 
 						</Canvas>
 					</Viewbox>
