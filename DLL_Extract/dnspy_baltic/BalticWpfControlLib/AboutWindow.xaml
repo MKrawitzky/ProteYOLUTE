@@ -1,3 +1,6 @@
+<!-- ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved. -->
+<!-- Licensed under proprietary terms. See LICENSE file for details. -->
+<!-- https://github.com/MKrawitzky/ProteYOLUTE -->
 <Window
 	x:Class="BalticWpfControlLib.AboutWindow"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -149,7 +152,7 @@
 			Grid.Column="1"
 			Grid.Row="4"
 			Grid.ColumnSpan="2"
-			Style="{StaticResource copyrightText}">Copyright © 2025 Bruker Daltonics GmbH &amp; Co. KG</TextBlock>
+			Style="{StaticResource copyrightText}">Copyright © 2025-2026 Michael Krawitzky. All rights reserved. (ProteYOLUTE)</TextBlock>
 		<TextBlock
 			Grid.Column="1"
 			Grid.Row="5"

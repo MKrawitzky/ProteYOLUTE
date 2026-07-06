@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------------
+// ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.
+// Licensed under proprietary terms. See LICENSE file for details.
+// https://github.com/MKrawitzky/ProteYOLUTE
+// ---------------------------------------------------------------------------
+
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -10,9 +16,9 @@ using System.Runtime.Versioning;
 [assembly: AssemblyMetadata("POMVersion", "3.0.1.17")]
 [assembly: AssemblyMetadata("POMSnapshot", "False")]
 [assembly: AssemblyMetadata("GitHash", "64fe60194aa113103fa4f2aac99cdaf503b539a9")]
-[assembly: AssemblyCompany("Bruker Daltonics GmbH & Co. KG")]
+[assembly: AssemblyCompany("Michael Krawitzky — ProteYOLUTE")]
 [assembly: AssemblyConfiguration("Release")]
-[assembly: AssemblyCopyright("Copyright © Bruker Daltonics GmbH & Co. KG")]
+[assembly: AssemblyCopyright("Copyright © 2025-2026 Michael Krawitzky. All rights reserved.")]
 [assembly: AssemblyFileVersion("3.0.217.1")]
 [assembly: AssemblyInformationalVersion("3.0.1.17 (1)")]
 [assembly: AssemblyProduct("BrukerLC.Styling")]

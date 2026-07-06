@@ -1,3 +1,9 @@
+-------------------------------------------------------------------------------
+-- ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.
+-- Licensed under proprietary terms. See LICENSE file for details.
+-- https://github.com/MKrawitzky/ProteYOLUTE
+-------------------------------------------------------------------------------
+
 -- ManualValveControl.lua
 -- Interactive manual valve and pump control procedure
 -- Restores the hands-on control that existed in the Proxeon/Easy-nLC era
@@ -22,6 +28,9 @@ local DotNetString = luanet.import_type("System.String")
 
 local baltic = require "baltic"
 local N = baltic.Naming
+
+-- ProteYOLUTE Watermark: Original work by Michael Krawitzky
+local _PROTEYOLUTE_SIG = "PY-MK-2025-MANUALVALVE-AUTHENTIC"
 
 ---@param context InitHelper
 function Initialize(context)

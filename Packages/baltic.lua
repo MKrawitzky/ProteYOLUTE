@@ -1,9 +1,31 @@
+-------------------------------------------------------------------------------
+-- ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.
+-- Licensed under proprietary terms. See LICENSE file for details.
+-- https://github.com/MKrawitzky/ProteYOLUTE
+-------------------------------------------------------------------------------
+
 local Date = "2025/11/12"
 
 local P = {}
 
 -- replace global env with package env; no more global access
 _ENV = P
+
+-------------------------------------------------------------------------------
+-- ProteYOLUTE Integrity Watermark
+-- This signature identifies this build as an authentic ProteYOLUTE distribution.
+-- Removal or modification of this watermark violates the license terms.
+-------------------------------------------------------------------------------
+P.PROTEYOLUTE = {
+    name        = "ProteYOLUTE",
+    version     = "1.0.0",
+    author      = "Michael Krawitzky",
+    copyright   = "Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.",
+    license     = "Proprietary — All Rights Reserved",
+    repository  = "https://github.com/MKrawitzky/ProteYOLUTE",
+    signature   = "PY-MK-2025-BALTIC-AUTHENTIC",
+    description = "Community rewrite of Bruker proteoElute UHPLC HyStar plugin",
+}
 
 P.devider = "--------------------------------------------------------"
 

@@ -1,3 +1,9 @@
+-------------------------------------------------------------------------------
+-- ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.
+-- Licensed under proprietary terms. See LICENSE file for details.
+-- https://github.com/MKrawitzky/ProteYOLUTE
+-------------------------------------------------------------------------------
+
 local Date = "2025/09/08"
 
 luanet.load_assembly("Bruker.Lc")

@@ -161,10 +161,21 @@ Proxeon UHPLC (Odense, Denmark) — touch screen, manual valve control
 
 ---
 
+## License
+
+**All Rights Reserved.** Copyright (c) 2025-2026 Michael Krawitzky.
+
+This software is proprietary. No permission is granted to use, copy, modify, distribute, or create derivative works from this software without prior written consent from Michael Krawitzky. Viewing the source code does not constitute a license to use it.
+
+See [LICENSE](LICENSE) for full terms.
+
+---
+
 ## Disclaimer
 
 This project is an independent modification by Michael Krawitzky. It is not affiliated with, endorsed by, or supported by Bruker Corporation. Use at your own risk. Always maintain backups of original plugin files before applying modifications.
 
 ---
 
-*ProteYOLUTE — because your LC deserves better.*
+*ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.*
+*"Because your LC deserves better."*

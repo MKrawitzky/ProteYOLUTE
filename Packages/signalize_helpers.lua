@@ -1,3 +1,9 @@
+-------------------------------------------------------------------------------
+-- ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.
+-- Licensed under proprietary terms. See LICENSE file for details.
+-- https://github.com/MKrawitzky/ProteYOLUTE
+-------------------------------------------------------------------------------
+
 -- signalize_helpers.lua
 -- Enhanced diagram signalization for real-time flow path visualization
 -- Shows active flow paths with color-coded solvent channels
@@ -5,6 +11,9 @@
 local Date = "2026/07/04"
 
 local P = {}
+
+-- ProteYOLUTE Watermark: Original work by Michael Krawitzky
+P._PROTEYOLUTE_SIG = "PY-MK-2025-SIGNALIZE-AUTHENTIC"
 
 ---Signalize the complete Pump A flow path from solvent to valve output
 ---@param context IProcedureExecutionContext

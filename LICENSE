@@ -1,0 +1,86 @@
+ProteYOLUTE — All Rights Reserved License
+
+Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.
+
+PROPRIETARY SOFTWARE LICENSE
+
+This software, ProteYOLUTE, including all source code, compiled binaries,
+documentation, configuration files, Lua scripts, .NET assemblies, XAML
+templates, tools, and associated materials (collectively, the "Software"),
+is the exclusive intellectual property of Michael Krawitzky.
+
+1. GRANT OF RIGHTS
+   No rights are granted under this license. This Software is made available
+   for viewing purposes only. You may view the source code in its hosted
+   repository, but this does not constitute a license to use, copy, modify,
+   merge, publish, distribute, sublicense, or sell the Software.
+
+2. RESTRICTIONS
+   You may NOT, without prior written permission from Michael Krawitzky:
+
+   a) Copy, reproduce, or duplicate the Software or any portion thereof;
+   b) Modify, adapt, translate, or create derivative works based on the
+      Software;
+   c) Distribute, sublicense, lease, rent, loan, or otherwise transfer the
+      Software to any third party;
+   d) Use the Software, in whole or in part, for any commercial or
+      non-commercial purpose;
+   e) Reverse engineer, decompile, or disassemble any compiled portions of
+      the Software (except as expressly permitted by applicable law);
+   f) Remove, alter, or obscure any copyright notices, watermarks, or
+      proprietary markings in the Software;
+   g) Incorporate any portion of the Software into other software or systems;
+   h) Use the Software to develop competing products or services;
+   i) Claim authorship or ownership of the Software or any portion thereof.
+
+3. INTELLECTUAL PROPERTY
+   The Software represents substantial original creative work by
+   Michael Krawitzky, including but not limited to:
+
+   - Complete rewrite of Lua business logic with original error diagnostics
+   - Original ManualValveControl system
+   - Original LED effects engine with 17 color themes
+   - Original diagram flow visualization system
+   - Full decompilation, reconstruction, and enhancement of plugin DLLs
+   - Original Diagram Editor tool
+   - Original Valve Port Editor tool
+   - Original pop-out diagram viewer
+   - Original build pipeline and tooling
+
+   These contributions constitute a new and distinct work of authorship,
+   separate from any underlying platform or framework.
+
+4. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL
+   MICHAEL KRAWITZKY BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY,
+   WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT
+   OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   THE SOFTWARE.
+
+5. ENFORCEMENT
+   Any unauthorized use, reproduction, or distribution of the Software may
+   result in civil and criminal penalties. Michael Krawitzky reserves the
+   right to pursue all available legal remedies against any party that
+   violates the terms of this license.
+
+6. THIRD-PARTY NOTICE
+   This Software operates within the Bruker HyStar plugin ecosystem. The
+   ProteYOLUTE modifications, enhancements, and original works are
+   independently authored by Michael Krawitzky and are not affiliated with,
+   endorsed by, or supported by Bruker Corporation. Bruker product names
+   referenced herein are trademarks of their respective owners.
+
+7. CONTACT
+   For licensing inquiries, permissions, or collaboration proposals:
+   GitHub: https://github.com/MKrawitzky/ProteYOLUTE
+
+8. GOVERNING LAW
+   This license shall be governed by and construed in accordance with
+   applicable copyright law and international intellectual property treaties.
+
+---
+
+ProteYOLUTE — "because your LC deserves better."
+Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.

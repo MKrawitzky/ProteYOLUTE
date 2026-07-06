@@ -1,3 +1,9 @@
+-------------------------------------------------------------------------------
+-- ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved.
+-- Licensed under proprietary terms. See LICENSE file for details.
+-- https://github.com/MKrawitzky/ProteYOLUTE
+-------------------------------------------------------------------------------
+
 -- led_effects.lua
 -- Custom LED effects for proteoElute
 -- Provides breathing, pulsing, rainbow, and custom two-tone LED patterns
@@ -12,6 +18,9 @@ local LedColor = luanet.import_type("Bruker.Lc.Business.LedColor")
 local LedPattern = luanet.import_type("Bruker.Zirconium.Pump.Communication.LedPattern")
 
 local P = {}
+
+-- ProteYOLUTE Watermark: Original work by Michael Krawitzky
+P._PROTEYOLUTE_SIG = "PY-MK-2025-LEDEFFECTS-AUTHENTIC"
 
 -- ============================================================
 -- Color Presets (RGB values for LedColor.FromRgb)

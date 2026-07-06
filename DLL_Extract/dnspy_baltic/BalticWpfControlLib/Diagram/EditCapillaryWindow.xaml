@@ -1,3 +1,6 @@
+<!-- ProteYOLUTE — Copyright (c) 2025-2026 Michael Krawitzky. All rights reserved. -->
+<!-- Licensed under proprietary terms. See LICENSE file for details. -->
+<!-- https://github.com/MKrawitzky/ProteYOLUTE -->
 <Window
 	x:Class="BalticWpfControlLib.Diagram.EditCapillaryWindow"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
