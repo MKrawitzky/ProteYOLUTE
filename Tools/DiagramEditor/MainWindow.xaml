@@ -55,6 +55,15 @@
                         <TextBlock x:Name="txtSelected" Text="Click a component or port" Foreground="#FFAAAAAA" TextWrapping="Wrap" FontSize="10"/>
                         <TextBlock x:Name="txtCoords" Text="" Foreground="#FF00CC00" FontFamily="Consolas" FontSize="9" Margin="0,4,0,0"/>
 
+                        <!-- Z-Order -->
+                        <TextBlock Text="LAYER" Foreground="#FFCCCCCC" FontWeight="Bold" Margin="0,8,0,2" FontSize="10"/>
+                        <WrapPanel Margin="0,2">
+                            <Button Content="▲ Front" Click="BringFront_Click" Width="60" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="▼ Back" Click="SendBack_Click" Width="60" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="△ Up" Click="BringUp_Click" Width="48" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="▽ Down" Click="SendDown_Click" Width="48" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                        </WrapPanel>
+
                         <!-- Resize -->
                         <TextBlock Text="RESIZE" Foreground="#FFCCCCCC" FontWeight="Bold" Margin="0,8,0,2" FontSize="10"/>
                         <Grid>
