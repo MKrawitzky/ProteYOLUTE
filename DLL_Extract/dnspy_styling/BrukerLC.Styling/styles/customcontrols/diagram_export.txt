@@ -1,0 +1,38 @@
+<!-- ProteYOLUTE Diagram Editor Export -->
+<!-- Component Positions -->
+<!-- Pump B: Canvas.Left="245.0" Canvas.Top="360.0" (Pump 52x102) -->
+<!-- Valve A (Trap): Canvas.Left="345.0" Canvas.Top="80.0" (Valve 36x36) -->
+<!-- Valve B (Inj): Canvas.Left="345.0" Canvas.Top="150.0" (Valve 36x36) -->
+<!-- Valve C (PmpB): Canvas.Left="205.0" Canvas.Top="370.0" (Valve 36x36) -->
+<!-- Valve D (PmpA): Canvas.Left="100.0" Canvas.Top="370.0" (Valve 36x36) -->
+<!-- Injection: Canvas.Left="350.0" Canvas.Top="40.0" (Inject 30x40) -->
+<!-- Output/Sep: Canvas.Left="380.0" Canvas.Top="160.0" (Transfer 60x10) -->
+<!-- Flow Sensor A: Canvas.Left="130.0" Canvas.Top="460.0" (Sensor 54x28) -->
+<!-- Flow Sensor B: Canvas.Left="130.0" Canvas.Top="435.0" (Sensor 54x28) -->
+<!-- Waste A: Canvas.Left="330.0" Canvas.Top="75.0" (Waste 20x20) -->
+<!-- Waste B: Canvas.Left="330.0" Canvas.Top="140.0" (Waste 20x20) -->
+<!-- Waste C: Canvas.Left="195.0" Canvas.Top="365.0" (Waste 20x20) -->
+<!-- Waste D: Canvas.Left="80.0" Canvas.Top="365.0" (Waste 20x20) -->
+<!-- Solvent A: Canvas.Left="75.0" Canvas.Top="400.0" (Solvent 30x50) -->
+<!-- Solvent B: Canvas.Left="185.0" Canvas.Top="395.0" (Solvent 30x50) -->
+<!-- Loop: Canvas.Left="350.0" Canvas.Top="80.0" (Loop 20x30) -->
+<!-- Trap Column: Canvas.Left="355.0" Canvas.Top="145.0" (Trap 20x50) -->
+<!-- PSensor A: Canvas.Left="50.0" Canvas.Top="400.0" (PSensor 22x20) -->
+<!-- PSensor B: Canvas.Left="235.0" Canvas.Top="405.0" (PSensor 22x20) -->
+<!-- Mixing Tee: Canvas.Left="315.0" Canvas.Top="395.0" (MixTee 26x26) -->
+<!-- Peltier Stack: Canvas.Left="10.0" Canvas.Top="35.0" (Peltier 140x80) -->
+<!-- Pump_21: Canvas.Left="5.0" Canvas.Top="360.0" (Pump 52x102) -->
+<!-- Tubing: (31,406) -> (31,406) -->
+<!-- Tubing: (31,406) -> (35,383) -->
+<!-- Tubing: (31,411) -> (34,335) -->
+<!-- Tubing: (61,410) -> (35,336) -->
+<!-- Tubing: (61,410) -> (119,376) -->
+<!-- Tubing: (118,388) -> (131,476) -->
+<!-- Tubing: (271,411) -> (242,406) -->
+<!-- Tubing: (246,415) -> (228,372) -->
+<!-- Tubing: (223,388) -> (130,466) -->
+<!-- Tubing: (157,474) -> (331,420) -->
+<!-- Tubing: (157,449) -> (318,405) -->
+<!-- Tubing: (328,408) -> (349,177) -->
+<!-- Tubing: (363,98) -> (374,172) -->
+<!-- Tubing: (118,388) -> (363,109) -->
