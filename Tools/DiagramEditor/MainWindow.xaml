@@ -46,7 +46,7 @@
                     <Button Content="EXPORT" Click="ExportXaml_Click" Background="#FF005A9E" Foreground="White" Padding="6,3" Margin="0,2" FontWeight="Bold"/>
                     <Button Content="BUILD &amp; DEPLOY" Click="BuildDeploy_Click" Background="#FF107C10" Foreground="White" Padding="6,3" Margin="0,2" FontWeight="Bold"/>
                     <Button Content="DELETE SELECTED" Click="DeleteSelected_Click" Background="#FFC42B1C" Foreground="White" Padding="6,3" Margin="0,2" FontWeight="Bold"/>
-                    <Button Content="UNDO LAST TUBING" Click="UndoTubing_Click" Background="#FF884400" Foreground="White" Padding="6,3" Margin="0,2" FontWeight="Bold"/>
+                    <Button Content="UNDO LAST ACTION" Click="UndoTubing_Click" Background="#FF884400" Foreground="White" Padding="6,3" Margin="0,2" FontWeight="Bold"/>
                 </StackPanel>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">

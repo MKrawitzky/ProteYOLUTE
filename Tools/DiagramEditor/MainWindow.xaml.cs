@@ -22,6 +22,7 @@ namespace DiagramEditor
         private List<TubingPath> _tubingPaths = new List<TubingPath>();
         private TubingPath _activeTubing;
         private bool _updatingSize;
+        private List<object> _actionHistory = new List<object>(); // tracks items and tubing in order added
         private static readonly double[] Port6Angles = { -90, -150, -210, -270, -330, -30 };
         private static readonly string[] Port6Clocks = { "12", "10", "8", "6", "4", "2" };
         private static readonly string SaveDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "cluade");
@@ -100,6 +101,7 @@ namespace DiagramEditor
                 new[] { "Injection Port", "#FF444444" },
                 new[] { "Peltier Stack", "#FF8090A0" },
                 new[] { "Output", "#FF999999" },
+                new[] { "Plug", "#FFCC2222" },
                 new[] { "Custom", "#FF6A00B0" }
             };
             foreach (var c in comps)
@@ -170,6 +172,7 @@ namespace DiagramEditor
                 case "Mixing Tee": w = 30; h = 30; fill = Colors.Gray; label = "MT"; break;
                 case "Solvent Bottle": w = 30; h = 50; fill = Colors.CornflowerBlue; break;
                 case "Waste Port": w = 20; h = 20; fill = Colors.IndianRed; label = "W"; break;
+                case "Plug": w = 16; h = 16; fill = Color.FromRgb(204, 34, 34); label = "X"; break;
                 case "Loop 1uL": w = 20; h = 20; fill = Color.FromRgb(68,102,68); break;
                 case "Loop 5uL": w = 30; h = 30; fill = Color.FromRgb(85,136,85); break;
                 case "Loop 20uL": w = 45; h = 45; fill = Color.FromRgb(102,136,102); break;
@@ -342,6 +345,24 @@ namespace DiagramEditor
                 };
                 group.Children.Add(arrow);
             }
+            else if (type == "Plug")
+            {
+                // Red X symbol
+                var hitRect = new Rectangle { Width = w, Height = h, Fill = Brushes.Transparent };
+                group.Children.Add(hitRect);
+                var line1 = new Line { X1 = 2, Y1 = 2, X2 = w - 2, Y2 = h - 2, Stroke = Brushes.Red, StrokeThickness = 3 };
+                var line2 = new Line { X1 = w - 2, Y1 = 2, X2 = 2, Y2 = h - 2, Stroke = Brushes.Red, StrokeThickness = 3 };
+                group.Children.Add(line1); group.Children.Add(line2);
+                var circle = new Ellipse { Width = w, Height = h, Stroke = Brushes.DarkRed, StrokeThickness = 1.5, Fill = Brushes.Transparent };
+                group.Children.Add(circle);
+                item.HasSnapPoints = true;
+                // Single center snap point
+                var snap = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Red, Stroke = Brushes.DarkRed,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name };
+                Canvas.SetLeft(snap, w / 2 - 4); Canvas.SetTop(snap, h / 2 - 4);
+                group.Children.Add(snap);
+                item.Ports.Add(new PortDot { PortNum = 1, Dot = snap, Owner = item, AngleDeg = 0 }); snap.Tag = item.Ports.Last();
+            }
             else
             {
                 var border = new Border
@@ -401,7 +422,37 @@ namespace DiagramEditor
                 group.Children.Add(snapL);
                 item.Ports.Add(new PortDot { PortNum = 3, Dot = snapL, Owner = item, AngleDeg = 180 }); snapL.Tag = item.Ports.Last();
             }
-            else if (type.StartsWith("Trap") || type.StartsWith("Column") || type == "Injection Port" || type == "Output" || type == "Pressure Sensor" || type == "Flow Sensor" || type == "Waste Port" || type == "Solvent Bottle")
+            else if (type == "Pump")
+            {
+                item.HasSnapPoints = true;
+                var snapT = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Lime, Stroke = Brushes.DarkGreen,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Top (12 o'clk)" };
+                Canvas.SetLeft(snapT, w / 2 - 4); Canvas.SetTop(snapT, -4);
+                group.Children.Add(snapT);
+                item.Ports.Add(new PortDot { PortNum = 1, Dot = snapT, Owner = item, AngleDeg = -90 }); snapT.Tag = item.Ports.Last();
+
+                var snapBt = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Orange, Stroke = Brushes.DarkOrange,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Bottom (6 o'clk)" };
+                Canvas.SetLeft(snapBt, w / 2 - 4); Canvas.SetTop(snapBt, h - 4);
+                group.Children.Add(snapBt);
+                item.Ports.Add(new PortDot { PortNum = 2, Dot = snapBt, Owner = item, AngleDeg = 90 }); snapBt.Tag = item.Ports.Last();
+            }
+            else if (type == "Flow Sensor")
+            {
+                item.HasSnapPoints = true;
+                var snapL = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Lime, Stroke = Brushes.DarkGreen,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Inlet (left)" };
+                Canvas.SetLeft(snapL, -4); Canvas.SetTop(snapL, h / 2 - 4);
+                group.Children.Add(snapL);
+                item.Ports.Add(new PortDot { PortNum = 1, Dot = snapL, Owner = item, AngleDeg = 180 }); snapL.Tag = item.Ports.Last();
+
+                var snapR = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Orange, Stroke = Brushes.DarkOrange,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Outlet (right)" };
+                Canvas.SetLeft(snapR, w - 4); Canvas.SetTop(snapR, h / 2 - 4);
+                group.Children.Add(snapR);
+                item.Ports.Add(new PortDot { PortNum = 2, Dot = snapR, Owner = item, AngleDeg = 0 }); snapR.Tag = item.Ports.Last();
+            }
+            else if (type.StartsWith("Trap") || type.StartsWith("Column") || type == "Injection Port" || type == "Output" || type == "Pressure Sensor" || type == "Waste Port" || type == "Solvent Bottle")
             {
                 item.HasSnapPoints = true;
                 // Inlet snap point (top)
@@ -429,6 +480,7 @@ namespace DiagramEditor
 
             editorCanvas.Children.Add(group);
             _items.Add(item);
+            _actionHistory.Add(item);
         }
 
         void DrawGroove(Canvas c, double cx, double cy, double r, double a1d, double a2d)
@@ -922,57 +974,120 @@ namespace DiagramEditor
             }
             else
             {
-                // Both ports selected — create the component between them
-                var p1 = GetPortCenter(_connectPort1);
-                var p2 = GetPortCenter(port);
-                port.Dot.Fill = Brushes.Magenta;
-
-                double dx = p2.X - p1.X, dy = p2.Y - p1.Y;
-                double dist = Math.Sqrt(dx * dx + dy * dy);
-                double angle = Math.Atan2(dy, dx) * 180 / Math.PI;
-                double midX = (p1.X + p2.X) / 2, midY = (p1.Y + p2.Y) / 2;
-
-                // Create component
-                AddItem(_connectType, midX - 20, midY - dist / 2, _connectType);
-                var newItem = _items.Last();
-
-                // Resize to span the distance
-                if (_connectType.StartsWith("Loop"))
+                try
                 {
-                    newItem.W = Math.Max(dist * 0.6, 25);
-                    newItem.H = Math.Max(dist * 0.5, 20);
-                    newItem.Rotation = angle + 90;
-                    // Position so ends align with ports
-                    newItem.X = midX - newItem.W / 2;
-                    newItem.Y = midY - newItem.H / 2;
+                    var p1 = GetPortCenter(_connectPort1);
+                    var p2 = GetPortCenter(port);
+                    port.Dot.Fill = Brushes.Magenta;
+
+                    double dx = p2.X - p1.X, dy = p2.Y - p1.Y;
+                    double dist = Math.Sqrt(dx * dx + dy * dy);
+                    double angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+                    double midX = (p1.X + p2.X) / 2, midY = (p1.Y + p2.Y) / 2;
+
+                    // Calculate size and position first
+                    double cw, ch, cx, cy, crot;
+                    string ctype = _connectType;
+
+                    if (ctype.StartsWith("Loop"))
+                    {
+                        // Draw a curved tubing arc OUTSIDE the valve between the two ports
+                        // Find valve center to calculate outward bulge direction
+                        double valveCX = _connectPort1.Owner.X + _connectPort1.Owner.W / 2;
+                        double valveCY = _connectPort1.Owner.Y + _connectPort1.Owner.H / 2;
+
+                        // Outward direction from valve center through midpoint
+                        double outDX = midX - valveCX;
+                        double outDY = midY - valveCY;
+                        double outLen = Math.Sqrt(outDX * outDX + outDY * outDY);
+                        if (outLen < 1) outLen = 1;
+
+                        // Bulge amount based on loop volume
+                        double bulge = 30;
+                        if (ctype.Contains("5u")) bulge = 40;
+                        if (ctype.Contains("20u")) bulge = 55;
+                        if (ctype.Contains("50u")) bulge = 70;
+
+                        // Control point: pushed outward from valve center
+                        double cpX = midX + (outDX / outLen) * bulge;
+                        double cpY = midY + (outDY / outLen) * bulge;
+
+                        // Draw the arc as a bezier curve
+                        Color loopColor = Colors.DarkSeaGreen;
+                        double loopThick = 3;
+                        var fig = new PathFigure { StartPoint = p1 };
+                        fig.Segments.Add(new QuadraticBezierSegment(new Point(cpX, cpY), p2, true));
+                        var geom = new PathGeometry(); geom.Figures.Add(fig);
+                        var arcPath = new System.Windows.Shapes.Path
+                        {
+                            Data = geom, Stroke = new SolidColorBrush(loopColor),
+                            StrokeThickness = loopThick, Fill = Brushes.Transparent, IsHitTestVisible = false
+                        };
+                        editorCanvas.Children.Add(arcPath);
+
+                        // Label at the control point
+                        var lbl = new TextBlock
+                        {
+                            Text = ctype, FontSize = 8, Foreground = new SolidColorBrush(loopColor),
+                            FontWeight = FontWeights.Bold, IsHitTestVisible = false
+                        };
+                        Canvas.SetLeft(lbl, cpX - 15); Canvas.SetTop(lbl, cpY - 5);
+                        editorCanvas.Children.Add(lbl);
+
+                        // Small dots at connection points
+                        var d1 = new Ellipse { Width = 6, Height = 6, Fill = new SolidColorBrush(loopColor), IsHitTestVisible = false };
+                        Canvas.SetLeft(d1, p1.X - 3); Canvas.SetTop(d1, p1.Y - 3);
+                        editorCanvas.Children.Add(d1);
+                        var d2 = new Ellipse { Width = 6, Height = 6, Fill = new SolidColorBrush(loopColor), IsHitTestVisible = false };
+                        Canvas.SetLeft(d2, p2.X - 3); Canvas.SetTop(d2, p2.Y - 3);
+                        editorCanvas.Children.Add(d2);
+
+                        // Store as tubing path for save/undo
+                        var tp = new TubingPath { Thickness = loopThick, Color = loopColor, Points = { p1, new Point(cpX, cpY), p2 } };
+                        tp.Visuals.Add(arcPath); tp.Visuals.Add(lbl); tp.Visuals.Add(d1); tp.Visuals.Add(d2);
+                        _tubingPaths.Add(tp);
+                        _actionHistory.Add(tp);
+                    }
+                    else
+                    {
+                        // Trap/Column: draw as inline cylinder
+                        double tcw = Math.Max(18, 18);
+                        double tch = Math.Max(dist, 30);
+                        double tcrot = angle - 90;
+                        double tcx = midX - tcw / 2;
+                        double tcy = midY - tch / 2;
+
+                        Color fill = Colors.Gray;
+                        switch (ctype)
+                        {
+                            case "Trap 5cm": fill = Color.FromRgb(102, 68, 34); break;
+                            case "Trap 15cm": fill = Color.FromRgb(136, 102, 68); break;
+                            case "Trap 25cm": fill = Color.FromRgb(170, 136, 102); break;
+                            case "Column 15cm": fill = Color.FromRgb(68, 85, 102); break;
+                            case "Column 25cm": fill = Color.FromRgb(85, 102, 119); break;
+                            case "Column 50cm": fill = Color.FromRgb(102, 119, 136); break;
+                        }
+                        BuildVisual(ctype + "_conn", ctype, tcx, tcy, tcw, tch, fill, ctype, 0, tcrot);
+                    }
+
+                    // Color the ports
+                    _connectPort1.Dot.Fill = Brushes.Cyan;
+                    _connectPort1.Dot.Stroke = Brushes.DarkCyan;
+                    port.Dot.Fill = Brushes.Cyan;
+                    port.Dot.Stroke = Brushes.DarkCyan;
+
+                    txtConnectStatus.Text = "CONNECTED: " + ctype + "\n" +
+                        _connectPort1.Owner.Name + " P" + _connectPort1.PortNum + " ↔ " +
+                        port.Owner.Name + " P" + port.PortNum;
                 }
-                else
+                catch (Exception ex)
                 {
-                    newItem.W = Math.Max(15, newItem.W);
-                    newItem.H = dist;
-                    newItem.Rotation = angle + 90;
-                    newItem.X = midX - newItem.W / 2;
-                    newItem.Y = midY - newItem.H / 2;
+                    txtConnectStatus.Text = "Error: " + ex.Message;
                 }
-
-                // Rebuild with new size/rotation
-                RebuildVisual(newItem);
-                var built = _items.Last();
-                Canvas.SetLeft(built.Visual, built.X);
-                Canvas.SetTop(built.Visual, built.Y);
-
-                // Color the ports
-                _connectPort1.Dot.Fill = Brushes.Cyan;
-                _connectPort1.Dot.Stroke = Brushes.DarkCyan;
-                port.Dot.Fill = Brushes.Cyan;
-                port.Dot.Stroke = Brushes.DarkCyan;
-
-                txtConnectStatus.Text = "CONNECTED: " + _connectType + "\n" +
-                    _connectPort1.Owner.Name + " P" + _connectPort1.PortNum + " ↔ " +
-                    port.Owner.Name + " P" + port.PortNum;
 
                 _connectType = null;
                 _connectPort1 = null;
+                rbModeDrag.IsChecked = true; // switch back to drag mode
             }
         }
 
@@ -1032,10 +1147,15 @@ namespace DiagramEditor
                 }
                 if (pd.Owner.Type == "Mixing Tee")
                 {
-                    // 3 ports: 1=center top, 2=center bottom, 3=left center
                     if (pd.PortNum == 1) return new Point(pd.Owner.X + pd.Owner.W / 2, pd.Owner.Y);
                     if (pd.PortNum == 2) return new Point(pd.Owner.X + pd.Owner.W / 2, pd.Owner.Y + pd.Owner.H);
                     return new Point(pd.Owner.X, pd.Owner.Y + pd.Owner.H / 2);
+                }
+                if (pd.Owner.Type == "Flow Sensor")
+                {
+                    // Horizontal: 1=left center, 2=right center
+                    if (pd.PortNum == 1) return new Point(pd.Owner.X, pd.Owner.Y + pd.Owner.H / 2);
+                    return new Point(pd.Owner.X + pd.Owner.W, pd.Owner.Y + pd.Owner.H / 2);
                 }
                 // Standard 2-port: port 1 = top center, port 2 = bottom center
                 double cx = pd.Owner.X + pd.Owner.W / 2;
@@ -1054,41 +1174,125 @@ namespace DiagramEditor
             txtCoords.Text = "Left=\"" + item.X.ToString("F0") + "\" Top=\"" + item.Y.ToString("F0") + "\"\n" + item.W.ToString("F0") + " x " + item.H.ToString("F0");
         }
 
-        // --- TUBING ---
+        // --- TUBING (smooth curves) ---
+        private PortDot _tubeStartPort;
+        private Point _tubeStartPt;
+
         void AddTubingPoint(Point pt, PortDot anchorPort = null)
         {
-            if (_activeTubing == null)
+            if (_tubeStartPort == null && anchorPort == null && _activeTubing == null)
             {
+                // First click on empty space — start freeform
+                _tubeStartPt = pt;
+                _tubeStartPort = null;
                 _activeTubing = new TubingPath { Thickness = TubeWidth, Color = TubeColor };
                 _tubingPaths.Add(_activeTubing);
-                txtSelected.Text = "Click waypoints, ENTER to finish";
+                _activeTubing.Points.Add(pt);
+                txtSelected.Text = "Click end point or port...";
+                return;
             }
-            _activeTubing.Points.Add(pt);
-            if (anchorPort != null)
-                _activeTubing.Anchors.Add(new TubingAnchor { Port = anchorPort, PointIndex = _activeTubing.Points.Count - 1 });
-            var dot = new Ellipse { Width = 6, Height = 6, Fill = new SolidColorBrush(_activeTubing.Color), IsHitTestVisible = false };
-            Canvas.SetLeft(dot, pt.X - 3); Canvas.SetTop(dot, pt.Y - 3);
-            editorCanvas.Children.Add(dot);
-            _activeTubing.Visuals.Add(dot);
 
-            if (_activeTubing.Points.Count > 1)
+            if (_tubeStartPort == null && anchorPort != null && _activeTubing == null)
             {
-                var prev = _activeTubing.Points[_activeTubing.Points.Count - 2];
-                var line = new Line
-                {
-                    X1 = prev.X, Y1 = prev.Y, X2 = pt.X, Y2 = pt.Y,
-                    Stroke = new SolidColorBrush(_activeTubing.Color), StrokeThickness = _activeTubing.Thickness, IsHitTestVisible = false
-                };
-                editorCanvas.Children.Add(line);
-                _activeTubing.Visuals.Add(line);
+                // First click on a port — remember start
+                _tubeStartPort = anchorPort;
+                _tubeStartPt = pt;
+                txtSelected.Text = "Start: " + anchorPort.Owner.Name + " P" + anchorPort.PortNum + "\nClick end port...";
+                return;
             }
+
+            // Second click — draw smooth curve from start to here
+            Point startPt = _tubeStartPt;
+            Point endPt = pt;
+            PortDot startPort = _tubeStartPort;
+            PortDot endPort = anchorPort;
+
+            DrawSmoothTubing(startPt, endPt, startPort, endPort);
+
+            _tubeStartPort = null;
+            _activeTubing = null;
+        }
+
+        void DrawSmoothTubing(Point p1, Point p2, PortDot port1, PortDot port2)
+        {
+            var brush = new SolidColorBrush(TubeColor);
+            double thick = TubeWidth;
+            double dx = p2.X - p1.X, dy = p2.Y - p1.Y;
+            double dist = Math.Sqrt(dx * dx + dy * dy);
+
+            // Calculate control points for smooth S-curve
+            // Tubing exits in the direction the port faces, then curves to destination
+            double cp1X, cp1Y, cp2X, cp2Y;
+            double exitLen = Math.Max(dist * 0.4, 25); // how far the tubing extends before curving
+
+            if (port1 != null)
+            {
+                // Exit in port direction
+                double a1 = port1.AngleDeg * Math.PI / 180;
+                cp1X = p1.X + Math.Cos(a1) * exitLen;
+                cp1Y = p1.Y + Math.Sin(a1) * exitLen;
+            }
+            else
+            {
+                // No port — use midpoint offset
+                cp1X = p1.X + dx * 0.3;
+                cp1Y = p1.Y;
+            }
+
+            if (port2 != null)
+            {
+                // Enter from port direction (opposite)
+                double a2 = port2.AngleDeg * Math.PI / 180;
+                cp2X = p2.X + Math.Cos(a2) * exitLen;
+                cp2Y = p2.Y + Math.Sin(a2) * exitLen;
+            }
+            else
+            {
+                // No port — use midpoint offset
+                cp2X = p2.X - dx * 0.3;
+                cp2Y = p2.Y;
+            }
+
+            // Draw cubic Bezier
+            var fig = new PathFigure { StartPoint = p1 };
+            fig.Segments.Add(new BezierSegment(new Point(cp1X, cp1Y), new Point(cp2X, cp2Y), p2, true));
+            var geom = new PathGeometry(); geom.Figures.Add(fig);
+            var path = new System.Windows.Shapes.Path
+            {
+                Data = geom, Stroke = brush, StrokeThickness = thick,
+                Fill = Brushes.Transparent, IsHitTestVisible = false
+            };
+            editorCanvas.Children.Add(path);
+
+            // Small dots at endpoints
+            var d1 = new Ellipse { Width = 5, Height = 5, Fill = brush, IsHitTestVisible = false };
+            Canvas.SetLeft(d1, p1.X - 2.5); Canvas.SetTop(d1, p1.Y - 2.5);
+            editorCanvas.Children.Add(d1);
+            var d2 = new Ellipse { Width = 5, Height = 5, Fill = brush, IsHitTestVisible = false };
+            Canvas.SetLeft(d2, p2.X - 2.5); Canvas.SetTop(d2, p2.Y - 2.5);
+            editorCanvas.Children.Add(d2);
+
+            // Store
+            var tp = new TubingPath { Thickness = thick, Color = TubeColor, Points = { p1, new Point(cp1X, cp1Y), new Point(cp2X, cp2Y), p2 } };
+            tp.Visuals.Add(path); tp.Visuals.Add(d1); tp.Visuals.Add(d2);
+            if (port1 != null) tp.Anchors.Add(new TubingAnchor { Port = port1, PointIndex = 0 });
+            if (port2 != null) tp.Anchors.Add(new TubingAnchor { Port = port2, PointIndex = 3 });
+            _tubingPaths.Add(tp);
+            _actionHistory.Add(tp);
+
+            string msg = "Tubing: ";
+            if (port1 != null) msg += port1.Owner.Name + " P" + port1.PortNum;
+            else msg += "(" + p1.X.ToString("F0") + "," + p1.Y.ToString("F0") + ")";
+            msg += " → ";
+            if (port2 != null) msg += port2.Owner.Name + " P" + port2.PortNum;
+            else msg += "(" + p2.X.ToString("F0") + "," + p2.Y.ToString("F0") + ")";
+            txtSelected.Text = msg;
         }
 
         void FinishTubing()
         {
-            if (_activeTubing != null && _activeTubing.Points.Count >= 2)
-                txtSelected.Text = "Tubing done (" + _activeTubing.Points.Count + " pts)";
             _activeTubing = null;
+            _tubeStartPort = null;
         }
 
         void CancelTubing()
@@ -1190,12 +1394,25 @@ namespace DiagramEditor
 
         void UndoTubing_Click(object s, RoutedEventArgs e)
         {
-            if (_tubingPaths.Count > 0)
+            if (_actionHistory.Count == 0) { txtSelected.Text = "Nothing to undo"; return; }
+
+            var last = _actionHistory.Last();
+            _actionHistory.RemoveAt(_actionHistory.Count - 1);
+
+            if (last is TubingPath tp)
             {
-                var last = _tubingPaths.Last();
-                foreach (var v in last.Visuals) editorCanvas.Children.Remove(v);
-                _tubingPaths.Remove(last);
+                foreach (var v in tp.Visuals) editorCanvas.Children.Remove(v);
+                _tubingPaths.Remove(tp);
                 txtSelected.Text = "Tubing removed";
+            }
+            else if (last is DiagramItem di)
+            {
+                editorCanvas.Children.Remove(di.Visual);
+                _items.Remove(di);
+                foreach (var tpath in _tubingPaths)
+                    tpath.Anchors.RemoveAll(a => a.Port.Owner == di);
+                if (_selectedItem == di) _selectedItem = null;
+                txtSelected.Text = "Component removed: " + di.Name;
             }
         }
 
