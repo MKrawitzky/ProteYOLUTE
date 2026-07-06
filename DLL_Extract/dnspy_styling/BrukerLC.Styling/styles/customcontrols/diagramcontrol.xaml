@@ -75,7 +75,7 @@
 							<!-- OUTPUT -->
 							<OutputControl Canvas.Left="430" Canvas.Top="82"
 								DataContext="{TemplateBinding DiagramControl.OutputDataContext}" />
-							<TemperatureControl Canvas.Left="430" Canvas.Top="100"
+							<TemperatureControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.TemperatureDataContext}" />
 
 							<!-- PRESSURE SENSORS — on pump heads mid body -->
@@ -110,17 +110,17 @@
 							</Border>
 
 							<!-- LOOP — big circle on injection valve -->
-							<LoopControl Canvas.Left="335" Canvas.Top="162"
+							<LoopControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.LoopDataContext}" />
 
 							<!-- TRAP COLUMN — on trap valve -->
-							<TrapControl Canvas.Left="388" Canvas.Top="62"
+							<TrapControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.TrapDataContext}" />
 
 							<!-- PLUG — Valve B P5 -->
-							<BlindPlugControl Canvas.Left="208" Canvas.Top="390"
+							<BlindPlugControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.ValveBPlugDataContextDataContext}" />
-							<BlindPlugControl Canvas.Left="180" Canvas.Top="310"
+							<BlindPlugControl Canvas.Left="-100" Canvas.Top="0"
 								DataContext="{TemplateBinding DiagramControl.ValveAPlugDataContextDataContext}" />
 
 							<!-- PELTIER STACK -->

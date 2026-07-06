@@ -1,0 +1,3 @@
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\DiagramEditor\bin\Publish\ProteYOLUTE.DiagramEditor.exe
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\DiagramEditor\bin\Publish\ProteYOLUTE.DiagramEditor.exe.config
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\DiagramEditor\bin\Publish\ProteYOLUTE.DiagramEditor.pdb

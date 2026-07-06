@@ -434,11 +434,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\DiagramEditor\\DiagramEditor.csproj",
-      "projectName": "ProteYOLUTE.DiagramEditor",
-      "projectPath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\DiagramEditor\\DiagramEditor.csproj",
+      "projectUniqueName": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\ValveEditor\\ValveEditor.csproj",
+      "projectName": "ProteYOLUTE.ValveEditor",
+      "projectPath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\ValveEditor\\ValveEditor.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\DiagramEditor\\obj\\",
+      "outputPath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\ValveEditor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"

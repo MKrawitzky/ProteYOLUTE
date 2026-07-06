@@ -1,0 +1,16 @@
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\bin\Release\net48\win-x64\ProteYOLUTE.ValveEditor.exe.config
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\bin\Release\net48\win-x64\ProteYOLUTE.ValveEditor.exe
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\bin\Release\net48\win-x64\ProteYOLUTE.ValveEditor.pdb
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.csproj.AssemblyReference.cache
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.baml
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.g.cs
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\App.g.cs
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ProteYOLUTE.ValveEditor_MarkupCompile.cache
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ProteYOLUTE.ValveEditor.g.resources
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.GeneratedMSBuildEditorConfig.editorconfig
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.AssemblyInfoInputs.cache
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.AssemblyInfo.cs
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.csproj.CoreCompileInputs.cache
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ValveEditor.sourcelink.json
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ProteYOLUTE.ValveEditor.exe
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\obj\Release\net48\win-x64\ProteYOLUTE.ValveEditor.pdb

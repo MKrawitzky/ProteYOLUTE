@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "k9783AsMoUY=",
+  "dgSpecHash": "Ee2XugC4+GQ=",
   "success": true,
-  "projectFilePath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\DiagramEditor\\DiagramEditor.csproj",
+  "projectFilePath": "C:\\BDalSystemData\\HyStar\\LcPlugin\\PrivateData\\Bruker proteoElute\\Tools\\ValveEditor\\ValveEditor.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.3\\microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net48\\1.0.3\\microsoft.netframework.referenceassemblies.net48.1.0.3.nupkg.sha512"

@@ -1,0 +1,3 @@
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\bin\Publish\ProteYOLUTE.ValveEditor.exe
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\bin\Publish\ProteYOLUTE.ValveEditor.exe.config
+C:\BDalSystemData\HyStar\LcPlugin\PrivateData\Bruker proteoElute\Tools\ValveEditor\bin\Publish\ProteYOLUTE.ValveEditor.pdb
