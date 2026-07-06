@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProteYOLUTE.DiagramEditor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aa365019f6e425d1ef6dfa4c10d6309a112942e5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c37bdb076a6452894ccf368aaac7375e916b548")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProteYOLUTE.DiagramEditor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProteYOLUTE.DiagramEditor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

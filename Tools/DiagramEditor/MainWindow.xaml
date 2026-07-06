@@ -126,10 +126,31 @@
                         <TextBlock Text="Click ports or canvas to place waypoints." Foreground="#FF666666" FontSize="8" Margin="0,4,0,0" TextWrapping="Wrap"/>
                         <TextBlock Text="Press ENTER to finish, ESC to cancel." Foreground="#FF666666" FontSize="8" TextWrapping="Wrap"/>
 
+                        <!-- Connect Ports -->
+                        <TextBlock Text="CONNECT PORTS" Foreground="#FFCCCCCC" FontWeight="Bold" Margin="0,10,0,2" FontSize="10"/>
+                        <TextBlock Text="Click button, then click 2 ports" Foreground="#FF888888" FontSize="8" TextWrapping="Wrap"/>
+                        <WrapPanel Margin="0,3">
+                            <Button Content="Loop 1µL" Click="ConnectLoop1_Click" Width="55" Margin="1" Background="#FF446644" Foreground="White" FontSize="8"/>
+                            <Button Content="Loop 5µL" Click="ConnectLoop5_Click" Width="55" Margin="1" Background="#FF558855" Foreground="White" FontSize="8"/>
+                            <Button Content="Loop 20µL" Click="ConnectLoop20_Click" Width="58" Margin="1" Background="#FF668866" Foreground="White" FontSize="8"/>
+                            <Button Content="Loop 50µL" Click="ConnectLoop50_Click" Width="58" Margin="1" Background="#FF779977" Foreground="White" FontSize="8"/>
+                        </WrapPanel>
+                        <WrapPanel Margin="0,2">
+                            <Button Content="Trap 5cm" Click="ConnectTrap5_Click" Width="55" Margin="1" Background="#FF664422" Foreground="White" FontSize="8"/>
+                            <Button Content="Trap 15cm" Click="ConnectTrap15_Click" Width="58" Margin="1" Background="#FF886644" Foreground="White" FontSize="8"/>
+                            <Button Content="Trap 25cm" Click="ConnectTrap25_Click" Width="58" Margin="1" Background="#FFAA8866" Foreground="White" FontSize="8"/>
+                        </WrapPanel>
+                        <WrapPanel Margin="0,2">
+                            <Button Content="Col 15cm" Click="ConnectCol15_Click" Width="55" Margin="1" Background="#FF445566" Foreground="White" FontSize="8"/>
+                            <Button Content="Col 25cm" Click="ConnectCol25_Click" Width="55" Margin="1" Background="#FF556677" Foreground="White" FontSize="8"/>
+                            <Button Content="Col 50cm" Click="ConnectCol50_Click" Width="55" Margin="1" Background="#FF667788" Foreground="White" FontSize="8"/>
+                        </WrapPanel>
+                        <TextBlock x:Name="txtConnectStatus" Text="" Foreground="#FFFF8800" FontSize="9" Margin="0,3" TextWrapping="Wrap"/>
+
                         <!-- Instructions -->
-                        <TextBlock Text="TIPS" Foreground="#FFCCCCCC" FontWeight="Bold" Margin="0,10,0,2" FontSize="10"/>
+                        <TextBlock Text="TIPS" Foreground="#FFCCCCCC" FontWeight="Bold" Margin="0,8,0,2" FontSize="10"/>
                         <TextBlock Foreground="#FF888888" FontSize="8" TextWrapping="Wrap"
-                            Text="• Drag mode: move components&#10;• Draw Tubing mode: click waypoints, ENTER to finish&#10;• Right-click port for info&#10;• Valves show 6 ports with rotor grooves&#10;• ESC cancels tubing"/>
+                            Text="• Drag mode: move components&#10;• Draw Tubing: click waypoints, ENTER to finish&#10;• Connect Ports: click button then 2 ports&#10;• Right-click port for info&#10;• ESC cancels"/>
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>

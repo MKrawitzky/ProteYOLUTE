@@ -40,11 +40,13 @@ namespace DiagramEditor
             public bool HasSnapPoints; // true for loops, traps, columns
         }
         class PortDot { public int PortNum; public Ellipse Dot; public DiagramItem Owner; public double AngleDeg; }
+        class TubingAnchor { public PortDot Port; public int PointIndex; }
         class TubingPath
         {
             public List<Point> Points = new List<Point>();
             public double Thickness; public Color Color;
             public List<UIElement> Visuals = new List<UIElement>();
+            public List<TubingAnchor> Anchors = new List<TubingAnchor>();
         }
 
         bool IsDrawMode => rbModeTube.IsChecked == true;
@@ -358,7 +360,23 @@ namespace DiagramEditor
                 group.Children.Add(border);
             }
             // Add snap points for loops, traps, columns (inlet at top, outlet at bottom)
-            if (type == "Mixing Tee")
+            if (type.StartsWith("Loop"))
+            {
+                // Snap points at the actual tubing ends: bottom-left and bottom-right
+                item.HasSnapPoints = true;
+                var snapL = new Ellipse { Width = 10, Height = 10, Fill = Brushes.Lime, Stroke = Brushes.DarkGreen,
+                    StrokeThickness = 1.5, Cursor = Cursors.Cross, ToolTip = item.Name + " End A" };
+                Canvas.SetLeft(snapL, -5); Canvas.SetTop(snapL, h - 5);
+                group.Children.Add(snapL);
+                item.Ports.Add(new PortDot { PortNum = 1, Dot = snapL, Owner = item, AngleDeg = 135 }); snapL.Tag = item.Ports.Last();
+
+                var snapR = new Ellipse { Width = 10, Height = 10, Fill = Brushes.Orange, Stroke = Brushes.DarkOrange,
+                    StrokeThickness = 1.5, Cursor = Cursors.Cross, ToolTip = item.Name + " End B" };
+                Canvas.SetLeft(snapR, w - 5); Canvas.SetTop(snapR, h - 5);
+                group.Children.Add(snapR);
+                item.Ports.Add(new PortDot { PortNum = 2, Dot = snapR, Owner = item, AngleDeg = 45 }); snapR.Tag = item.Ports.Last();
+            }
+            else if (type == "Mixing Tee")
             {
                 // Mixing Tee has 3 connection points: left input, right input, bottom output
                 item.HasSnapPoints = true;
@@ -383,7 +401,7 @@ namespace DiagramEditor
                 group.Children.Add(snapL);
                 item.Ports.Add(new PortDot { PortNum = 3, Dot = snapL, Owner = item, AngleDeg = 180 }); snapL.Tag = item.Ports.Last();
             }
-            else if (type.StartsWith("Loop") || type.StartsWith("Trap") || type.StartsWith("Column") || type == "Injection Port" || type == "Output" || type == "Pressure Sensor" || type == "Flow Sensor" || type == "Waste Port" || type == "Solvent Bottle")
+            else if (type.StartsWith("Trap") || type.StartsWith("Column") || type == "Injection Port" || type == "Output" || type == "Pressure Sensor" || type == "Flow Sensor" || type == "Waste Port" || type == "Solvent Bottle")
             {
                 item.HasSnapPoints = true;
                 // Inlet snap point (top)
@@ -633,22 +651,33 @@ namespace DiagramEditor
         {
             var pos = e.GetPosition(editorCanvas);
             var hitPort = FindPort(e);
+
+            // Connect ports mode — takes priority over everything
+            if (_connectType != null)
+            {
+                if (hitPort != null) { HandleConnectClick(hitPort); e.Handled = true; return; }
+                var nearPort = FindNearestPort(pos, 30);
+                if (nearPort != null) { HandleConnectClick(nearPort); e.Handled = true; return; }
+                txtConnectStatus.Text = "No port found. Click closer to a port dot.";
+                e.Handled = true;
+                return;
+            }
+
             if (hitPort != null && IsDrawMode)
             {
                 var center = GetPortCenter(hitPort);
-                AddTubingPoint(center);
-                txtSelected.Text = "Snapped to " + hitPort.Owner.Name + " P" + hitPort.PortNum;
+                AddTubingPoint(center, hitPort);
+                txtSelected.Text = "Anchored to " + hitPort.Owner.Name + " P" + hitPort.PortNum;
                 return;
             }
             if (IsDrawMode)
             {
-                // Try snap to nearest port within 20px
                 var nearPort = FindNearestPort(pos);
                 if (nearPort != null)
                 {
                     var center = GetPortCenter(nearPort);
-                    AddTubingPoint(center);
-                    txtSelected.Text = "Snapped to " + nearPort.Owner.Name + " P" + nearPort.PortNum;
+                    AddTubingPoint(center, nearPort);
+                    txtSelected.Text = "Anchored to " + nearPort.Owner.Name + " P" + nearPort.PortNum;
                 }
                 else
                 {
@@ -678,11 +707,189 @@ namespace DiagramEditor
             double ny = Math.Round((pos.Y - _dragOffset.Y) / 5) * 5;
             Canvas.SetLeft(_dragElement, nx); Canvas.SetTop(_dragElement, ny);
             _selectedItem.X = nx; _selectedItem.Y = ny; UpdateCoords(_selectedItem);
+
+            // Update all anchored tubing that connects to this component's ports
+            UpdateAnchoredTubing(_selectedItem);
         }
 
         void Canvas_MouseLeftButtonUp(object s, MouseButtonEventArgs e)
         {
-            if (_isDragging && _dragElement != null) { _dragElement.ReleaseMouseCapture(); _isDragging = false; _dragElement = null; }
+            if (_isDragging && _dragElement != null)
+            {
+                // Try to dock: if this component has snap points, check if any snap point
+                // is near a valve port — if so, dock the component onto that port
+                if (_selectedItem != null && _selectedItem.HasSnapPoints)
+                    TryDockToPort(_selectedItem);
+
+                _dragElement.ReleaseMouseCapture();
+                _isDragging = false;
+                _dragElement = null;
+            }
+        }
+
+        void TryDockToPort(DiagramItem item)
+        {
+            // For each of this item's snap points, find the nearest valve port or snap point
+            PortDot bestMySnap = null, bestValvePort = null;
+            double bestDist = 35; // increased range
+
+            foreach (var mySnap in item.Ports)
+            {
+                var myPos = GetPortCenter(mySnap);
+                foreach (var other in _items)
+                {
+                    if (other == item || other.Ports.Count == 0) continue;
+                    foreach (var otherPort in other.Ports)
+                    {
+                        var otherPos = GetPortCenter(otherPort);
+                        double dist = Math.Sqrt(Math.Pow(myPos.X - otherPos.X, 2) + Math.Pow(myPos.Y - otherPos.Y, 2));
+                        if (dist < bestDist)
+                        {
+                            bestDist = dist; bestMySnap = mySnap; bestValvePort = otherPort;
+                        }
+                    }
+                }
+            }
+
+            if (bestMySnap == null) return;
+
+            // Dock first end: move item so this snap sits on the valve port
+            var dockPos = GetPortCenter(bestValvePort);
+            var snapPos = GetPortCenter(bestMySnap);
+            double offsetX = snapPos.X - item.X;
+            double offsetY = snapPos.Y - item.Y;
+            item.X = dockPos.X - offsetX;
+            item.Y = dockPos.Y - offsetY;
+            Canvas.SetLeft(item.Visual, item.X);
+            Canvas.SetTop(item.Visual, item.Y);
+
+            // Color change: locked snap points turn red, valve port turns cyan
+            bestMySnap.Dot.Fill = Brushes.Red;
+            bestMySnap.Dot.Stroke = Brushes.DarkRed;
+            bestValvePort.Dot.Fill = Brushes.Cyan;
+            bestValvePort.Dot.Stroke = Brushes.DarkCyan;
+
+            txtSelected.Text = "DOCKED: " + item.Name + " snap " + bestMySnap.PortNum + " → " + bestValvePort.Owner.Name + " P" + bestValvePort.PortNum;
+
+            // Now check: does the OTHER snap point of this item have a nearby valve port?
+            // If so, stretch/resize the component to bridge both ports
+            if (item.Ports.Count >= 2)
+            {
+                var otherSnap = item.Ports.First(p => p != bestMySnap);
+                var otherSnapPos = GetPortCenter(otherSnap);
+
+                PortDot secondPort = null;
+                double secondBest = 40; // wider search for second port
+
+                foreach (var other in _items)
+                {
+                    if (other == item || other.PortCount == 0) continue;
+                    foreach (var vp in other.Ports)
+                    {
+                        if (vp == bestValvePort) continue;
+                        var vpPos = GetPortCenter(vp);
+                        double d = Math.Sqrt(Math.Pow(otherSnapPos.X - vpPos.X, 2) + Math.Pow(otherSnapPos.Y - vpPos.Y, 2));
+                        if (d < secondBest) { secondBest = d; secondPort = vp; }
+                    }
+                }
+
+                if (secondPort != null)
+                {
+                    // Stretch: calculate needed size to bridge both ports
+                    var port1Pos = GetPortCenter(bestValvePort);
+                    var port2Pos = GetPortCenter(secondPort);
+                    double dx = port2Pos.X - port1Pos.X;
+                    double dy = port2Pos.Y - port1Pos.Y;
+                    double distance = Math.Sqrt(dx * dx + dy * dy);
+
+                    // Calculate rotation to align inlet→outlet with port1→port2
+                    double angle = Math.Atan2(dy, dx) * 180 / Math.PI + 90; // +90 because inlet is top
+
+                    // Resize height to match distance
+                    item.H = distance;
+                    item.Rotation = angle;
+
+                    // Rebuild visual with new size and rotation
+                    RebuildVisual(item);
+                    _selectedItem = _items.Last(); // RebuildVisual creates new item
+
+                    // Re-dock after rebuild (positions changed)
+                    var newItem = _items.Last();
+                    var newSnap1 = newItem.Ports.FirstOrDefault(p => p.PortNum == bestMySnap.PortNum);
+                    if (newSnap1 != null)
+                    {
+                        var ns1Pos = GetPortCenter(newSnap1);
+                        newItem.X += port1Pos.X - ns1Pos.X;
+                        newItem.Y += port1Pos.Y - ns1Pos.Y;
+                        Canvas.SetLeft(newItem.Visual, newItem.X);
+                        Canvas.SetTop(newItem.Visual, newItem.Y);
+                    }
+
+                    // Color both valve ports cyan to show they're bridged
+                    bestValvePort.Dot.Fill = Brushes.Cyan;
+                    bestValvePort.Dot.Stroke = Brushes.DarkCyan;
+                    secondPort.Dot.Fill = Brushes.Cyan;
+                    secondPort.Dot.Stroke = Brushes.DarkCyan;
+
+                    txtSelected.Text = "BRIDGED: " + newItem.Name + " between " +
+                        bestValvePort.Owner.Name + " P" + bestValvePort.PortNum + " ↔ " +
+                        secondPort.Owner.Name + " P" + secondPort.PortNum;
+                }
+            }
+
+            UpdateCoords(_selectedItem ?? item);
+            UpdateAnchoredTubing(item);
+        }
+
+        void UpdateAnchoredTubing(DiagramItem movedItem)
+        {
+            foreach (var tp in _tubingPaths)
+            {
+                bool changed = false;
+                foreach (var anchor in tp.Anchors)
+                {
+                    if (anchor.Port.Owner == movedItem)
+                    {
+                        var newPos = GetPortCenter(anchor.Port);
+                        if (anchor.PointIndex < tp.Points.Count)
+                        {
+                            tp.Points[anchor.PointIndex] = newPos;
+                            changed = true;
+                        }
+                    }
+                }
+                if (changed) RedrawTubing(tp);
+            }
+        }
+
+        void RedrawTubing(TubingPath tp)
+        {
+            // Remove old visuals
+            foreach (var v in tp.Visuals) editorCanvas.Children.Remove(v);
+            tp.Visuals.Clear();
+
+            var brush = new SolidColorBrush(tp.Color);
+            // Redraw dots and lines
+            for (int i = 0; i < tp.Points.Count; i++)
+            {
+                var pt = tp.Points[i];
+                var dot = new Ellipse { Width = 6, Height = 6, Fill = brush, IsHitTestVisible = false };
+                Canvas.SetLeft(dot, pt.X - 3); Canvas.SetTop(dot, pt.Y - 3);
+                editorCanvas.Children.Add(dot);
+                tp.Visuals.Add(dot);
+
+                if (i > 0)
+                {
+                    var prev = tp.Points[i - 1];
+                    var line = new Line
+                    {
+                        X1 = prev.X, Y1 = prev.Y, X2 = pt.X, Y2 = pt.Y,
+                        Stroke = brush, StrokeThickness = tp.Thickness, IsHitTestVisible = false
+                    };
+                    editorCanvas.Children.Add(line);
+                    tp.Visuals.Add(line);
+                }
+            }
         }
 
         void Canvas_RightClick(object s, MouseButtonEventArgs e)
@@ -693,10 +900,101 @@ namespace DiagramEditor
                     (port.Owner.PortCount == 6 ? " (" + Port6Clocks[port.PortNum - 1] + " o'clk)" : "");
         }
 
+        // --- CONNECT PORTS MODE ---
+        private string _connectType;
+        private PortDot _connectPort1;
+
+        void StartConnectMode(string componentType)
+        {
+            _connectType = componentType;
+            _connectPort1 = null;
+            rbModeDrag.IsChecked = true; // switch to drag mode so clicks go to ports
+            txtConnectStatus.Text = "Click FIRST port for " + componentType;
+        }
+
+        void HandleConnectClick(PortDot port)
+        {
+            if (_connectPort1 == null)
+            {
+                _connectPort1 = port;
+                port.Dot.Fill = Brushes.Magenta;
+                txtConnectStatus.Text = "Port 1: " + port.Owner.Name + " P" + port.PortNum + "\nClick SECOND port...";
+            }
+            else
+            {
+                // Both ports selected — create the component between them
+                var p1 = GetPortCenter(_connectPort1);
+                var p2 = GetPortCenter(port);
+                port.Dot.Fill = Brushes.Magenta;
+
+                double dx = p2.X - p1.X, dy = p2.Y - p1.Y;
+                double dist = Math.Sqrt(dx * dx + dy * dy);
+                double angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+                double midX = (p1.X + p2.X) / 2, midY = (p1.Y + p2.Y) / 2;
+
+                // Create component
+                AddItem(_connectType, midX - 20, midY - dist / 2, _connectType);
+                var newItem = _items.Last();
+
+                // Resize to span the distance
+                if (_connectType.StartsWith("Loop"))
+                {
+                    newItem.W = Math.Max(dist * 0.6, 25);
+                    newItem.H = Math.Max(dist * 0.5, 20);
+                    newItem.Rotation = angle + 90;
+                    // Position so ends align with ports
+                    newItem.X = midX - newItem.W / 2;
+                    newItem.Y = midY - newItem.H / 2;
+                }
+                else
+                {
+                    newItem.W = Math.Max(15, newItem.W);
+                    newItem.H = dist;
+                    newItem.Rotation = angle + 90;
+                    newItem.X = midX - newItem.W / 2;
+                    newItem.Y = midY - newItem.H / 2;
+                }
+
+                // Rebuild with new size/rotation
+                RebuildVisual(newItem);
+                var built = _items.Last();
+                Canvas.SetLeft(built.Visual, built.X);
+                Canvas.SetTop(built.Visual, built.Y);
+
+                // Color the ports
+                _connectPort1.Dot.Fill = Brushes.Cyan;
+                _connectPort1.Dot.Stroke = Brushes.DarkCyan;
+                port.Dot.Fill = Brushes.Cyan;
+                port.Dot.Stroke = Brushes.DarkCyan;
+
+                txtConnectStatus.Text = "CONNECTED: " + _connectType + "\n" +
+                    _connectPort1.Owner.Name + " P" + _connectPort1.PortNum + " ↔ " +
+                    port.Owner.Name + " P" + port.PortNum;
+
+                _connectType = null;
+                _connectPort1 = null;
+            }
+        }
+
+        void ConnectLoop1_Click(object s, RoutedEventArgs e) { StartConnectMode("Loop 1uL"); }
+        void ConnectLoop5_Click(object s, RoutedEventArgs e) { StartConnectMode("Loop 5uL"); }
+        void ConnectLoop20_Click(object s, RoutedEventArgs e) { StartConnectMode("Loop 20uL"); }
+        void ConnectLoop50_Click(object s, RoutedEventArgs e) { StartConnectMode("Loop 50uL"); }
+        void ConnectTrap5_Click(object s, RoutedEventArgs e) { StartConnectMode("Trap 5cm"); }
+        void ConnectTrap15_Click(object s, RoutedEventArgs e) { StartConnectMode("Trap 15cm"); }
+        void ConnectTrap25_Click(object s, RoutedEventArgs e) { StartConnectMode("Trap 25cm"); }
+        void ConnectCol15_Click(object s, RoutedEventArgs e) { StartConnectMode("Column 15cm"); }
+        void ConnectCol25_Click(object s, RoutedEventArgs e) { StartConnectMode("Column 25cm"); }
+        void ConnectCol50_Click(object s, RoutedEventArgs e) { StartConnectMode("Column 50cm"); }
+
         void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && _activeTubing != null) FinishTubing();
-            if (e.Key == Key.Escape && _activeTubing != null) CancelTubing();
+            if (e.Key == Key.Escape)
+            {
+                if (_activeTubing != null) CancelTubing();
+                if (_connectType != null) { _connectType = null; _connectPort1 = null; txtConnectStatus.Text = "Cancelled"; }
+            }
         }
 
         DiagramItem FindItem(MouseButtonEventArgs e)
@@ -726,6 +1024,12 @@ namespace DiagramEditor
         {
             if (pd.Owner.HasSnapPoints)
             {
+                if (pd.Owner.Type.StartsWith("Loop"))
+                {
+                    // End A = bottom-left, End B = bottom-right
+                    if (pd.PortNum == 1) return new Point(pd.Owner.X, pd.Owner.Y + pd.Owner.H);
+                    return new Point(pd.Owner.X + pd.Owner.W, pd.Owner.Y + pd.Owner.H);
+                }
                 if (pd.Owner.Type == "Mixing Tee")
                 {
                     // 3 ports: 1=center top, 2=center bottom, 3=left center
@@ -751,7 +1055,7 @@ namespace DiagramEditor
         }
 
         // --- TUBING ---
-        void AddTubingPoint(Point pt)
+        void AddTubingPoint(Point pt, PortDot anchorPort = null)
         {
             if (_activeTubing == null)
             {
@@ -760,6 +1064,8 @@ namespace DiagramEditor
                 txtSelected.Text = "Click waypoints, ENTER to finish";
             }
             _activeTubing.Points.Add(pt);
+            if (anchorPort != null)
+                _activeTubing.Anchors.Add(new TubingAnchor { Port = anchorPort, PointIndex = _activeTubing.Points.Count - 1 });
             var dot = new Ellipse { Width = 6, Height = 6, Fill = new SolidColorBrush(_activeTubing.Color), IsHitTestVisible = false };
             Canvas.SetLeft(dot, pt.X - 3); Canvas.SetTop(dot, pt.Y - 3);
             editorCanvas.Children.Add(dot);
@@ -800,24 +1106,38 @@ namespace DiagramEditor
         void Size_TextChanged(object s, TextChangedEventArgs e)
         {
             if (_updatingSize || _selectedItem == null) return;
-            double newW = _selectedItem.W, newH = _selectedItem.H;
-            if (double.TryParse(txtWidth.Text, out double w) && w > 5) newW = w;
-            if (double.TryParse(txtHeight.Text, out double h) && h > 5) newH = h;
-            if (newW != _selectedItem.W || newH != _selectedItem.H)
+            try
             {
-                _selectedItem.W = newW; _selectedItem.H = newH;
-                RebuildVisual(_selectedItem);
-                _selectedItem = _items.Last();
-                UpdateCoords(_selectedItem);
+                double newW = _selectedItem.W, newH = _selectedItem.H;
+                if (double.TryParse(txtWidth.Text, out double w) && w > 5) newW = w;
+                if (double.TryParse(txtHeight.Text, out double h) && h > 5) newH = h;
+                if (newW != _selectedItem.W || newH != _selectedItem.H)
+                {
+                    _selectedItem.W = newW; _selectedItem.H = newH;
+                    SafeRebuild(_selectedItem);
+                    UpdateCoords(_selectedItem);
+                }
             }
+            catch { }
+        }
+
+        void SafeRebuild(DiagramItem item)
+        {
+            double x = item.X, y = item.Y;
+            editorCanvas.Children.Remove(item.Visual);
+            _items.Remove(item);
+            // Remove any tubing anchors referencing this item's ports
+            foreach (var tp in _tubingPaths)
+                tp.Anchors.RemoveAll(a => a.Port.Owner == item);
+            BuildVisual(item.Name, item.Type, x, y, item.W, item.H, item.FillColor, item.Label, item.PortCount, item.Rotation);
+            _selectedItem = _items.Last();
         }
 
         void ResizeSelected(double f)
         {
             if (_selectedItem == null) return;
             _selectedItem.W *= f; _selectedItem.H *= f;
-            RebuildVisual(_selectedItem);
-            _selectedItem = _items.Last();
+            SafeRebuild(_selectedItem);
             _updatingSize = true; txtWidth.Text = _selectedItem.W.ToString("F0"); txtHeight.Text = _selectedItem.H.ToString("F0"); _updatingSize = false;
             UpdateCoords(_selectedItem);
         }
