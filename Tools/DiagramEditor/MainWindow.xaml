@@ -83,6 +83,25 @@
                             <Button Content="x2" Click="DoubleBtn_Click" Width="48" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
                         </WrapPanel>
 
+                        <!-- Rotate -->
+                        <TextBlock Text="ROTATE" Foreground="#FFCCCCCC" FontWeight="Bold" Margin="0,6,0,2" FontSize="10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Deg:" Foreground="#FFAAAAAA" VerticalAlignment="Center" Margin="0,0,3,0" FontSize="10"/>
+                            <TextBox x:Name="txtRotation" Grid.Column="1" Background="#FF3A3A3C" Foreground="White" BorderBrush="#FF555555" Margin="0,1" FontSize="10" Text="0" TextChanged="Rotation_TextChanged"/>
+                        </Grid>
+                        <WrapPanel Margin="0,2">
+                            <Button Content="-90" Click="RotLeft90_Click" Width="36" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="-45" Click="RotLeft45_Click" Width="36" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="-15" Click="RotLeft15_Click" Width="36" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="+15" Click="RotRight15_Click" Width="36" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="+45" Click="RotRight45_Click" Width="36" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="+90" Click="RotRight90_Click" Width="36" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                            <Button Content="x2" Click="DoubleBtn_Click" Width="48" Margin="1" Background="#FF555555" Foreground="White" FontSize="9"/>
+                        </WrapPanel>
+
                         <!-- Tubing -->
                         <TextBlock Text="TUBING" Foreground="#FFCCCCCC" FontWeight="Bold" Margin="0,8,0,2" FontSize="10"/>
                         <TextBlock Text="Mode:" Foreground="#FF888888" FontSize="9"/>

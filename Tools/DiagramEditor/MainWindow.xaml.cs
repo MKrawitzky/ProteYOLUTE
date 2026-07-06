@@ -32,11 +32,12 @@ namespace DiagramEditor
         class DiagramItem
         {
             public string Name, Type, Label;
-            public double X, Y, W, H;
+            public double X, Y, W, H, Rotation;
             public Color FillColor;
             public UIElement Visual;
             public List<PortDot> Ports = new List<PortDot>();
             public int PortCount;
+            public bool HasSnapPoints; // true for loops, traps, columns
         }
         class PortDot { public int PortNum; public Ellipse Dot; public DiagramItem Owner; public double AngleDeg; }
         class TubingPath
@@ -89,7 +90,7 @@ namespace DiagramEditor
                 new[] { "Loop 20uL", "#FF668866" },
                 new[] { "Loop 50uL", "#FF779977" },
                 new[] { "Trap 5cm", "#FF664422" },
-                new[] { "Trap 10cm", "#FF886644" },
+                new[] { "Trap 15cm", "#FF886644" },
                 new[] { "Trap 25cm", "#FFAA8866" },
                 new[] { "Column 15cm", "#FF445566" },
                 new[] { "Column 25cm", "#FF556677" },
@@ -172,7 +173,7 @@ namespace DiagramEditor
                 case "Loop 20uL": w = 45; h = 45; fill = Color.FromRgb(102,136,102); break;
                 case "Loop 50uL": w = 60; h = 60; fill = Color.FromRgb(119,153,119); break;
                 case "Trap 5cm": w = 15; h = 35; fill = Color.FromRgb(102,68,34); break;
-                case "Trap 10cm": w = 18; h = 55; fill = Color.FromRgb(136,102,68); break;
+                case "Trap 15cm": w = 18; h = 65; fill = Color.FromRgb(136,102,68); break;
                 case "Trap 25cm": w = 20; h = 80; fill = Color.FromRgb(170,136,102); break;
                 case "Column 15cm": w = 14; h = 60; fill = Color.FromRgb(68,85,102); break;
                 case "Column 25cm": w = 16; h = 85; fill = Color.FromRgb(85,102,119); break;
@@ -185,9 +186,9 @@ namespace DiagramEditor
             BuildVisual(customName ?? (type + "_" + _items.Count), type, x, y, w, h, fill, label, ports);
         }
 
-        void BuildVisual(string name, string type, double x, double y, double w, double h, Color fill, string label, int ports)
+        void BuildVisual(string name, string type, double x, double y, double w, double h, Color fill, string label, int ports, double rotation = 0)
         {
-            var item = new DiagramItem { Name = name, Type = type, X = x, Y = y, W = w, H = h, FillColor = fill, Label = label, PortCount = ports };
+            var item = new DiagramItem { Name = name, Type = type, X = x, Y = y, W = w, H = h, FillColor = fill, Label = label, PortCount = ports, Rotation = rotation };
             var group = new Canvas { Width = w, Height = h };
 
             if (ports > 0)
@@ -240,44 +241,104 @@ namespace DiagramEditor
             }
             else if (type.StartsWith("Loop"))
             {
-                // Loop as a circle with open ends
-                var ellipse = new Ellipse
+                // Invisible background for hit-testing (so you can drag it)
+                var hitRect = new Rectangle { Width = w, Height = h, Fill = Brushes.Transparent };
+                group.Children.Add(hitRect);
+
+                // Loop as coiled tubing — two ends coming in, lasso coil in middle
+                double tubeThick = 2.5;
+                var brush = new SolidColorBrush(fill);
+                double cx = w / 2, cy = h / 2;
+                double coilR = Math.Min(w, h) / 2 - 8; // coil radius
+                int coils = w < 30 ? 1 : w < 50 ? 2 : 3; // more coils for bigger loops
+
+                // Inlet line (bottom-left coming in)
+                var inlet = new Line { X1 = 0, Y1 = h, X2 = cx - coilR, Y2 = cy, Stroke = brush, StrokeThickness = tubeThick };
+                group.Children.Add(inlet);
+
+                // Coil spiral
+                for (int c = 0; c < coils; c++)
                 {
-                    Width = w, Height = h,
-                    Stroke = new SolidColorBrush(fill), StrokeThickness = 3,
-                    Fill = new SolidColorBrush(Color.FromArgb(40, fill.R, fill.G, fill.B))
-                };
-                group.Children.Add(ellipse);
+                    double offset = c * 4;
+                    double r = coilR - offset;
+                    var coilPath = new System.Windows.Shapes.Path { Stroke = brush, StrokeThickness = tubeThick, Fill = Brushes.Transparent };
+                    var fig = new PathFigure { StartPoint = new Point(cx - r, cy) };
+                    // Full circle arc (two semicircles)
+                    fig.Segments.Add(new ArcSegment(new Point(cx + r, cy), new Size(r, r), 0, false, SweepDirection.Clockwise, true));
+                    fig.Segments.Add(new ArcSegment(new Point(cx - r, cy), new Size(r, r), 0, false, SweepDirection.Clockwise, true));
+                    var geom = new PathGeometry(); geom.Figures.Add(fig);
+                    coilPath.Data = geom; coilPath.IsHitTestVisible = false;
+                    group.Children.Add(coilPath);
+                }
+
+                // Outlet line (bottom-right going out)
+                var outlet = new Line { X1 = cx + coilR, Y1 = cy, X2 = w, Y2 = h, Stroke = brush, StrokeThickness = tubeThick };
+                group.Children.Add(outlet);
+
+                // Label
                 var lbl = new TextBlock
                 {
-                    Text = label, FontSize = w < 30 ? 6 : 8, FontWeight = FontWeights.Bold,
-                    Foreground = new SolidColorBrush(fill), IsHitTestVisible = false,
-                    HorizontalAlignment = HorizontalAlignment.Center
+                    Text = label, FontSize = 7, FontWeight = FontWeights.Bold,
+                    Foreground = new SolidColorBrush(Color.FromArgb(180, fill.R, fill.G, fill.B)),
+                    IsHitTestVisible = false
                 };
-                Canvas.SetLeft(lbl, w / 2 - label.Length * 2.5); Canvas.SetTop(lbl, h / 2 - 6);
+                Canvas.SetLeft(lbl, cx - label.Length * 2); Canvas.SetTop(lbl, 0);
                 group.Children.Add(lbl);
             }
             else if (type.StartsWith("Trap") || type.StartsWith("Column"))
             {
-                // Column/Trap as a rounded rectangle with gradient
-                var border = new Border
+                // Column/Trap as inline cylinder with inlet/outlet stubs
+                double tubeThick = 2;
+                var brush = new SolidColorBrush(fill);
+                double bodyW = w - 4, bodyH = h - 16; // leave room for stubs
+                double bodyX = 2, bodyY = 8;
+
+                // Inlet stub (top)
+                var inlet = new Line { X1 = w / 2, Y1 = 0, X2 = w / 2, Y2 = bodyY, Stroke = brush, StrokeThickness = tubeThick };
+                group.Children.Add(inlet);
+
+                // Cylinder body with gradient for 3D effect
+                var body = new Border
                 {
-                    Width = w, Height = h,
-                    CornerRadius = new CornerRadius(w / 2),
+                    Width = bodyW, Height = bodyH,
+                    CornerRadius = new CornerRadius(bodyW / 2),
                     BorderBrush = new SolidColorBrush(Color.FromArgb(200, fill.R, fill.G, fill.B)),
-                    BorderThickness = new Thickness(2), Opacity = 0.9
+                    BorderThickness = new Thickness(1.5)
                 };
-                border.Background = new LinearGradientBrush(
-                    Color.FromArgb(180, (byte)Math.Min(fill.R + 40, 255), (byte)Math.Min(fill.G + 40, 255), (byte)Math.Min(fill.B + 40, 255)),
-                    Color.FromArgb(220, fill.R, fill.G, fill.B), 0);
-                border.Child = new TextBlock
+                body.Background = new LinearGradientBrush(
+                    Color.FromArgb(200, (byte)Math.Min(fill.R + 50, 255), (byte)Math.Min(fill.G + 50, 255), (byte)Math.Min(fill.B + 50, 255)),
+                    Color.FromArgb(230, (byte)Math.Max(fill.R - 30, 0), (byte)Math.Max(fill.G - 30, 0), (byte)Math.Max(fill.B - 30, 0)),
+                    new Point(0, 0.5), new Point(1, 0.5));
+                body.Child = new TextBlock
                 {
-                    Text = label, FontSize = 7, FontWeight = FontWeights.Bold,
+                    Text = label, FontSize = 6, FontWeight = FontWeights.Bold,
                     Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center, TextWrapping = TextWrapping.Wrap,
                     TextAlignment = TextAlignment.Center
                 };
-                group.Children.Add(border);
+                Canvas.SetLeft(body, bodyX); Canvas.SetTop(body, bodyY);
+                group.Children.Add(body);
+
+                // Outlet stub (bottom)
+                var outlet = new Line { X1 = w / 2, Y1 = bodyY + bodyH, X2 = w / 2, Y2 = h, Stroke = brush, StrokeThickness = tubeThick };
+                group.Children.Add(outlet);
+
+                // Packing indicator (horizontal lines inside)
+                for (double py = bodyY + 8; py < bodyY + bodyH - 5; py += 6)
+                {
+                    var pk = new Line { X1 = bodyX + 3, Y1 = py, X2 = bodyX + bodyW - 3, Y2 = py,
+                        Stroke = new SolidColorBrush(Color.FromArgb(60, 255, 255, 255)), StrokeThickness = 0.5, IsHitTestVisible = false };
+                    group.Children.Add(pk);
+                }
+
+                // Flow direction arrow (pointing down into column)
+                var arrow = new Polygon
+                {
+                    Points = new PointCollection { new Point(w/2 - 4, 1), new Point(w/2 + 4, 1), new Point(w/2, 7) },
+                    Fill = new SolidColorBrush(Color.FromArgb(200, fill.R, fill.G, fill.B)),
+                    IsHitTestVisible = false
+                };
+                group.Children.Add(arrow);
             }
             else
             {
@@ -296,9 +357,58 @@ namespace DiagramEditor
                 };
                 group.Children.Add(border);
             }
+            // Add snap points for loops, traps, columns (inlet at top, outlet at bottom)
+            if (type == "Mixing Tee")
+            {
+                // Mixing Tee has 3 connection points: left input, right input, bottom output
+                item.HasSnapPoints = true;
+                // Input A (center top)
+                var snapT = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Lime, Stroke = Brushes.DarkGreen,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Input A (top)" };
+                Canvas.SetLeft(snapT, w / 2 - 4); Canvas.SetTop(snapT, -4);
+                group.Children.Add(snapT);
+                item.Ports.Add(new PortDot { PortNum = 1, Dot = snapT, Owner = item, AngleDeg = -90 }); snapT.Tag = item.Ports.Last();
+
+                // Input B (center bottom)
+                var snapB = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Lime, Stroke = Brushes.DarkGreen,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Input B (bottom)" };
+                Canvas.SetLeft(snapB, w / 2 - 4); Canvas.SetTop(snapB, h - 4);
+                group.Children.Add(snapB);
+                item.Ports.Add(new PortDot { PortNum = 2, Dot = snapB, Owner = item, AngleDeg = 90 }); snapB.Tag = item.Ports.Last();
+
+                // Output (left center)
+                var snapL = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Orange, Stroke = Brushes.DarkOrange,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Output (left)" };
+                Canvas.SetLeft(snapL, -4); Canvas.SetTop(snapL, h / 2 - 4);
+                group.Children.Add(snapL);
+                item.Ports.Add(new PortDot { PortNum = 3, Dot = snapL, Owner = item, AngleDeg = 180 }); snapL.Tag = item.Ports.Last();
+            }
+            else if (type.StartsWith("Loop") || type.StartsWith("Trap") || type.StartsWith("Column") || type == "Injection Port" || type == "Output" || type == "Pressure Sensor" || type == "Flow Sensor" || type == "Waste Port" || type == "Solvent Bottle")
+            {
+                item.HasSnapPoints = true;
+                // Inlet snap point (top)
+                var snapIn = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Lime, Stroke = Brushes.DarkGreen,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Inlet" };
+                Canvas.SetLeft(snapIn, w / 2 - 4); Canvas.SetTop(snapIn, -4);
+                group.Children.Add(snapIn);
+                item.Ports.Add(new PortDot { PortNum = 1, Dot = snapIn, Owner = item, AngleDeg = -90 }); snapIn.Tag = item.Ports.Last();
+
+                // Outlet snap point (bottom)
+                var snapOut = new Ellipse { Width = 8, Height = 8, Fill = Brushes.Orange, Stroke = Brushes.DarkOrange,
+                    StrokeThickness = 1, Cursor = Cursors.Cross, ToolTip = item.Name + " Outlet" };
+                Canvas.SetLeft(snapOut, w / 2 - 4); Canvas.SetTop(snapOut, h - 4);
+                group.Children.Add(snapOut);
+                item.Ports.Add(new PortDot { PortNum = 2, Dot = snapOut, Owner = item, AngleDeg = 90 }); snapOut.Tag = item.Ports.Last();
+            }
+
             group.Tag = item; group.Cursor = Cursors.SizeAll;
             item.Visual = group;
             Canvas.SetLeft(group, x); Canvas.SetTop(group, y);
+
+            // Apply rotation
+            if (item.Rotation != 0)
+                group.RenderTransform = new RotateTransform(item.Rotation, w / 2, h / 2);
+
             editorCanvas.Children.Add(group);
             _items.Add(item);
         }
@@ -448,6 +558,7 @@ namespace DiagramEditor
                             string name = parts[1], type = parts[2];
                             double x = double.Parse(parts[3]), y = double.Parse(parts[4]);
                             double w = double.Parse(parts[5]), h = double.Parse(parts[6]);
+                            double rot = parts.Length >= 8 ? double.Parse(parts[7]) : 0;
                             int portCount = 0;
                             if (type.Contains("Valve"))
                             {
@@ -464,7 +575,7 @@ namespace DiagramEditor
                                 case "Peltier Stack": fill = Colors.LightSteelBlue; break;
                                 default: if (type.Contains("Valve")) fill = Colors.DarkGray; break;
                             }
-                            BuildVisual(name, type, x, y, w, h, fill, name, portCount);
+                            BuildVisual(name, type, x, y, w, h, fill, name, portCount, rot);
                         }
                     }
                     else if (line.StartsWith("TUBE|"))
@@ -505,12 +616,46 @@ namespace DiagramEditor
         }
 
         // --- INPUT ---
+        PortDot FindNearestPort(Point pos, double maxDist = 20)
+        {
+            PortDot nearest = null; double best = maxDist;
+            foreach (var item in _items)
+                foreach (var pd in item.Ports)
+                {
+                    var pc = GetPortCenter(pd);
+                    double d = Math.Sqrt(Math.Pow(pc.X - pos.X, 2) + Math.Pow(pc.Y - pos.Y, 2));
+                    if (d < best) { best = d; nearest = pd; }
+                }
+            return nearest;
+        }
+
         void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var pos = e.GetPosition(editorCanvas);
             var hitPort = FindPort(e);
-            if (hitPort != null && IsDrawMode) { AddTubingPoint(GetPortCenter(hitPort)); return; }
-            if (IsDrawMode) { AddTubingPoint(pos); return; }
+            if (hitPort != null && IsDrawMode)
+            {
+                var center = GetPortCenter(hitPort);
+                AddTubingPoint(center);
+                txtSelected.Text = "Snapped to " + hitPort.Owner.Name + " P" + hitPort.PortNum;
+                return;
+            }
+            if (IsDrawMode)
+            {
+                // Try snap to nearest port within 20px
+                var nearPort = FindNearestPort(pos);
+                if (nearPort != null)
+                {
+                    var center = GetPortCenter(nearPort);
+                    AddTubingPoint(center);
+                    txtSelected.Text = "Snapped to " + nearPort.Owner.Name + " P" + nearPort.PortNum;
+                }
+                else
+                {
+                    AddTubingPoint(pos);
+                }
+                return;
+            }
 
             var item = FindItem(e);
             if (item != null)
@@ -518,7 +663,10 @@ namespace DiagramEditor
                 _dragElement = (FrameworkElement)item.Visual; _dragOffset = e.GetPosition(_dragElement);
                 _isDragging = true; _selectedItem = item; _dragElement.CaptureMouse();
                 txtSelected.Text = item.Name + " (" + item.Type + ")"; UpdateCoords(item);
-                _updatingSize = true; txtWidth.Text = item.W.ToString("F0"); txtHeight.Text = item.H.ToString("F0"); _updatingSize = false;
+                _updatingSize = true;
+                txtWidth.Text = item.W.ToString("F0"); txtHeight.Text = item.H.ToString("F0");
+                txtRotation.Text = item.Rotation.ToString("F0");
+                _updatingSize = false;
             }
         }
 
@@ -576,11 +724,25 @@ namespace DiagramEditor
 
         Point GetPortCenter(PortDot pd)
         {
-            double cx = pd.Owner.X + pd.Owner.W / 2;
-            double cy = pd.Owner.Y + pd.Owner.H / 2;
+            if (pd.Owner.HasSnapPoints)
+            {
+                if (pd.Owner.Type == "Mixing Tee")
+                {
+                    // 3 ports: 1=center top, 2=center bottom, 3=left center
+                    if (pd.PortNum == 1) return new Point(pd.Owner.X + pd.Owner.W / 2, pd.Owner.Y);
+                    if (pd.PortNum == 2) return new Point(pd.Owner.X + pd.Owner.W / 2, pd.Owner.Y + pd.Owner.H);
+                    return new Point(pd.Owner.X, pd.Owner.Y + pd.Owner.H / 2);
+                }
+                // Standard 2-port: port 1 = top center, port 2 = bottom center
+                double cx = pd.Owner.X + pd.Owner.W / 2;
+                if (pd.PortNum == 1) return new Point(cx, pd.Owner.Y);
+                else return new Point(cx, pd.Owner.Y + pd.Owner.H);
+            }
+            double pcx = pd.Owner.X + pd.Owner.W / 2;
+            double pcy = pd.Owner.Y + pd.Owner.H / 2;
             double a = pd.AngleDeg * Math.PI / 180;
             double r = pd.Owner.W / 2 + 5;
-            return new Point(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            return new Point(pcx + r * Math.Cos(a), pcy + r * Math.Sin(a));
         }
 
         void UpdateCoords(DiagramItem item)
@@ -660,6 +822,36 @@ namespace DiagramEditor
             UpdateCoords(_selectedItem);
         }
 
+        // --- ROTATION ---
+        void RotateSelected(double delta)
+        {
+            if (_selectedItem == null) return;
+            _selectedItem.Rotation = (_selectedItem.Rotation + delta) % 360;
+            if (_selectedItem.Rotation < 0) _selectedItem.Rotation += 360;
+            var fe = (FrameworkElement)_selectedItem.Visual;
+            fe.RenderTransformOrigin = new Point(0.5, 0.5);
+            fe.RenderTransform = new RotateTransform(_selectedItem.Rotation);
+            _updatingSize = true; txtRotation.Text = _selectedItem.Rotation.ToString("F0"); _updatingSize = false;
+            UpdateCoords(_selectedItem);
+        }
+        void Rotation_TextChanged(object s, TextChangedEventArgs e)
+        {
+            if (_updatingSize || _selectedItem == null) return;
+            if (double.TryParse(txtRotation.Text, out double deg))
+            {
+                _selectedItem.Rotation = deg % 360;
+                var fe = (FrameworkElement)_selectedItem.Visual;
+                fe.RenderTransformOrigin = new Point(0.5, 0.5);
+                fe.RenderTransform = new RotateTransform(_selectedItem.Rotation);
+            }
+        }
+        void RotLeft90_Click(object s, RoutedEventArgs e) { RotateSelected(-90); }
+        void RotLeft45_Click(object s, RoutedEventArgs e) { RotateSelected(-45); }
+        void RotLeft15_Click(object s, RoutedEventArgs e) { RotateSelected(-15); }
+        void RotRight15_Click(object s, RoutedEventArgs e) { RotateSelected(15); }
+        void RotRight45_Click(object s, RoutedEventArgs e) { RotateSelected(45); }
+        void RotRight90_Click(object s, RoutedEventArgs e) { RotateSelected(90); }
+
         void ShrinkBtn_Click(object s, RoutedEventArgs e) { ResizeSelected(0.75); }
         void GrowBtn_Click(object s, RoutedEventArgs e) { ResizeSelected(1.25); }
         void Grow50Btn_Click(object s, RoutedEventArgs e) { ResizeSelected(1.5); }
@@ -699,7 +891,7 @@ namespace DiagramEditor
             var sb = new StringBuilder();
             sb.AppendLine("# ProteYOLUTE Schematic — " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             foreach (var i in _items)
-                sb.AppendLine("COMP|" + i.Name + "|" + i.Type + "|" + i.X.ToString("F1") + "|" + i.Y.ToString("F1") + "|" + i.W.ToString("F1") + "|" + i.H.ToString("F1"));
+                sb.AppendLine("COMP|" + i.Name + "|" + i.Type + "|" + i.X.ToString("F1") + "|" + i.Y.ToString("F1") + "|" + i.W.ToString("F1") + "|" + i.H.ToString("F1") + "|" + i.Rotation.ToString("F0"));
             foreach (var t in _tubingPaths.Where(tp => tp.Visuals.Count > 0))
             {
                 string pts = string.Join(";", t.Points.Select(p => p.X.ToString("F0") + "," + p.Y.ToString("F0")));
