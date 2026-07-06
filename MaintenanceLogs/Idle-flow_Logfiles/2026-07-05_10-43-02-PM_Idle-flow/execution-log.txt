@@ -1,0 +1,13 @@
+﻿Procedure: Idle flow
+Argument list:
+idle_flow_rate = 0.3
+composition = 80
+max_flow = 3
+via_trap = True
+default_oven_temperature = 35
+is_use_oven_temperature = True
+oven_temperature = 20
+trap = Name: Thermo Neo Trap Cartridge 5 mm, Func: Trap, ColDia: 0.3 mm, Len: 5 mm, PartDia: 5 µm, Porosity: 42 %
+separator = Name: PepSep (25cm x 150µm x 1.5µm), Func: Separator, ColDia: 0.15 mm, Len: 250 mm, PartDia: 1.5 µm, Porosity: 42 %
+05/07/2026 22:43:02.380 - 000.00:00:00.0	STARTED
+05/07/2026 22:43:03.381 - 000.00:00:01.0	COMPLETED

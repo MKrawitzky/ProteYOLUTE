@@ -1,4 +1,0 @@
-﻿Procedure: Decompress
-Argument list:
-05/07/2026 15:13:24.138 - 000.00:00:00.0	STARTED
-05/07/2026 15:13:25.139 - 000.00:00:01.0	COMPLETED
