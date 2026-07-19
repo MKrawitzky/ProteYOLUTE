@@ -1,0 +1,253 @@
+{
+    "_comment": "ProteYOLUTE System Topology Configuration",
+    "_version": "2.0.0",
+    "_author": "Michael Krawitzky",
+
+    "system": {
+        "name": "proteoElute",
+        "description": "Bruker proteoElute UHPLC — 2-pump, 4-valve nano-flow system",
+        "max_flow_ul_min": 3.0,
+        "base_pressure_bar": 40,
+        "max_pump_volume_ul": 1350,
+        "capillary_system_volume_ul": 0.22,
+        "gradient_dead_volume_ul": 0.46,
+        "loop_volume_ul": 20
+    },
+
+    "pumps": {
+        "A": {
+            "name": "Pump A",
+            "channel": "A",
+            "role": "aqueous",
+            "max_volume_ul": 1350,
+            "default_solvent": "Water + 0.1% FA"
+        },
+        "B": {
+            "name": "Pump B",
+            "channel": "B",
+            "role": "organic",
+            "max_volume_ul": 1350,
+            "default_solvent": "80% ACN + 0.1% FA"
+        }
+    },
+
+    "valves": {
+        "PumpValveA": {
+            "name": "Valve A",
+            "type": "6-port rotary",
+            "positions": {
+                "Inject":      { "angle": 0,   "description": "Flow to injection path" },
+                "Solvent":     { "angle": 60,  "description": "Draw from solvent bottle" },
+                "Compress120": { "angle": 120, "description": "Compress at 120 degrees" },
+                "Waste":       { "angle": 180, "description": "Route to waste" },
+                "MixTee":      { "angle": 240, "description": "Flow to mixing tee" },
+                "Compress":    { "angle": 300, "description": "Compress at 300 degrees" }
+            }
+        },
+        "PumpValveB": {
+            "name": "Valve B",
+            "type": "6-port rotary",
+            "positions": {
+                "Inject":      { "angle": 0,   "description": "Flow to injection path" },
+                "Solvent":     { "angle": 60,  "description": "Draw from solvent bottle" },
+                "Compress120": { "angle": 120, "description": "Compress at 120 degrees" },
+                "Waste":       { "angle": 180, "description": "Route to waste" },
+                "MixTee":      { "angle": 240, "description": "Flow to mixing tee" },
+                "Compress":    { "angle": 300, "description": "Compress at 300 degrees" }
+            }
+        },
+        "InjectionValve": {
+            "name": "Injection Valve",
+            "type": "3-position rotary",
+            "positions": {
+                "Inject": { "angle": 0,  "description": "Inject sample from loop" },
+                "Block":  { "angle": 30, "description": "Block position" },
+                "Load":   { "angle": 60, "description": "Load sample into loop" }
+            }
+        },
+        "TrapValve": {
+            "name": "Trap Valve",
+            "type": "6-port rotary",
+            "positions": {
+                "Waste":       { "angle": 0,   "description": "Route to waste" },
+                "Trap":        { "angle": 60,  "description": "Load trap column" },
+                "GradientA":   { "angle": 120, "description": "Gradient to analytical via A" },
+                "Analytical":  { "angle": 180, "description": "Direct to analytical column" },
+                "GradientT":   { "angle": 240, "description": "Gradient through trap" },
+                "InjectWaste": { "angle": 300, "description": "Inject position with waste" }
+            }
+        }
+    },
+
+    "sensors": {
+        "PressureSensorA": {
+            "name": "Pressure Sensor A",
+            "channel": "A",
+            "type": "pressure",
+            "model": "1600bar",
+            "max_bar": 1000,
+            "cutoff_bar": 1250,
+            "default_offset": 211,
+            "default_factor": 0.03075
+        },
+        "PressureSensorB": {
+            "name": "Pressure Sensor B",
+            "channel": "B",
+            "type": "pressure",
+            "model": "1600bar",
+            "max_bar": 1000,
+            "cutoff_bar": 1250,
+            "default_offset": 211,
+            "default_factor": 0.03075
+        },
+        "FlowSensorA": {
+            "name": "Flow Sensor A",
+            "channel": "A",
+            "type": "flow"
+        },
+        "FlowSensorB": {
+            "name": "Flow Sensor B",
+            "channel": "B",
+            "type": "flow"
+        }
+    },
+
+    "flow_paths": {
+        "PumpA_to_MixTee": {
+            "description": "Pump A aqueous path",
+            "components": ["PumpA", "PumpValveA", "PressureSensorA", "FlowSensorA", "MixTee"],
+            "color_rgb": [15, 112, 184]
+        },
+        "PumpB_to_MixTee": {
+            "description": "Pump B organic path",
+            "components": ["PumpB", "PumpValveB", "PressureSensorB", "FlowSensorB", "MixTee"],
+            "color_rgb": [193, 41, 45]
+        },
+        "MixTee_to_TrapValve": {
+            "description": "Mixed solvent to trap valve",
+            "components": ["MixTee", "TrapValve"],
+            "color_rgb": [99, 50, 138]
+        },
+        "Separation": {
+            "description": "Analytical column to MS",
+            "components": ["TrapValve", "SeparatorColumn", "TransferLine"],
+            "color_rgb": [0, 128, 0]
+        },
+        "Injection": {
+            "description": "Sample injection path",
+            "components": ["InjectionValve", "SampleLoop", "TrapValve"],
+            "color_rgb": [218, 165, 32]
+        }
+    },
+
+    "unity_flows": {
+        "system": 0.006425354,
+        "equilibration_pump_separation": 0.02405,
+        "equilibration_pump_load_trap": 0.0468,
+        "trap_flow_factor": 1.045,
+        "transfer_line_flow_factor": 1.13
+    },
+
+    "dead_volumes": {
+        "mix_tee_nl": 66,
+        "capillary_to_trap_valve_nl": 110,
+        "trap_valve_groove_nl": 109,
+        "post_trap_capillary_nl": 173,
+        "total_gradient_dead_volume_nl": 460
+    },
+
+    "pid_profiles": {
+        "PID_Test":   { "P": 1600, "I": 100, "D": 100, "description": "Test profile" },
+        "PID_6_1_1":  { "P": 600,  "I": 100, "D": 100, "description": "Conservative — low flow" },
+        "PID_6_2_1":  { "P": 600,  "I": 200, "D": 100, "description": "Conservative — medium response" },
+        "PID_10_1_1": { "P": 1000, "I": 100, "D": 100, "description": "Moderate" },
+        "PID_16_1_1": { "P": 1600, "I": 100, "D": 100, "description": "Standard — most gradients" },
+        "PID_16_2_1": { "P": 1600, "I": 200, "D": 100, "description": "Standard — faster response" },
+        "PID_16_5_1": { "P": 1600, "I": 500, "D": 100, "description": "Standard — fast integral" },
+        "PID_18_1_1": { "P": 1800, "I": 100, "D": 100, "description": "Aggressive" },
+        "PID_20_6_1": { "P": 2000, "I": 600, "D": 100, "description": "High flow — standard" },
+        "PID_20_10_1":{ "P": 2000, "I": 1000,"D": 100, "description": "High flow — fast response" },
+        "PID_25_1_1": { "P": 2500, "I": 100, "D": 100, "description": "Very aggressive — high flow" },
+        "PID_25_12_1":{ "P": 2500, "I": 1200,"D": 100, "description": "Very aggressive — fastest" },
+        "PID_50_2_1": { "P": 5000, "I": 200, "D": 100, "description": "Maximum — special cases" }
+    },
+
+    "pid_auto_select": {
+        "rules": [
+            { "flow_max_ul_min": 0.3, "profile": "PID_6_1_1", "description": "Low flow" },
+            { "flow_max_ul_min": 0.5, "profile": "PID_10_1_1", "description": "Medium-low flow" },
+            { "flow_max_ul_min": 1.0, "profile": "PID_16_1_1", "description": "Standard flow" },
+            { "flow_max_ul_min": 2.0, "profile": "PID_20_6_1", "description": "High flow" },
+            { "flow_max_ul_min": 3.0, "profile": "PID_25_12_1", "description": "Maximum flow" }
+        ]
+    },
+
+    "oven": {
+        "min_temperature_c": 10,
+        "max_temperature_c": 60,
+        "default_temperature_c": 50
+    },
+
+    "diagnostics": {
+        "flow_restriction_test_pressure_bar": 20,
+        "flow_restriction_build_speed_ul_min": 100,
+        "flow_restriction_duration_s": 240,
+        "leak_test_low_pressure_bar": 50,
+        "leak_test_high_pressure_bar": 1000,
+        "thresholds": {
+            "low_pressure_hold_flow_a": 0.1,
+            "low_pressure_hold_flow_b": 0.15,
+            "low_pressure_build_vol_a": 20,
+            "low_pressure_build_vol_b": 25,
+            "back_pressure_flow_route1": 0.5,
+            "back_pressure_flow_route2": 1.5,
+            "back_pressure_flow_route3": 3.0,
+            "high_pressure_flow_a": 1.0,
+            "high_pressure_flow_b": 1.5,
+            "leak_test_speed_a": 1.5,
+            "leak_test_speed_b": 2.0,
+            "leak_test_flow_a": -0.05,
+            "leak_test_flow_b": 0.05
+        }
+    },
+
+    "calibration": {
+        "pressure_offset_range_min": 140,
+        "pressure_offset_range_max": 350,
+        "flow_offset_range_ul_min": 0.1,
+        "flow_factor_range_min": 0.1,
+        "flow_factor_range_max": 10,
+        "test_flow_rate_ul_min": 0.5,
+        "test_pressure_a_bar": 60,
+        "test_pressure_b_bar": 50,
+        "calibration_duration_s": 300,
+        "compressibility_factor_default": 1.70
+    },
+
+    "topologies": {
+        "standard": {
+            "name": "Standard proteoElute",
+            "description": "2 pumps, 4 valves, trap + analytical column",
+            "pumps": ["A", "B"],
+            "valves": ["PumpValveA", "PumpValveB", "InjectionValve", "TrapValve"],
+            "has_trap": true,
+            "has_injection": true
+        },
+        "trapless": {
+            "name": "Trap-less",
+            "description": "2 pumps, 3 valves, direct injection to analytical",
+            "pumps": ["A", "B"],
+            "valves": ["PumpValveA", "PumpValveB", "InjectionValve"],
+            "has_trap": false,
+            "has_injection": true
+        },
+        "direct_flow": {
+            "name": "Direct Flow",
+            "description": "Single pump constant flow, no column",
+            "pumps": ["A"],
+            "valves": ["PumpValveA"],
+            "has_trap": false,
+            "has_injection": false
+        }
+    }
+}

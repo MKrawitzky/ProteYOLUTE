@@ -45,6 +45,12 @@
       <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\BrukerLC.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Syncfusion.SfChart.WPF">
@@ -204,6 +210,14 @@
       <DependentUpon>ProcedureParameterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProcParam.cs" />
+    <Compile Include="Data\ProteYoluteDb.cs" />
+    <Compile Include="Data\SmartColumnManager.cs" />
+    <Compile Include="Data\PressureAnomalyDetector.cs" />
+    <Compile Include="Api\ProteYoluteApiServer.cs" />
+    <Compile Include="Controls\LiveDashboardPanel.xaml.cs">
+      <DependentUpon>LiveDashboardPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FlowAnimationOverlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
@@ -344,6 +358,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Led.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LiveDashboardPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
