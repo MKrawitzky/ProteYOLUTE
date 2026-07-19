@@ -392,6 +392,25 @@ namespace BalticWpfControlLib.Api
 
         private string GenerateDashboardHtml()
         {
+            // Try to load premium dashboard from file
+            try
+            {
+                string dashPath = Path.Combine(
+                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? "",
+                    "Api", "dashboard.html");
+                if (!File.Exists(dashPath))
+                {
+                    // Try relative to plugin directory
+                    dashPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                        @"Bruker\HyStar\LcPlugin\PrivateData\Bruker proteoElute\DLL_Extract\dnspy_baltic\BalticWpfControlLib\Api\dashboard.html");
+                }
+                if (File.Exists(dashPath))
+                    return File.ReadAllText(dashPath, System.Text.Encoding.UTF8);
+            }
+            catch { /* Fall through to embedded version */ }
+
+            // Fallback: embedded minimal dashboard
             return @"<!DOCTYPE html>
 <html lang=""en"">
 <head>

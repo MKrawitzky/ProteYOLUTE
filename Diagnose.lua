@@ -104,6 +104,9 @@ function Main (installed, context)
 		context:Log("Starting Basic Diagnostics")
 	end
 	local fvd = require "Diagnostics"
+	local core = require("proteyolute_core")
+	-- Diagnostics manages its own pump reference
+
 	local pressure = {1000}
 --	if (installed.MaxPumpPressure > 1200) then pressure = {1000, 1200} end		-- PNS-763
 	fvd.diagnostics(installed, context, pressure, isAdvanced, selfDiagnose)

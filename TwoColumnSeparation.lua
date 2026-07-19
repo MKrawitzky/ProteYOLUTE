@@ -213,6 +213,11 @@ function Main (installed, context)
 	local pump = 		context:GetProcedureParticipant(baltic.GradientPumpRole)
 	local dictator = LoggingDictator.Prevent(pump)
 	if installed.IsExtendedLoggingEnabled then dictator:Dispose() end
+
+	-- ProteYOLUTE intelligent monitoring
+	local core = require("proteyolute_core")
+	local session = core.beginProcedure(context, installed, pump, zr)
+
 	---@type IProcedureStatusParticipant
 	local status = 		context:GetProcedureParticipant(baltic.LcStatusRole)
 	local valveI = 		pp.QueryValveDrive(execAux, pp.Capabilities.ILcInjectorValve)
@@ -827,7 +832,10 @@ function Main (installed, context)
 	zr.logValveABShiftCounterPosition(context, pump)
 	zr.logPumpVolume(context, pump)
 
+	session:finish("completed")
+
 	if ( error_code.err ~= "" ) then
+		session:fail(error_code.err)
 		handle_message()
 	end
 end

@@ -120,6 +120,11 @@ function Main (installed, context)
 	local pump 		= context:GetProcedureParticipant(baltic.GradientPumpRole)
 	local dictator = LoggingDictator.Prevent(pump)
 	if installed.IsExtendedLoggingEnabled then dictator:Dispose() end
+
+	-- ProteYOLUTE intelligent monitoring
+	local core = require("proteyolute_core")
+	local session = core.beginProcedure(context, installed, pump, zr)
+
 	---@type IPalParticipant
 	local execLeft 	= context:GetProcedureParticipant(baltic.LeftExecutorRole)
 	---@type IPalParticipant
@@ -1021,5 +1026,7 @@ function Main (installed, context)
 	while not execLeft.IsIdle do
 		sleep_100()
 	end
+
+	session:finish("completed")
 end
 

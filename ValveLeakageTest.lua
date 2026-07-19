@@ -71,6 +71,11 @@ function Main (installed, context)
 	local pump = context:GetProcedureParticipant(baltic.GradientPumpRole)
 	local dictator = LoggingDictator.Prevent(pump)
 	if installed.IsExtendedLoggingEnabled then dictator:Dispose() end
+
+	-- ProteYOLUTE intelligent monitoring
+	local core = require("proteyolute_core")
+	local session = core.beginProcedure(context, installed, pump, zr)
+
 	---@type IProcedureStatusParticipant
 	local status = context:GetProcedureParticipant(baltic.LcStatusRole)
 
@@ -483,4 +488,6 @@ function Main (installed, context)
 	pf.SetMaxPressureLimit(zr.A, 1020, pump, sleep_100)
 	pf.SetMaxPressureLimit(zr.B, 1020, pump, sleep_100)
 	context:Sleep(2000)
+
+	session:finish("completed")
 end

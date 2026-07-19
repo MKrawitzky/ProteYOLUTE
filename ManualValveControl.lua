@@ -197,6 +197,10 @@ function Main(installed, context)
 	local dictator = LoggingDictator.Prevent(pump)
 	if installed.IsExtendedLoggingEnabled then dictator:Dispose() end
 
+	-- ProteYOLUTE intelligent monitoring
+	local core = require("proteyolute_core")
+	local session = core.beginProcedure(context, installed, pump, zr)
+
 	-- Reset diagram
 	pr.Signalize_Reset(context)
 	context:ShowComposition(true)
@@ -444,4 +448,6 @@ function Main(installed, context)
 	-- ========================================
 	context:Log("=== Manual Control finished: {0} ===", os.date())
 	dictator:Dispose()
+
+	session:finish("completed")
 end

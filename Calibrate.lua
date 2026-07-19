@@ -98,6 +98,10 @@ function Main (installed, context)
 	local dictator = LoggingDictator.Prevent(pump)
 	if installed.IsExtendedLoggingEnabled then dictator:Dispose() end
 
+	-- ProteYOLUTE intelligent monitoring
+	local core = require("proteyolute_core")
+	local session = core.beginProcedure(context, installed, pump, zr)
+
 	local procStartTime = pf.now()
 	local calFlowSensors_New	= false	-- context:GetArgumentValue("Calibrate flow sensors new")	-- PBNE-660 false due to future version
 	-- channel A
@@ -1196,4 +1200,6 @@ function Main (installed, context)
 	pf.isPumpIdle(pump, sleep_100)
 
 	context:Report("Calibration", Severity.Info, true, "The calibration has been completed.")
+
+	session:finish("completed")
 end

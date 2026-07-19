@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProteYOLUTE</title>
+<style>
+:root {
+  --bg-primary: #06060c;
+  --bg-card: rgba(16,16,28,0.8);
+  --bg-card-hover: rgba(20,20,36,0.9);
+  --border: rgba(255,255,255,0.06);
+  --border-accent: rgba(99,102,241,0.3);
+  --text-primary: #f0f0f5;
+  --text-secondary: #8b8ba3;
+  --text-muted: #4a4a6a;
+  --accent: #6366f1;
+  --accent-glow: rgba(99,102,241,0.15);
+  --green: #22c55e;
+  --green-glow: rgba(34,197,94,0.12);
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --purple: #a855f7;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden;
+  -webkit-font-smoothing: antialiased; }
+
+/* Ambient background */
+body::before { content:''; position:fixed; top:-50%; left:-50%; width:200%; height:200%;
+  background: radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.04) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(34,197,94,0.03) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(168,85,247,0.03) 0%, transparent 50%);
+  animation: ambientShift 20s ease-in-out infinite; z-index:-1; }
+@keyframes ambientShift { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-2%,-1%)} }
+
+.header { padding: 20px 28px; display:flex; align-items:center; gap:16px;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  position:sticky; top:0; z-index:100; background: rgba(6,6,12,0.85); }
+.logo { display:flex; align-items:center; gap:12px; }
+.logo-mark { width:36px; height:36px; border-radius:10px;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:16px; color:white; letter-spacing:-1px;
+  box-shadow: 0 0 20px rgba(99,102,241,0.3); }
+.logo h1 { font-size:20px; font-weight:700; letter-spacing:-0.5px;
+  background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.logo .sub { font-size:11px; color:var(--text-muted); font-weight:500; letter-spacing:0.5px; text-transform:uppercase; }
+.header-right { margin-left:auto; display:flex; align-items:center; gap:16px; }
+.status-pill { display:flex; align-items:center; gap:6px; padding:5px 12px;
+  background: var(--green-glow); border:1px solid rgba(34,197,94,0.2);
+  border-radius:20px; font-size:12px; font-weight:600; color:var(--green); }
+.status-pill .dot { width:6px; height:6px; border-radius:50%; background:var(--green);
+  box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+.clock { font-size:13px; color:var(--text-muted); font-variant-numeric:tabular-nums; font-weight:500; }
+
+.grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; padding:20px 28px; }
+@media(max-width:1200px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:600px) { .grid { grid-template-columns: 1fr; } }
+
+.card { background: var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:20px; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); position:relative; overflow:hidden; }
+.card:hover { background:var(--bg-card-hover); border-color:var(--border-accent);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px var(--border-accent); transform:translateY(-1px); }
+.card.span2 { grid-column: span 2; }
+.card.span4 { grid-column: span 4; }
+
+.card-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px;
+  color:var(--text-muted); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.card-label .icon { width:16px; height:16px; border-radius:4px; display:flex; align-items:center;
+  justify-content:center; font-size:10px; }
+
+.metric-row { display:flex; justify-content:space-between; align-items:baseline; padding:5px 0;
+  border-bottom:1px solid rgba(255,255,255,0.03); }
+.metric-row:last-child { border-bottom:none; }
+.metric-name { font-size:13px; color:var(--text-secondary); }
+.metric-val { font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-0.5px; }
+.metric-val.sm { font-size:16px; }
+.metric-unit { font-size:11px; color:var(--text-muted); margin-left:3px; font-weight:400; }
+.metric-val.green { color:var(--green); }
+.metric-val.amber { color:var(--amber); }
+.metric-val.red { color:var(--red); }
+.metric-val.blue { color:var(--blue); }
+.metric-val.purple { color:var(--purple); }
+
+.sparkline { height:80px; margin-top:12px; border-radius:var(--radius-sm);
+  background:rgba(0,0,0,0.25); position:relative; overflow:hidden; }
+.sparkline canvas { width:100%!important; height:100%!important; }
+
+.health-track { height:4px; background:rgba(255,255,255,0.05); border-radius:2px; margin-top:10px; overflow:hidden; }
+.health-fill { height:100%; border-radius:2px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1), background 0.5s; }
+
+.counter-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; }
+.counter { text-align:center; padding:14px 8px; background:rgba(0,0,0,0.2); border-radius:var(--radius-sm);
+  border:1px solid rgba(255,255,255,0.03); transition:all 0.3s; }
+.counter:hover { border-color:var(--border-accent); background:rgba(99,102,241,0.05); }
+.counter .num { font-size:28px; font-weight:800; letter-spacing:-1px;
+  background:linear-gradient(135deg, var(--accent), var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.counter .desc { font-size:10px; color:var(--text-muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.8px; font-weight:600; }
+
+.alert { padding:10px 14px; border-radius:var(--radius-sm); margin-bottom:6px;
+  border-left:3px solid; backdrop-filter:blur(4px); transition:all 0.3s;
+  animation: slideIn 0.3s cubic-bezier(0.4,0,0.2,1); }
+@keyframes slideIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:none} }
+.alert.warning { background:rgba(245,158,11,0.08); border-color:var(--amber); }
+.alert.error { background:rgba(239,68,68,0.08); border-color:var(--red); }
+.alert.info { background:rgba(59,130,246,0.08); border-color:var(--blue); }
+.alert .msg { font-size:13px; line-height:1.5; }
+.alert .time { font-size:10px; color:var(--text-muted); margin-top:3px; }
+
+.gradient-bar { height:6px; background:rgba(255,255,255,0.05); border-radius:3px; margin-top:10px; overflow:hidden; }
+.gradient-fill { height:100%; border-radius:3px; transition:width 0.5s;
+  background:linear-gradient(90deg, var(--blue), var(--purple), var(--red)); }
+
+.valve-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:8px; }
+.valve-chip { padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:8px;
+  border:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center; }
+.valve-chip .name { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; }
+.valve-chip .pos { font-size:13px; font-weight:600; color:var(--blue); }
+
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th { text-align:left; padding:8px; color:var(--text-muted); font-size:11px;
+  text-transform:uppercase; letter-spacing:0.5px; font-weight:600;
+  border-bottom:1px solid var(--border); }
+td { padding:8px; border-bottom:1px solid rgba(255,255,255,0.02); }
+tr:hover td { background:rgba(255,255,255,0.02); }
+.badge { padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+.badge.completed { background:rgba(34,197,94,0.1); color:var(--green); }
+.badge.running { background:rgba(59,130,246,0.1); color:var(--blue); }
+.badge.failed { background:rgba(239,68,68,0.1); color:var(--red); }
+
+.proactive { padding:16px; background:linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.05));
+  border:1px solid rgba(99,102,241,0.15); border-radius:var(--radius-sm); margin-bottom:10px; }
+.proactive .title { font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.proactive .recommendation { font-size:13px; color:var(--text-secondary); line-height:1.6; }
+
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-mark">PY</div>
+    <div><h1>ProteYOLUTE</h1><div class="sub">Intelligent Nano-Flow LC</div></div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill" id="statusPill"><div class="dot"></div><span id="statusText">Online</span></div>
+    <div class="clock" id="clock"></div>
+  </div>
+</div>
+
+<div class="grid">
+  <!-- Proactive Intelligence -->
+  <div class="card span4" id="proactiveCard" style="display:none">
+    <div class="card-label"><div class="icon" style="background:var(--accent)">!</div> PROACTIVE INSIGHTS</div>
+    <div id="proactiveContent"></div>
+  </div>
+
+  <!-- Pressure -->
+  <div class="card">
+    <div class="card-label"><div class="icon" style="background:rgba(59,130,246,0.2);color:var(--blue)">P</div> PRESSURE</div>
+    <div class="metric-row"><span class="metric-name">Channel A</span><span class="metric-val green" id="pA">--<span class="metric-unit">bar</span></span></div>
+    <div class="metric-row"><span class="metric-name">Channel B</span><span class="metric-val green" id="pB">--<span class="metric-unit">bar</span></span></div>
+    <div class="sparkline"><canvas id="cPressure"></canvas></div>
+  </div>
+
+  <!-- Flow -->
+  <div class="card">
+    <div class="card-label"><div class="icon" style="background:rgba(34,197,94,0.2);color:var(--green)">F</div> FLOW</div>
+    <div class="metric-row"><span class="metric-name">Channel A</span><span class="metric-val green" id="fA">--<span class="metric-unit">uL/min</span></span></div>
+    <div class="metric-row"><span class="metric-name">Channel B</span><span class="metric-val green" id="fB">--<span class="metric-unit">uL/min</span></span></div>
+    <div class="sparkline"><canvas id="cFlow"></canvas></div>
+  </div>
+
+  <!-- Smart Column -->
+  <div class="card">
+    <div class="card-label"><div class="icon" style="background:rgba(168,85,247,0.2);color:var(--purple)">C</div> SMART COLUMN</div>
+    <div class="metric-row"><span class="metric-name">Name</span><span class="metric-val sm" id="colN" style="color:var(--text-primary)">--</span></div>
+    <div class="metric-row"><span class="metric-name">Performance</span><span class="metric-val green" id="colS">--%</span></div>
+    <div class="health-track"><div class="health-fill" id="colBar" style="width:0;background:var(--green)"></div></div>
+    <div class="metric-row" style="margin-top:8px"><span class="metric-name">Injections</span><span class="metric-val sm blue" id="colI">--</span></div>
+    <div class="metric-row"><span class="metric-name">Remaining</span><span class="metric-val sm" id="colR" style="color:var(--text-secondary)">--</span></div>
+  </div>
+
+  <!-- Smart Trap -->
+  <div class="card">
+    <div class="card-label"><div class="icon" style="background:rgba(245,158,11,0.2);color:var(--amber)">T</div> SMART TRAP</div>
+    <div class="metric-row"><span class="metric-name">Name</span><span class="metric-val sm" id="trpN" style="color:var(--text-primary)">--</span></div>
+    <div class="metric-row"><span class="metric-name">Performance</span><span class="metric-val green" id="trpS">--%</span></div>
+    <div class="health-track"><div class="health-fill" id="trpBar" style="width:0;background:var(--green)"></div></div>
+    <div class="metric-row" style="margin-top:8px"><span class="metric-name">Injections</span><span class="metric-val sm blue" id="trpI">--</span></div>
+    <div class="metric-row"><span class="metric-name">Health</span><span class="metric-val sm" id="trpH" style="color:var(--text-secondary)">--</span></div>
+  </div>
+
+  <!-- Gradient -->
+  <div class="card">
+    <div class="card-label"><div class="icon" style="background:rgba(99,102,241,0.2);color:var(--accent)">G</div> GRADIENT</div>
+    <div class="metric-row"><span class="metric-name">%B Composition</span><span class="metric-val purple" id="pctB" style="font-size:28px">--%</span></div>
+    <div class="metric-row"><span class="metric-name">Progress</span><span class="metric-val sm blue" id="gPct">--%</span></div>
+    <div class="gradient-bar"><div class="gradient-fill" id="gBar" style="width:0"></div></div>
+    <div class="metric-row" style="margin-top:8px"><span class="metric-name">State</span><span class="metric-val sm" id="sysState" style="color:var(--text-muted)">Idle</span></div>
+  </div>
+
+  <!-- Valves -->
+  <div class="card">
+    <div class="card-label"><div class="icon" style="background:rgba(34,197,94,0.2);color:var(--green)">V</div> VALVES</div>
+    <div class="valve-grid">
+      <div class="valve-chip"><span class="name">Valve A</span><span class="pos" id="vA">--</span></div>
+      <div class="valve-chip"><span class="name">Valve B</span><span class="pos" id="vB">--</span></div>
+      <div class="valve-chip"><span class="name">Injection</span><span class="pos" id="vI" style="color:var(--amber)">--</span></div>
+      <div class="valve-chip"><span class="name">Trap</span><span class="pos" id="vT" style="color:var(--green)">--</span></div>
+    </div>
+  </div>
+
+  <!-- System Health -->
+  <div class="card span2">
+    <div class="card-label"><div class="icon" style="background:rgba(99,102,241,0.2);color:var(--accent)">H</div> SYSTEM HEALTH</div>
+    <div class="counter-grid">
+      <div class="counter"><div class="num" id="cRuns">0</div><div class="desc">Runs</div></div>
+      <div class="counter"><div class="num" id="cInj">0</div><div class="desc">Injections</div></div>
+      <div class="counter"><div class="num" id="cHrs">0</div><div class="desc">Pump Hours</div></div>
+      <div class="counter"><div class="num" id="cVlv">0</div><div class="desc">Valve Cycles</div></div>
+    </div>
+    <div class="metric-row" style="margin-top:12px"><span class="metric-name">Max Pressure Ever</span><span class="metric-val sm" id="maxP" style="color:var(--text-secondary)">-- bar</span></div>
+    <div class="metric-row"><span class="metric-name">Last Calibration</span><span class="metric-val sm" id="lastCal" style="color:var(--text-secondary)">--</span></div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="card span2">
+    <div class="card-label"><div class="icon" style="background:rgba(245,158,11,0.2);color:var(--amber)">!</div> ALERTS</div>
+    <div id="alerts" style="max-height:260px;overflow-y:auto">
+      <div class="alert info"><div class="msg">System ready — no active alerts</div></div>
+    </div>
+  </div>
+
+  <!-- Recent Runs -->
+  <div class="card span4">
+    <div class="card-label"><div class="icon" style="background:rgba(168,85,247,0.2);color:var(--purple)">R</div> RECENT RUNS</div>
+    <table><thead><tr><th>#</th><th>Method</th><th>Started</th><th>Duration</th><th>Status</th></tr></thead>
+    <tbody id="runsBody"></tbody></table>
+  </div>
+</div>
+
+<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:11px">
+  ProteYOLUTE v2.0 &mdash; &copy; 2025-2026 Michael Krawitzky &mdash; localhost:<span id="portNum">8742</span>
+</div>
+
+<script>
+const API='';
+const D={pA:[],pB:[],fA:[],fB:[],labels:[]};
+const MX=180;
+
+function $(id){return document.getElementById(id)}
+function fmt(n,d){return n!=null?(d!=null?Number(n).toFixed(d):Math.round(n).toLocaleString()):'0'}
+function sc(s){return s>=70?'green':s>=40?'amber':'red'}
+function scc(s){return s>=70?'var(--green)':s>=40?'var(--amber)':'var(--red)'}
+
+setInterval(()=>{$('clock').textContent=new Date().toLocaleTimeString()},1000);
+$('clock').textContent=new Date().toLocaleTimeString();
+
+async function f(p){try{const r=await fetch(API+p);return await r.json()}catch{return null}}
+
+function setVal(id,v,u,cls){
+  const e=$(id);if(!e||v==null)return;
+  e.innerHTML=(typeof v==='number'?v.toFixed(v<10?3:0):v)+(u?'<span class="metric-unit">'+u+'</span>':'');
+  if(cls)e.className='metric-val '+cls;
+}
+
+function drawChart(canvasId,dA,dB,cA,cB){
+  const cv=$(canvasId);if(!cv)return;
+  const c=cv.getContext('2d');
+  const w=cv.width=cv.parentElement.clientWidth;
+  const h=cv.height=cv.parentElement.clientHeight;
+  c.clearRect(0,0,w,h);
+  if(dA.length<2)return;
+  const all=[...dA,...dB];
+  const mx=Math.max(...all)*1.15||1;
+  const mn=Math.min(0,...all);
+
+  // Subtle grid
+  c.strokeStyle='rgba(255,255,255,0.03)';c.lineWidth=1;
+  for(let i=1;i<4;i++){const y=h*i/4;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}
+
+  function draw(arr,col,alpha){
+    if(arr.length<2)return;
+    // Fill gradient
+    const grad=c.createLinearGradient(0,0,0,h);
+    grad.addColorStop(0,col.replace('1)',alpha+')'));
+    grad.addColorStop(1,'rgba(0,0,0,0)');
+    c.beginPath();
+    arr.forEach((v,i)=>{const x=i/(arr.length-1)*w;const y=h-((v-mn)/(mx-mn)*h);i===0?c.moveTo(x,y):c.lineTo(x,y)});
+    c.lineTo(w,h);c.lineTo(0,h);c.closePath();c.fillStyle=grad;c.fill();
+    // Line
+    c.beginPath();c.strokeStyle=col;c.lineWidth=1.5;
+    arr.forEach((v,i)=>{const x=i/(arr.length-1)*w;const y=h-((v-mn)/(mx-mn)*h);i===0?c.moveTo(x,y):c.lineTo(x,y)});
+    c.stroke();
+  }
+  draw(dA,cA||'rgba(99,102,241,1)',0.08);
+  draw(dB,cB||'rgba(239,68,68,1)',0.05);
+}
+
+async function refreshStatus(){
+  const s=await f('/api/status');if(!s)return;
+  setVal('pA',s.pressure_a,'bar',s.pressure_a>1000?'red':s.pressure_a>800?'amber':'green');
+  setVal('pB',s.pressure_b,'bar','green');
+  setVal('fA',s.flow_a,'uL/min','green');
+  setVal('fB',s.flow_b,'uL/min','green');
+  if(s.pressure_a!=null){D.pA.push(s.pressure_a);D.pB.push(s.pressure_b||0);if(D.pA.length>MX){D.pA.shift();D.pB.shift()}}
+  if(s.flow_a!=null){D.fA.push(s.flow_a);D.fB.push(s.flow_b||0);if(D.fA.length>MX){D.fA.shift();D.fB.shift()}}
+  drawChart('cPressure',D.pA,D.pB);
+  drawChart('cFlow',D.fA,D.fB,'rgba(34,197,94,1)','rgba(245,158,11,1)');
+  if(s.valve_a)$('vA').textContent=s.valve_a;
+  if(s.valve_b)$('vB').textContent=s.valve_b;
+  if(s.valve_i)$('vI').textContent=s.valve_i;
+  if(s.valve_t)$('vT').textContent=s.valve_t;
+  if(s.percent_b!=null){$('pctB').textContent=s.percent_b.toFixed(1)+'%'}
+  if(s.gradient_progress_pct!=null){$('gPct').textContent=s.gradient_progress_pct.toFixed(1)+'%';$('gBar').style.width=s.gradient_progress_pct+'%'}
+  if(s.system_state){$('sysState').textContent=s.system_state;$('sysState').style.color=s.system_state==='running'||s.system_state==='gradient'?'var(--green)':'var(--text-muted)';
+    $('statusText').textContent=s.system_state==='running'?'Running':s.system_state==='gradient'?'Gradient':'Online';
+    $('statusPill').style.borderColor=s.system_state==='running'?'rgba(59,130,246,0.3)':'rgba(34,197,94,0.2)'}
+}
+
+async function refreshHealth(){
+  const h=await f('/api/health');if(!h)return;
+  const c=h.counters||{};
+  $('cRuns').textContent=fmt(c.total_runs);
+  $('cInj').textContent=fmt(c.total_injections);
+  $('cHrs').textContent=fmt(c.pump_a_hours,1);
+  $('cVlv').textContent=fmt((c.valve_a_switches||0)+(c.valve_b_switches||0)+(c.valve_i_switches||0)+(c.valve_t_switches||0));
+  $('maxP').textContent=fmt(c.max_pressure_ever_a,0)+' bar';
+  if(c.last_calibration_date>0){const d=Math.floor((Date.now()/1000-c.last_calibration_date)/86400);
+    $('lastCal').textContent=d+' days ago';$('lastCal').className='metric-val sm '+(d>30?'amber':'green')}
+
+  if(h.active_column){const col=h.active_column;
+    $('colN').textContent=col.Name||'--';
+    setVal('colS',col.PerformanceScore,'%',sc(col.PerformanceScore));
+    $('colBar').style.width=col.PerformanceScore+'%';$('colBar').style.background=scc(col.PerformanceScore);
+    $('colI').textContent=col.TotalInjections||0;
+    $('colR').textContent=col.EstimatedRemainingInjections||'--';
+    $('colR').style.color=col.EstimatedRemainingInjections&&col.EstimatedRemainingInjections<50?'var(--red)':'var(--text-secondary)'}
+
+  if(h.active_trap){const t=h.active_trap;
+    $('trpN').textContent=t.Name||'--';
+    setVal('trpS',t.PerformanceScore,'%',sc(t.PerformanceScore));
+    $('trpBar').style.width=t.PerformanceScore+'%';$('trpBar').style.background=scc(t.PerformanceScore);
+    $('trpI').textContent=t.TotalInjections||0;
+    $('trpH').textContent=t.HealthStatus||'--'}
+
+  // Alerts
+  if(h.alerts&&h.alerts.length>0){
+    $('alerts').innerHTML=h.alerts.slice(0,12).map(a=>{
+      const sev=a.severity||'info';
+      return`<div class="alert ${sev}"><div class="msg">${a.message||''}</div><div class="time">${a.timestamp||''}</div></div>`
+    }).join('')}
+  else{$('alerts').innerHTML='<div class="alert info"><div class="msg">System ready — no active alerts</div></div>'}
+
+  // Proactive insights
+  buildProactiveInsights(h);
+}
+
+function buildProactiveInsights(h){
+  const insights=[];
+  const c=h.counters||{};
+
+  if(c.last_calibration_date>0){
+    const days=Math.floor((Date.now()/1000-c.last_calibration_date)/86400);
+    if(days>14)insights.push({icon:'&#x1f4cb;',text:`Calibration is ${days} days old. Run pressure and flow sensor calibration for best accuracy.`})}
+
+  if(h.active_column&&h.active_column.PerformanceScore<60)
+    insights.push({icon:'&#x26a0;',text:`Column "${h.active_column.Name}" at ${h.active_column.PerformanceScore.toFixed(0)}% performance. Consider running a blank gradient to assess, or prepare a replacement.`});
+
+  if(h.active_column&&h.active_column.EstimatedRemainingInjections&&h.active_column.EstimatedRemainingInjections<100)
+    insights.push({icon:'&#x1f4e6;',text:`Column has ~${h.active_column.EstimatedRemainingInjections} injections remaining. Order a replacement column now to avoid downtime.`});
+
+  if(h.active_trap&&h.active_trap.PerformanceScore<50)
+    insights.push({icon:'&#x1f527;',text:`Trap column "${h.active_trap.Name}" showing degradation. Trap columns wear faster than analytical — schedule replacement.`});
+
+  const valveI=c.valve_i_switches||0;
+  if(valveI>15000)insights.push({icon:'&#x2699;',text:`Injection valve has ${valveI.toLocaleString()} cycles. Rotor seal inspection recommended at 20,000.`});
+
+  if(insights.length>0){
+    $('proactiveCard').style.display='block';
+    $('proactiveContent').innerHTML=insights.map(i=>`<div class="proactive"><div class="title">${i.icon} RECOMMENDATION</div><div class="recommendation">${i.text}</div></div>`).join('')}
+  else{$('proactiveCard').style.display='none'}
+}
+
+async function refreshRuns(){
+  const runs=await f('/api/runs?limit=10');if(!runs)return;
+  $('runsBody').innerHTML=runs.map(r=>{
+    const dur=r.end_time?timeDiff(r.start_time,r.end_time):(r.status==='running'?'<span style="color:var(--blue)">running...</span>':'--');
+    return`<tr><td style="color:var(--text-muted)">${r.run_id}</td><td>${r.method||''}</td>
+      <td style="color:var(--text-muted)">${r.start_time||''}</td><td>${dur}</td>
+      <td><span class="badge ${r.status}">${r.status}</span></td></tr>`}).join('')}
+
+function timeDiff(a,b){const ms=new Date(b)-new Date(a);const m=Math.floor(ms/60000);return m<60?m+' min':(m/60).toFixed(1)+' hr'}
+
+// SSE
+function connectSSE(){
+  const es=new EventSource(API+'/api/stream');
+  es.addEventListener('pressure',e=>{const d=JSON.parse(e.data);
+    if(d.channel==='A')setVal('pA',d.pressure,'bar','green');
+    if(d.channel==='B')setVal('pB',d.pressure,'bar','green')});
+  es.addEventListener('flow',e=>{const d=JSON.parse(e.data);
+    if(d.channel==='A')setVal('fA',d.flow,'uL/min','green');
+    if(d.channel==='B')setVal('fB',d.flow,'uL/min','green')});
+  es.addEventListener('alert',()=>refreshHealth());
+  es.addEventListener('run.started',()=>{refreshRuns();refreshHealth()});
+  es.addEventListener('run.ended',()=>{refreshRuns();refreshHealth()});
+  es.onerror=()=>setTimeout(connectSSE,5000);
+}
+
+refreshStatus();refreshHealth();refreshRuns();connectSSE();
+setInterval(refreshStatus,2000);
+setInterval(refreshHealth,15000);
+setInterval(refreshRuns,10000);
+</script>
+</body>
+</html>

@@ -518,5 +518,10 @@
     <Resource Include="images\warning.png" />
     <Resource Include="images\wrench_20.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Api\dashboard.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
