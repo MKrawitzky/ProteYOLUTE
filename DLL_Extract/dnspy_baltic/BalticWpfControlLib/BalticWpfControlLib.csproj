@@ -10,6 +10,9 @@
     <AssemblyName>BalticWpfControlLib</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>latest</LangVersion>
+    <NuGetInteractive>false</NuGetInteractive>
+    <ResolveNuGetPackages>false</ResolveNuGetPackages>
     <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -50,17 +53,24 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Resources.Extensions">
+      <HintPath>..\packages\System.Resources.Extensions.6.0.0\lib\net461\System.Resources.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Syncfusion.SfChart.WPF">
       <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfChart.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfTextInputLayout.WPF">
-      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.SfTextInputLayout.WPF.dll</HintPath>
+    <Reference Include="Syncfusion.SfTextInputLayout.WPF, Version=28.2462.3.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.sftextinputlayout.wpf.dll</HintPath>
+      <Private>true</Private>
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
-    <Reference Include="Syncfusion.Shared.Wpf">
-      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\Syncfusion.Shared.Wpf.dll</HintPath>
+    <Reference Include="Syncfusion.Shared.Wpf, Version=28.2462.3.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.shared.wpf.dll</HintPath>
+      <Private>true</Private>
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,12 +80,24 @@
     <Reference Include="WindowsBase" />
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="Syncfusion.SfGrid.WPF" />
-    <Reference Include="Syncfusion.SfInput.Wpf" />
-    <Reference Include="Syncfusion.Shared.MVVM.WPF" />
-    <Reference Include="Syncfusion.Shared.Wpf.Classic" />
-    <Reference Include="Syncfusion.Tools.MVVM.WPF" />
-    <Reference Include="Syncfusion.Tools.Wpf" />
+    <Reference Include="Syncfusion.SfGrid.WPF">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.sfgrid.wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfInput.Wpf">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.sfinput.wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.MVVM.WPF">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.shared.mvvm.wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Wpf.Classic">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.shared.wpf.classic.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Tools.MVVM.WPF">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.tools.mvvm.wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Tools.Wpf">
+      <HintPath>..\..\..\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute\syncfusion.tools.wpf.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
   </ItemGroup>
   <ItemGroup>
