@@ -435,15 +435,13 @@
 						Background="{StaticResource SplitterBackground}"
 						HorizontalAlignment="Stretch"
 						Focusable="False" />
-					<!-- ProteYOLUTE Dashboard + Chart Tabs -->
+					<!-- ProteYOLUTE Dashboard — loaded programmatically to avoid assembly load failures -->
 					<TabControl
+						x:Name="dashboardTabControl"
 						Grid.Column="2"
 						Background="Transparent"
 						BorderThickness="0"
 						Padding="0">
-						<TabItem Header="Dashboard">
-							<controls:LiveDashboardPanel />
-						</TabItem>
 						<TabItem Header="Traces" x:Name="tabTraces">
 							<!-- Original chart loaded programmatically -->
 						</TabItem>

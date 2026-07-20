@@ -1041,6 +1041,16 @@ namespace BalticWpfControlLib
 				gridView.Columns[1].Width = workingWidth * 0.25;
 				gridView.Columns[2].Width = workingWidth * 0.57;
 			}
+
+			// ProteYOLUTE: Load dashboard tab safely (deferred to avoid assembly load crashes)
+			try
+			{
+				var dashTab = new System.Windows.Controls.TabItem { Header = "Dashboard" };
+				dashTab.Content = new Controls.LiveDashboardPanel();
+				if (this.dashboardTabControl != null)
+					this.dashboardTabControl.Items.Insert(0, dashTab);
+			}
+			catch { /* SQLite not available — dashboard tab not added */ }
 		}
 
 		// Token: 0x060001D6 RID: 470 RVA: 0x0000C6DD File Offset: 0x0000A8DD

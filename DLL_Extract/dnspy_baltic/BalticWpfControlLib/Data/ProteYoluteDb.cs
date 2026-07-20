@@ -7,11 +7,53 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BalticWpfControlLib.Data
 {
+    /// <summary>
+    /// Ensures System.Data.SQLite.dll can be found regardless of where HyStar loads the plugin from.
+    /// Must be initialized before any SQLite types are referenced.
+    /// </summary>
+    internal static class SqliteAssemblyResolver
+    {
+        private static bool _registered;
+
+        internal static void EnsureRegistered()
+        {
+            if (_registered) return;
+            _registered = true;
+            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+        }
+
+        private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var name = new AssemblyName(args.Name);
+            if (!name.Name.Equals("System.Data.SQLite", StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            // Search in known locations
+            string[] searchPaths = new[]
+            {
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"C:\Program Files (x86)\Bruker Daltonik\HyStar\proteoElute",
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "proteoElute"),
+                AppDomain.CurrentDomain.BaseDirectory,
+            };
+
+            foreach (var dir in searchPaths)
+            {
+                if (string.IsNullOrEmpty(dir)) continue;
+                string path = Path.Combine(dir, "System.Data.SQLite.dll");
+                if (File.Exists(path))
+                    return Assembly.LoadFrom(path);
+            }
+            return null;
+        }
+    }
+
     /// <summary>
     /// Core database engine for ProteYOLUTE. Replaces CSV logging with structured
     /// SQLite storage. Thread-safe, singleton, lazy-initialized.
@@ -19,7 +61,11 @@ namespace BalticWpfControlLib.Data
     public sealed class ProteYoluteDb : IDisposable
     {
         private static readonly Lazy<ProteYoluteDb> _instance =
-            new Lazy<ProteYoluteDb>(() => new ProteYoluteDb());
+            new Lazy<ProteYoluteDb>(() =>
+            {
+                SqliteAssemblyResolver.EnsureRegistered();
+                return new ProteYoluteDb();
+            });
         public static ProteYoluteDb Instance => _instance.Value;
 
         private SQLiteConnection _conn;

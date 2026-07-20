@@ -31,20 +31,24 @@ namespace BalticWpfControlLib.Controls
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            _updateTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
-            _updateTimer.Tick += OnUpdateTick;
-            _updateTimer.Start();
-
-            // Subscribe to real-time data events
             try
             {
+                _updateTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+                _updateTimer.Tick += OnUpdateTick;
+                _updateTimer.Start();
+
+                // Subscribe to real-time data events
                 var db = ProteYoluteDb.Instance;
                 db.DataLogged += OnDataLogged;
-            }
-            catch { /* DB not initialized yet */ }
 
-            RefreshHealthCounters();
-            RefreshAlerts();
+                RefreshHealthCounters();
+                RefreshAlerts();
+            }
+            catch (Exception ex)
+            {
+                // SQLite or DB not available yet — dashboard will show defaults
+                System.Diagnostics.Debug.WriteLine($"LiveDashboardPanel: DB init deferred — {ex.Message}");
+            }
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
